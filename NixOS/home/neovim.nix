@@ -34,9 +34,9 @@ let
 
   # Генерируем Lua-таблицу вида:
   # return {
-  --   ["nvim-lspconfig"] = "/nix/store/.../nvim-lspconfig",
-  --   ...
-  -- }
+  #--   ["nvim-lspconfig"] = "/nix/store/.../nvim-lspconfig",
+  #--   ...
+  #-- }
   pluginPathsLua =
     "return {\n"
     + pkgs.lib.concatStrings (
@@ -82,11 +82,6 @@ in
     lua-language-server
     stylua
     selene
-
-    # --- Wayland ---
-    wayland
-    wayland-protocols
-    wayland-scanner
 
     # --- Nix ---
     nixd
