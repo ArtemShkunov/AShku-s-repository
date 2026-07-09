@@ -79,12 +79,18 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
+  
+
+  # Allow zsh
+  programs.zsh.enable = true;
+
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users."artemmkk-sh" = {
     isNormalUser = true;
     description = "Artemmkk-sh";
     extraGroups = [ "networkmanager" "wheel" ];
+    shell = pkgs.zsh;
   };
 
   # Enable throne
@@ -107,6 +113,22 @@
     neovim # maybe someday i will turn it into an IDE
     git # need for flakes and many many other things
   ];
+
+  # Fonts configuration
+
+  fonts.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-cjk-serif
+    noto-fonts-color-emoji
+    fira
+    fira-math
+    nerd-fonts.fira-code
+    nerd-fonts.jetbrains-mono
+    corefonts
+  ];
+
+
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
