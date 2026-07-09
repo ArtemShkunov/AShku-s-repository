@@ -172,7 +172,7 @@
   };
 
   xfconf.settings.xfce4-terminal = {
-    "font-name" = "FiraCode Nerd Font 14";
+    "font-name" = "FiraCode Nerd Font 11";
     "font-use-system" = false;
   };
 }
