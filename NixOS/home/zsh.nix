@@ -154,5 +154,9 @@
     '';
   };
 
-  home.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
+  xconf.enable = true;
+  xfconf.settings.xfce4-terminal = {
+    "font-name" = "FiraMono Nerd Font 12";
+    "font-use-system" = false;
+  };
 }
