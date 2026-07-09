@@ -88,21 +88,24 @@
                   if [[ -n "$behind" && "$behind" -gt 0 ]]; then status_info+=" "; fi
               fi
 
-              echo "󰊢  ''${branch}''${status_info}"
+              # Используем классический символ ветки git
+              echo " ''${branch}''${status_info}"
           fi
       }
 
       # ---- Основная функция формирования приглашения ----
-      # ВАЖНО: каждый кусок с \e оборачиваем в $'...' - только так zsh
-      # раскрывает \e в реальный ESC-байт. Без $'...' символы \e
-      # печатаются буквально как текст (это и была причина сломанного promt'а).
       set_custom_prompt() {
           local EXIT=$?
 
+          # Цвета секций (RGB)
           local COLOR_USER="133;46;25"
           local COLOR_PATH="170;30;20"
           local COLOR_GIT="210;50;15"
           local COLOR_TIME="219;80;11"
+
+          # Глифы Powerline
+          local ARROW_LEFT=""   # Полукруг влево
+          local ARROW_RIGHT=""  # Треугольник вправо
 
           local FRAME ERR
           if [ "$EXIT" -eq 0 ]; then
@@ -118,24 +121,40 @@
 
           local IND_S="''${FRAME}"$'┌─'
           local IND_E="''${FRAME}"$'└─╼'
+          
+          if [ -z "$GIT_CONTENT" ]; then
+	   GIT_CONTENT=" "
+	  fi
 
+          # --- СТРОКА 1 ---
           local P="''${IND_S}"
-          P+=$'%{\e[38;2;'"''${COLOR_USER}"$'m%}'
-          P+=$'%{\e[1;97;48;2;'"''${COLOR_USER}"$'m%} '"''${USER}"$' '
-          P+=$'%{\e[38;2;'"''${COLOR_USER}"$';48;2;'"''${COLOR_PATH}"$'m%}'
-          P+=$'%{\e[1;97;48;2;'"''${COLOR_PATH}"$'m%} %~ '
-          P+=$'%{\e[38;2;'"''${COLOR_PATH}"$';48;2;'"''${COLOR_GIT}"$'m%}'
-          if [ -n "$GIT_CONTENT" ]; then
-              P+=$'%{\e[1;97;48;2;'"''${COLOR_GIT}"$'m%} '"''${GIT_CONTENT}"$' '
-          else
-              P+=$'%{\e[1;97;48;2;'"''${COLOR_GIT}"$'m%}'
-          fi
-          P+=$'%{\e[38;2;'"''${COLOR_GIT}"$';48;2;'"''${COLOR_TIME}"$'m%}'
-          P+=$'%{\e[1;97;48;2;'"''${COLOR_TIME}"$'m%} %* '
-          P+=$'%{\e[0;38;2;'"''${COLOR_TIME}"$'m%}%{\e[0m%}'
 
+          # Секция 1: Пользователь (Начало с полукруга)
+          P+=$'%{\e[38;2;'"''${COLOR_USER}"$'m%}'${ARROW_LEFT}
+          P+=$'%{\e[1;97;48;2;'"''${COLOR_USER}"$'m%}'"''${USER}"$' '
+
+          # Переход: Секция 1 -> Секция 2 (Путь)
+          P+=$'%{\e[38;2;'"''${COLOR_USER}"$';48;2;'"''${COLOR_PATH}"$'m%}'${ARROW_RIGHT}
+          P+=$'%{\e[1;97;48;2;'"''${COLOR_PATH}"$'m%} %~ '
+
+
+          P+=$'%{\e[38;2;'"''${COLOR_PATH}"$';48;2;'"''${COLOR_GIT}"$'m%}'${ARROW_RIGHT}
+          P+=$'%{\e[1;97;48;2;'"''${COLOR_GIT}"$'m%} '"''${GIT_CONTENT}"$' '
+          # Переход: Секция 3 -> Секция 4 (Время)
+          P+=$'%{\e[38;2;'"''${COLOR_GIT}"$';48;2;'"''${COLOR_TIME}"$'m%}'${ARROW_RIGHT}
+
+          # Секция 4: Время
+          P+=$'%{\e[1;97;48;2;'"''${COLOR_TIME}"$'m%} %* '
+
+          # Финальный треугольник: уходит в цвет фона (сброс цвета)
+          P+=$'%{\e[0;38;2;'"''${COLOR_TIME}"$'m%}'${ARROW_RIGHT}$'%{\e[0m%}'
+
+          # Ошибки и перенос
           P+="''${ERR}"$'\n'
-          P+="''${IND_E}''${FRAME}"$' %{\e[0m%}'
+
+          # --- СТРОКА 2 ---
+          # Тонкая стрелка на конце рамки под цвет статуса выполнения
+          P+="''${IND_E} "
 
           PROMPT="$P"
       }
