@@ -5,23 +5,18 @@ return {
     name = "nvim-lspconfig",
     lazy = false,
     config = function()
-      local lspconfig = require("lspconfig")
+      -- nvim-lspconfig в новых версиях (Neovim 0.11+) используется не
+      -- через require("lspconfig")[server].setup(), а как поставщик
+      -- готовых конфигов для нативного vim.lsp.config()/vim.lsp.enable().
+      -- Старый API (lspconfig[server].setup) объявлен deprecated и
+      -- будет удалён в lspconfig v3.0.0.
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      local servers = {
-        "clangd",  -- C / C++ (пакет: clang-tools)
-        "pyright", -- Python  (пакет: pyright)
-        "lua_ls",  -- Lua     (пакет: lua-language-server)
-      }
-
-      for _, server in ipairs(servers) do
-        lspconfig[server].setup({
-          capabilities = capabilities,
-        })
-      end
-
-      lspconfig.nixd.setup({
+      vim.lsp.config("*", {
         capabilities = capabilities,
+      })
+
+      vim.lsp.config("nixd", {
         settings = {
           nixd = {
             nixpkgs = {
@@ -32,6 +27,13 @@ return {
             },
           },
         },
+      })
+
+      vim.lsp.enable({
+        "clangd",  -- C / C++ (пакет: clang-tools)
+        "pyright", -- Python  (пакет: pyright)
+        "lua_ls",  -- Lua     (пакет: lua-language-server)
+        "nixd",    -- Nix     (пакет: nixd)
       })
 
       vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
