@@ -7,9 +7,6 @@
     viAlias = true;
     vimAlias = true;
 
-    extraLuaConfig = ''
-      ${builtins.readFile ../nvim/init.lua}
-    '';
 
     plugins = with pkgs.vimPlugins; [
       # Менеджер плагинов (lazy.nvim ставится тоже как обычный плагин;
