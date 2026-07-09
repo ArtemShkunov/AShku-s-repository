@@ -89,7 +89,7 @@
               fi
 
               # Используем классический символ ветки git
-              echo " ''${branch}''${status_info}"
+              echo "󰊢 ''${branch}''${status_info}"
           fi
       }
 
@@ -120,7 +120,7 @@
           local IND_E="''${FRAME}"$'└─╼'
           
           if [ -z "$GIT_CONTENT" ]; then
-	   GIT_CONTENT=" "
+	   GIT_CONTENT=""
 	  fi
 
           # --- СТРОКА 1 ---
@@ -151,7 +151,7 @@
 
           # --- СТРОКА 2 ---
           # Тонкая стрелка на конце рамки под цвет статуса выполнения
-          P+="''${IND_E} "
+          P+="❯ "
 
           PROMPT="$P"
       }
