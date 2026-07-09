@@ -1,6 +1,7 @@
 return {
   {
-    "windwp/nvim-autopairs",
+    "nvim-autopairs",
+    dir = plugin_path("nvim-autopairs"),
     name = "nvim-autopairs",
     event = "InsertEnter",
     config = function()
@@ -9,7 +10,8 @@ return {
   },
 
   {
-    "kylechui/nvim-surround",
+    "nvim-surround",
+    dir = plugin_path("nvim-surround"),
     name = "nvim-surround",
     event = "VeryLazy",
     config = function()
@@ -18,7 +20,8 @@ return {
   },
 
   {
-    "numToStr/Comment.nvim",
+    "comment-nvim",
+    dir = plugin_path("comment-nvim"),
     name = "comment-nvim",
     event = "VeryLazy",
     config = function()

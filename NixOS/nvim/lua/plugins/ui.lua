@@ -1,9 +1,12 @@
 return {
   {
-    "nvim-lualine/lualine.nvim",
+    "lualine-nvim",
+    dir = plugin_path("lualine-nvim"),
     name = "lualine-nvim",
     event = "VeryLazy",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = {
+      { "nvim-web-devicons", dir = plugin_path("nvim-web-devicons"), name = "nvim-web-devicons" },
+    },
     config = function()
       require("lualine").setup({
         options = { theme = "auto" },
@@ -12,17 +15,21 @@ return {
   },
 
   {
-    "akinsho/bufferline.nvim",
+    "bufferline-nvim",
+    dir = plugin_path("bufferline-nvim"),
     name = "bufferline-nvim",
     event = "VeryLazy",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = {
+      { "nvim-web-devicons", dir = plugin_path("nvim-web-devicons"), name = "nvim-web-devicons" },
+    },
     config = function()
       require("bufferline").setup({})
     end,
   },
 
   {
-    "folke/which-key.nvim",
+    "which-key-nvim",
+    dir = plugin_path("which-key-nvim"),
     name = "which-key-nvim",
     event = "VeryLazy",
     config = function()
@@ -31,7 +38,8 @@ return {
   },
 
   {
-    "lukas-reineke/indent-blankline.nvim",
+    "indent-blankline-nvim",
+    dir = plugin_path("indent-blankline-nvim"),
     name = "indent-blankline-nvim",
     main = "ibl",
     event = { "BufReadPre", "BufNewFile" },

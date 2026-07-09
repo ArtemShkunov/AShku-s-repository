@@ -1,4 +1,4 @@
--- Базовые настройки
+-- ~/.config/nvim/init.lua
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
@@ -23,22 +23,26 @@ opt.splitbelow = true
 opt.clipboard = "unnamedplus"
 opt.undofile = true
 
--- В связке с Nix плагины уже физически лежат в /nix/store и
--- добавлены в rtp через programs.neovim.plugins.
--- lazy.nvim здесь используется не для скачивания плагинов из интернета,
--- а как удобный загрузчик/структуризатор конфигурации (lazy loading,
--- keys, ft, cmd и т.д. всё ещё работают на уже установленных пакетах).
+-- Пути к плагинам, установленным через Nix (сгенерировано из neovim.nix).
+-- Экспортируем глобально, чтобы файлы в lua/plugins/*.lua могли
+-- использовать plugin_path("nvim-lspconfig") вместо "owner/repo".
+local plugin_paths = require("plugin-paths")
 
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-  -- Если lazy.nvim ставится через Nix (plugins = [ lazy-nvim ]),
-  -- он уже доступен в rtp, поэтому клонирование не требуется.
-  -- Эта проверка — просто защита для не-Nix окружений.
+_G.plugin_path = function(name)
+  local path = plugin_paths[name]
+  if not path then
+    error("Плагин '" .. name .. "' не найден в plugin-paths.lua (проверь neovim.nix)")
+  end
+  return path
 end
 
+-- lazy.nvim тоже установлен через Nix — добавляем его в rtp вручную,
+-- т.к. он должен быть доступен ДО вызова require("lazy")
+vim.opt.rtp:prepend(plugin_paths["lazy-nvim"])
+
 require("lazy").setup("plugins", {
-  -- Указываем lazy.nvim не пытаться сам управлять установкой/обновлением,
-  -- т.к. все плагины уже предоставлены Nix
+  -- Все плагины уже установлены Nix'ом, lazy.nvim не должен
+  -- пытаться их скачивать или обновлять
   install = { missing = false },
   checker = { enabled = false },
   change_detection = { notify = false },

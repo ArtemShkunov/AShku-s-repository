@@ -1,6 +1,7 @@
 return {
   {
-    "lewis6991/gitsigns.nvim",
+    "gitsigns-nvim",
+    dir = plugin_path("gitsigns-nvim"),
     name = "gitsigns-nvim",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
@@ -9,7 +10,8 @@ return {
   },
 
   {
-    "tpope/vim-fugitive",
+    "vim-fugitive",
+    dir = plugin_path("vim-fugitive"),
     name = "vim-fugitive",
     cmd = { "Git", "Gstatus", "Gblame", "Gpush", "Gpull" },
     keys = {

@@ -1,8 +1,11 @@
 return {
   {
-    "nvim-telescope/telescope.nvim",
+    "telescope-nvim",
+    dir = plugin_path("telescope-nvim"),
     name = "telescope-nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    dependencies = {
+      { "plenary-nvim", dir = plugin_path("plenary-nvim"), name = "plenary-nvim" },
+    },
     cmd = "Telescope",
     keys = {
       { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find files" },
@@ -16,9 +19,12 @@ return {
   },
 
   {
-    "nvim-tree/nvim-tree.lua",
+    "nvim-tree-lua",
+    dir = plugin_path("nvim-tree-lua"),
     name = "nvim-tree-lua",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = {
+      { "nvim-web-devicons", dir = plugin_path("nvim-web-devicons"), name = "nvim-web-devicons" },
+    },
     keys = {
       { "<leader>e", "<cmd>NvimTreeToggle<cr>", desc = "Toggle file tree" },
     },

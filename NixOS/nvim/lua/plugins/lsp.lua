@@ -1,14 +1,13 @@
 return {
   {
-    "neovim/nvim-lspconfig",
+    "nvim-lspconfig",
+    dir = plugin_path("nvim-lspconfig"),
     name = "nvim-lspconfig",
     lazy = false,
     config = function()
       local lspconfig = require("lspconfig")
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-      -- Сами language servers ставятся отдельно через home.packages
-      -- (см. neovim.nix), здесь мы только настраиваем lspconfig.
       local servers = {
         "clangd",  -- C / C++ (пакет: clang-tools)
         "pyright", -- Python  (пакет: pyright)
@@ -21,7 +20,6 @@ return {
         })
       end
 
-      -- Отдельная настройка nixd (путь к nixpkgs, форматтер и т.д.)
       lspconfig.nixd.setup({
         capabilities = capabilities,
         settings = {
@@ -45,14 +43,15 @@ return {
   },
 
   {
-    "hrsh7th/nvim-cmp",
+    "nvim-cmp",
+    dir = plugin_path("nvim-cmp"),
     name = "nvim-cmp",
     event = "InsertEnter",
     dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      "L3MON4D3/LuaSnip",
-      "saadparwaiz1/cmp_luasnip",
-      "rafamadriz/friendly-snippets",
+      { "cmp-nvim-lsp", dir = plugin_path("cmp-nvim-lsp"), name = "cmp-nvim-lsp" },
+      { "LuaSnip", dir = plugin_path("LuaSnip"), name = "LuaSnip" },
+      { "cmp_luasnip", dir = plugin_path("cmp_luasnip"), name = "cmp_luasnip" },
+      { "friendly-snippets", dir = plugin_path("friendly-snippets"), name = "friendly-snippets" },
     },
     config = function()
       local cmp = require("cmp")
@@ -97,7 +96,8 @@ return {
   },
 
   {
-    "nvimtools/none-ls.nvim",
+    "none-ls-nvim",
+    dir = plugin_path("none-ls-nvim"),
     name = "none-ls-nvim",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
