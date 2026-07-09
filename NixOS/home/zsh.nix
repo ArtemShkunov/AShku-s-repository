@@ -88,7 +88,7 @@
                   if [[ -n "$behind" && "$behind" -gt 0 ]]; then status_info+=" "; fi
               fi
 
-              echo " 󰊢  ''${branch}''${status_info}"
+              echo " 󰊢  ''${branch}''${status_info} "
           fi
       }
 
