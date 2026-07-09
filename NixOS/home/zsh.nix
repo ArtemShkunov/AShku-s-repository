@@ -89,7 +89,7 @@
               fi
 
               # Используем классический символ ветки git
-              echo " 󰊢 ''${branch}''${status_info}"
+              echo " 󰊢 ''${branch}''${status_info} "
           fi
       }
 
@@ -117,7 +117,7 @@
           GIT_CONTENT=$(__git_prompt_info)
 
           local IND_S="''${FRAME}"$'┌─'
-          local IND_E="''${FRAME}"$'└─╼'
+          local IND_E="''${FRAME}"$'└─'
           
           if [ -z "$GIT_CONTENT" ]; then
 	   GIT_CONTENT=""
@@ -136,7 +136,7 @@
 
 
           P+=$'%{\e[38;2;'"''${COLOR_PATH}"$';48;2;'"''${COLOR_GIT}"$'m%}'
-          P+=$'%{\e[1;97;48;2;'"''${COLOR_GIT}"$'m%}'"''${GIT_CONTENT}"$' '
+          P+=$'%{\e[1;97;48;2;'"''${COLOR_GIT}"$'m%}'"''${GIT_CONTENT}"$''
           # Переход: Секция 3 -> Секция 4 (Время)
           P+=$'%{\e[38;2;'"''${COLOR_GIT}"$';48;2;'"''${COLOR_TIME}"$'m%}'
 
@@ -151,7 +151,7 @@
 
           # --- СТРОКА 2 ---
           # Тонкая стрелка на конце рамки под цвет статуса выполнения
-          P+="''${IND_E}❯ "
+          P+="''${IND_E} ❯ "
 
           PROMPT="$P"
       }
