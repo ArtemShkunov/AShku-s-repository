@@ -104,7 +104,6 @@
           local COLOR_TIME="219;80;11"
 
           # Глифы Powerline
-          local ARROW_LEFT=""   # Полукруг влево
           local ARROW_RIGHT=""  # Треугольник вправо
 
           local FRAME ERR
@@ -130,7 +129,7 @@
           local P="''${IND_S}"
 
           # Секция 1: Пользователь (Начало с полукруга)
-          P+=$'%{\e[38;2;'"''${COLOR_USER}"$'m%}'${ARROW_LEFT}
+          P+=$'%{\e[38;2;'"''${COLOR_USER}"$'m%}'
           P+=$'%{\e[1;97;48;2;'"''${COLOR_USER}"$'m%}'"''${USER}"$' '
 
           # Переход: Секция 1 -> Секция 2 (Путь)
