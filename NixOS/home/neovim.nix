@@ -48,7 +48,9 @@
 
   # Файл конфигурации плагинов (init.lua) кладём рядом,
   # чтобы home-manager его тоже отслеживал и линковал
-  home.file.".config/nvim/init.lua".source = ../nvim/init.lua;
-  home.file.".config/nvim/lua".source = ../nvim/lua;
+  home.file.".config/nvim" = {
+    source = ../nvim;
+    recursive = true;
+  }
 }
 
