@@ -88,5 +88,8 @@ in
     nixfmt-rfc-style
     statix
     deadnix
+
+    # Для копирования 
+    wl-clipboard
   ];
 }
