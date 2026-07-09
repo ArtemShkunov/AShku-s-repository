@@ -88,7 +88,6 @@
                   if [[ -n "$behind" && "$behind" -gt 0 ]]; then status_info+=" "; fi
               fi
 
-              # Используем классический символ ветки git
               echo " 󰊢  ''${branch}''${status_info}"
           fi
       }
@@ -172,7 +171,7 @@
   };
 
   xfconf.settings.xfce4-terminal = {
-    "font-name" = "FiraCode Nerd Font 11";
+    "font-name" = "FiraCode Nerd Font 12";
     "font-use-system" = false;
   };
 }
