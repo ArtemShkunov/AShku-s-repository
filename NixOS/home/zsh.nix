@@ -1,11 +1,10 @@
-# home.nix (или фрагмент, который нужно импортировать в твой существующий home.nix)
+# zsh.nix — модуль home-manager
 { config, pkgs, ... }:
 
 {
   programs.zsh = {
     enable = true;
 
-    # ===================== История =====================
     history = {
       size = 1000;
       save = 2000;
@@ -13,13 +12,11 @@
       ignoreDups = true;
       ignoreSpace = true;
       append = true;
-      share = false; # аналог обычного APPEND_HISTORY, без "живого" шаринга между сессиями
+      share = false;
     };
 
-    # ===================== oh-my-zsh =====================
     oh-my-zsh = {
       enable = true;
-      # Тему не подключаем - используем свой кастомный promt ниже.
       theme = "";
       plugins = [
         "git"
@@ -27,7 +24,6 @@
       ];
     };
 
-    # ===================== плагины подсветки/автодополнения =====================
     plugins = [
       {
         name = "zsh-syntax-highlighting";
@@ -41,17 +37,15 @@
       }
     ];
 
-    # ===================== опции shell (аналог shopt/setopt из bashrc) =====================
     setOptions = [
-      "EXTENDED_GLOB"       # аналог shopt -s globstar
+      "EXTENDED_GLOB"
       "HIST_IGNORE_DUPS"
       "HIST_IGNORE_SPACE"
       "APPEND_HISTORY"
       "INC_APPEND_HISTORY"
-      "PROMPT_SUBST"        # нужно для кастомного promt
+      "PROMPT_SUBST"
     ];
 
-    # ===================== алиасы =====================
     shellAliases = {
       ll = "ls -alF";
       la = "ls -A";
@@ -64,7 +58,6 @@
       ramus = "/home/artemmkk-sh/.local/opt/ramus/start.sh";
     };
 
-    # ===================== весь кастомный promt и git-функция =====================
     initExtra = ''
       # ---- Логика Git: получение ветки со значком, статуса или хеша ----
       __git_prompt_info() {
@@ -100,6 +93,9 @@
       }
 
       # ---- Основная функция формирования приглашения ----
+      # ВАЖНО: каждый кусок с \e оборачиваем в $'...' - только так zsh
+      # раскрывает \e в реальный ESC-байт. Без $'...' символы \e
+      # печатаются буквально как текст (это и была причина сломанного promt'а).
       set_custom_prompt() {
           local EXIT=$?
 
@@ -114,33 +110,32 @@
               ERR=""
           else
               FRAME=$'%{\e[1;31m%}'
-              ERR=" %{\e[38;5;52m%}✗ $EXIT%{\e[0m%}"
+              ERR=$' %{\e[38;5;52m%}✗ '"$EXIT"$'%{\e[0m%}'
           fi
 
           local GIT_CONTENT
           GIT_CONTENT=$(__git_prompt_info)
 
-          local IND_S="''${FRAME}┌─"
-          local IND_E="''${FRAME}└─╼"
+          local IND_S="''${FRAME}"$'┌─'
+          local IND_E="''${FRAME}"$'└─╼'
 
           local P="''${IND_S}"
-          P+="%{\e[38;2;''${COLOR_USER}m%}"
-          P+="%{\e[1;97;48;2;''${COLOR_USER}m%} %n "
-          P+="%{\e[38;2;''${COLOR_USER};48;2;''${COLOR_PATH}m%}"
-          P+="%{\e[1;97;48;2;''${COLOR_PATH}m%} %~ "
-          P+="%{\e[38;2;''${COLOR_PATH};48;2;''${COLOR_GIT}m%}"
+          P+=$'%{\e[38;2;'"''${COLOR_USER}"$'m%}'
+          P+=$'%{\e[1;97;48;2;'"''${COLOR_USER}"$'m%} '"''${USER}"$' '
+          P+=$'%{\e[38;2;'"''${COLOR_USER}"$';48;2;'"''${COLOR_PATH}"$'m%}'
+          P+=$'%{\e[1;97;48;2;'"''${COLOR_PATH}"$'m%} %~ '
+          P+=$'%{\e[38;2;'"''${COLOR_PATH}"$';48;2;'"''${COLOR_GIT}"$'m%}'
           if [ -n "$GIT_CONTENT" ]; then
-              P+="%{\e[1;97;48;2;''${COLOR_GIT}m%} ''${GIT_CONTENT} "
+              P+=$'%{\e[1;97;48;2;'"''${COLOR_GIT}"$'m%} '"''${GIT_CONTENT}"$' '
           else
-              P+="%{\e[1;97;48;2;''${COLOR_GIT}m%}"
+              P+=$'%{\e[1;97;48;2;'"''${COLOR_GIT}"$'m%}'
           fi
-          P+="%{\e[38;2;''${COLOR_GIT};48;2;''${COLOR_TIME}m%}"
-          P+="%{\e[1;97;48;2;''${COLOR_TIME}m%} %* "
-          P+="%{\e[0;38;2;''${COLOR_TIME}m%}%{\e[0m%}"
+          P+=$'%{\e[38;2;'"''${COLOR_GIT}"$';48;2;'"''${COLOR_TIME}"$'m%}'
+          P+=$'%{\e[1;97;48;2;'"''${COLOR_TIME}"$'m%} %* '
+          P+=$'%{\e[0;38;2;'"''${COLOR_TIME}"$'m%}%{\e[0m%}'
 
-          P+="''${ERR}
-"
-          P+="''${IND_E}''${FRAME} %{\e[0m%}"
+          P+="''${ERR}"$'\n'
+          P+="''${IND_E}''${FRAME}"$' %{\e[0m%}'
 
           PROMPT="$P"
       }
@@ -159,6 +154,5 @@
     '';
   };
 
-  # Nerd Font с иконками  и 󰊢 - без него promt покажет квадратики
   home.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
 }
