@@ -85,10 +85,6 @@
     isNormalUser = true;
     description = "Artemmkk-sh";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-    # thunderbird
-      telegram-desktop
-    ];
   };
 
   # Enable throne
