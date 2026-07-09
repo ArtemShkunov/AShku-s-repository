@@ -2,7 +2,7 @@
 {
   home.username = "artemmkk-sh";
   home.homeDirectory = "/home/artemmkk-sh";
-  home.packages = iwth pkgs; [
+  home.packages = with pkgs; [
     telegram-desktop
     obsidian
   ];
