@@ -70,11 +70,11 @@
               local git_status
               git_status=$(git status --porcelain 2>/dev/null)
 
-              [[ "$git_status" =~ ^([MADRC].|.[MADRC]) ]] && status_info+=" "
-              [[ "$git_status" =~ ^( .[MTADRC]) ]] && status_info+=" "
-              [[ "$git_status" =~ ^( .[D]) ]] && status_info+=" "
-              [[ "$git_status" =~ (UU|AA|DD|AU|UA|UD|DU) ]] && status_info+=" "
-              [[ "$git_status" =~ '\?\?' ]] && status_info+=" "
+              [[ "$git_status" =~ ^([MADRC].|.[MADRC]) ]] && status_info+=" "
+              [[ "$git_status" =~ ^( .[MTADRC]) ]] && status_info+=" "
+              [[ "$git_status" =~ ^( .[D]) ]] && status_info+=" "
+              [[ "$git_status" =~ (UU|AA|DD|AU|UA|UD|DU) ]] && status_info+=" "
+              [[ "$git_status" =~ '\?\?' ]] && status_info+=" "`
 
               local upstream
               upstream=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)
@@ -84,12 +84,12 @@
                   ahead=$(echo $counts | awk '{print $1}')
                   behind=$(echo $counts | awk '{print $2}')
 
-                  if [[ -n "$ahead" && "$ahead" -gt 0 ]]; then status_info+=" "; fi
-                  if [[ -n "$behind" && "$behind" -gt 0 ]]; then status_info+=" "; fi
+                  if [[ -n "$ahead" && "$ahead" -gt 0 ]]; then status_info+=" "; fi
+                  if [[ -n "$behind" && "$behind" -gt 0 ]]; then status_info+=" "; fi
               fi
 
               # Используем классический символ ветки git
-              echo " 󰊢 ''${branch}''${status_info}"
+              echo " 󰊢  ''${branch}''${status_info}"
           fi
       }
 
