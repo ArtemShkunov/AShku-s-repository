@@ -74,7 +74,7 @@
               [[ "$git_status" =~ ^( .[MTADRC]) ]] && status_info+=" "
               [[ "$git_status" =~ ^( .[D]) ]] && status_info+=" "
               [[ "$git_status" =~ (UU|AA|DD|AU|UA|UD|DU) ]] && status_info+=" "
-              [[ "$git_status" =~ '\?\?' ]] && status_info+=" "`
+              [[ "$git_status" =~ '\?\?' ]] && status_info+=" "
 
               local upstream
               upstream=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)
