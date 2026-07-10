@@ -30,6 +30,15 @@ let
     nvim-surround = nvim-surround;
     indent-blankline-nvim = indent-blankline-nvim;
     comment-nvim = comment-nvim;
+
+    nvim-treesitter = nvim-treesitter.withPlugins (p: [
+      p.c p.cpp p.python p.lua p.nix p.bash p.markdown p.vim p.query
+    ]);
+    nvim-treesitter-textobjects = nvim-treesitter-textobjects;
+
+    noice-nvim = noice-nvim;
+    nui-nvim = nui-nvim;
+    nvim-notify = nvim-notify;
   };
 
   # Генерируем Lua-таблицу вида:
