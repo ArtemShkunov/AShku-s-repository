@@ -90,7 +90,7 @@ in
     deadnix
     
     # --- Bash ---
-    nodePackages.bash-language-server
+    pkgs.bash-language-server
     shellcheck
     shfmt
 
