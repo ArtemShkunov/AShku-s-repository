@@ -34,7 +34,8 @@ return {
         "pyright", -- Python  (пакет: pyright)
         "lua_ls",  -- Lua     (пакет: lua-language-server)
         "nixd",    -- Nix
-        "ruff",
+        "ruff",    -- тоже Python
+        "bashls",  -- Bash
       })
 
       vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
@@ -111,8 +112,6 @@ return {
           null_ls.builtins.formatting.clang_format,
           null_ls.builtins.diagnostics.cppcheck,
 
-          -- Python
-
           -- Lua
           null_ls.builtins.formatting.stylua,
           null_ls.builtins.diagnostics.selene,
@@ -121,6 +120,9 @@ return {
           null_ls.builtins.formatting.nixfmt,
           null_ls.builtins.diagnostics.statix,
           null_ls.builtins.diagnostics.deadnix,
+
+          -- Shell
+          null_ls.builtins.formatting.shfmt,
         },
       })
     end,

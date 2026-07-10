@@ -88,6 +88,11 @@ in
     nixfmt-rfc-style
     statix
     deadnix
+    
+    # --- Bash ---
+    nodePackages.bash-language-server
+    shellcheck
+    shfmt
 
     # Для копирования 
     wl-clipboard
