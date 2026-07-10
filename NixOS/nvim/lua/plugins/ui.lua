@@ -6,9 +6,7 @@ return {
     event = "VeryLazy",
     dependencies = {
       { "nvim-web-devicons", dir = plugin_path("nvim-web-devicons"), name = "nvim-web-devicons" },
-    },
-    config = function()
-      require("lualine").setup({
+    }, config = function() require("lualine").setup({
         options = { theme = "auto" },
       })
     end,
@@ -45,6 +43,15 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     config = function()
       require("ibl").setup({})
+    end,
+  },
+
+  {
+    "dressing-nvim",
+    dir = plugin_path("dressing-nvim"),
+    event = "VeryLazy",
+    config = function ()
+      require("dressing").setup({})
     end,
   },
 }

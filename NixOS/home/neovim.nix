@@ -39,6 +39,9 @@ let
     noice-nvim = noice-nvim;
     nui-nvim = nui-nvim;
     nvim-notify = nvim-notify;
+
+    dressing-nvim = dressing-nvim;
+    rose-pine = rose-pine;
   };
 
   # Генерируем Lua-таблицу вида:
