@@ -91,5 +91,6 @@ in
 
     # Для копирования 
     wl-clipboard
+    xclip
   ];
 }

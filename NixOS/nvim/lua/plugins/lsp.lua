@@ -33,7 +33,8 @@ return {
         "clangd",  -- C / C++ (пакет: clang-tools)
         "pyright", -- Python  (пакет: pyright)
         "lua_ls",  -- Lua     (пакет: lua-language-server)
-        "nixd",    -- Nix     (пакет: nixd)
+        "nixd",    -- Nix
+        "ruff",
       })
 
       vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
@@ -111,8 +112,6 @@ return {
           null_ls.builtins.diagnostics.cppcheck,
 
           -- Python
-          null_ls.builtins.formatting.ruff_format,
-          null_ls.builtins.diagnostics.ruff,
 
           -- Lua
           null_ls.builtins.formatting.stylua,
