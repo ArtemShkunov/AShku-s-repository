@@ -69,7 +69,7 @@ in
         "$mod, V, togglefloating"
         "$mod, R, exec, wofi --show drun"
         "$mod, P, pseudo"
-        "$mod, J, togglesplit"
+        "$mod, J, layoutmsg, togglesplit"
         "$mod, L, exec, hyprlock"
         ", Print, exec, grim -g \"$(slurp)\" - | wl-copy"
       ] ++ workspaceBinds;
