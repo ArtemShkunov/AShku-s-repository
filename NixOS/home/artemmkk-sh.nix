@@ -3,7 +3,6 @@
   imports = [
     ./zsh.nix
     ./neovim.nix
-    ./hyprland.nix
   ];
 
   home.username = "artemmkk-sh";
