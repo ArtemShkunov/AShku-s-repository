@@ -21,8 +21,8 @@
       style = "Nerd";
     };
     size = 12;
-    }
-  }
+    };
+  };
 
   programs.git = {
     enable = true;
