@@ -6,7 +6,7 @@
     enable = true;
     xwayland.enable = true;
 
-    configFormat = "hyprlang";
+    configType = "hyprlang";
 
     settings = {
       monitor = [ ",preferred,auto,1" ];
