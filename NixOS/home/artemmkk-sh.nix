@@ -12,6 +12,18 @@
     obsidian
   ];
 
+
+  programs.alacritty = {
+    enable = true;
+    font = {
+      normal = {
+      family = "Fira Code";
+      style = "Nerd";
+    };
+    size = 12;
+    }
+  }
+
   programs.git = {
     enable = true;
     userName = "shayu25u578";
