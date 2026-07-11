@@ -15,12 +15,14 @@
 
   programs.alacritty = {
     enable = true;
-    font = {
-      normal = {
-      family = "Fira Code";
-      style = "Nerd";
-    };
-    size = 12;
+    settings = {
+      font = {
+        normal = {
+          family = "Fira Code";
+          style = "Nerd";
+        };
+        size = 12;
+      };
     };
   };
 
