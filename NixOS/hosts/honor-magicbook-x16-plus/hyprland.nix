@@ -57,7 +57,6 @@
   ];
 
   # Разрешаем яркость без sudo для обычных пользователей
-  hardware.brightnessctl.enable = true;
 
   # Wayland-совместимость для Electron/Chromium-приложений.
   # Эти переменные session-wide, но XFCE-сессия под X11 их просто
