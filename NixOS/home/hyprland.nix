@@ -15,6 +15,8 @@ in
     enable = true;
     xwayland.enable = true;
 
+    configType = "hyprlang";
+
     settings = {
       monitor = ",preferred,auto,1";
 
@@ -142,5 +144,4 @@ in
     XDG_SESSION_DESKTOP = "Hyprland";
   };
 
-  configType = "hyprlang";
 }
