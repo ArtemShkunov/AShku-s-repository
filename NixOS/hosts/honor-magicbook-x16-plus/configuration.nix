@@ -49,6 +49,13 @@
   services.xserver.displayManager.lightdm.enable = true;
   services.xserver.desktopManager.xfce.enable = true;
 
+  # Enable Hyprland
+  programs.hyprland.enable = true;
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
+  };
+
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
