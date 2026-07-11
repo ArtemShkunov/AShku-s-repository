@@ -18,11 +18,10 @@ in
     configType = "hyprlang";
 
     settings = {
-      monitor = ",preferred,auto,1";
+      monitor = ",1920x1200@120,auto,1";
 
       exec-once = [
         "waybar"
-        "hyprpaper"
         "hypridle"
         "nm-applet --indicator"
         "wl-paste --watch cliphist store"
@@ -78,6 +77,15 @@ in
         "$mod, mouse:272, movewindow"
         "$mod, mouse:273, resizewindow"
       ];
+
+      services.hyprpaper = {
+        enable = true;
+        settings = {
+        preload = [ "${config.home.homeDirectory}/Data/Wallpaper.png" ];
+        wallpaper = [ ",${config.home.homeDirectory}/Data/Wallpaper.png" ];
+        splash = false;
+      };
+      };
     };
   };
 
