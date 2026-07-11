@@ -22,7 +22,16 @@ opt.splitright = true
 opt.splitbelow = true
 opt.clipboard = "unnamedplus"
 opt.undofile = true
+-- Включаем поддержку прозрачности фона
+vim.opt.termguicolors = true
 
+-- Глобальное отключение фона (делает всё прозрачным)
+vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+
+-- Дополнительно: отключаем фон для статус-бара (например, для lualine)
+vim.api.nvim_set_hl(0, "StatusLine", { bg = "none" })
+vim.api.nvim_set_hl(0, "StatusLineNC", { bg = "none" })
 -- Пути к плагинам, установленным через Nix (сгенерировано из neovim.nix).
 -- Экспортируем глобально, чтобы файлы в lua/plugins/*.lua могли
 -- использовать plugin_path("nvim-lspconfig") вместо "owner/repo".
