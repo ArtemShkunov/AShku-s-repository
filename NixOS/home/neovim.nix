@@ -42,6 +42,10 @@ let
 
     dressing-nvim = dressing-nvim;
     rose-pine = rose-pine;
+
+    nvim-dap = nvim-dap;
+    nvim-dap-ui = nvim-dap-ui;
+    nvim-nio = nvim-nio;
   };
 
   # Генерируем Lua-таблицу вида:
