@@ -123,7 +123,8 @@ in
     xfce.thunar
 
     # Nerd Font — та же семья, что используется в zsh-промпте
-    (nerdfonts.override { fonts = [ "JetBrainsMono" "FiraCode" ]; })
+    nerd-fonts.jetbrains-mono
+    ner-fonts.fira-code
 
     # Тема иконок
     adwaita-icon-theme
