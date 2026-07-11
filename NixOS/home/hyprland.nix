@@ -124,7 +124,7 @@ in
 
     # Nerd Font — та же семья, что используется в zsh-промпте
     nerd-fonts.jetbrains-mono
-    ner-fonts.fira-code
+    nerd-fonts.fira-code
 
     # Тема иконок
     adwaita-icon-theme
