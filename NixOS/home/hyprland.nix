@@ -27,7 +27,7 @@ in
         # с прошлой сессии (иначе новый hyprpaper не сможет занять сокет).
         # sleep даёт монитору время зарегистрироваться перед тем, как
         # hyprpaper попробует применить обои — иначе возможна гонка на старте.
-        "sh -c 'pkill hyprpaper; sleep 1; hyprpaper'"
+        "hyprpaper"
         "nm-applet --indicator"
         "wl-paste --watch cliphist store"
         "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
@@ -110,16 +110,19 @@ in
     };
   };
 
+  services.hyprpaper = {
+      enable = true;
+      settings = {
+        preload = "~/Data/Wallpaper.jpg";
+        wallpaper = "eDP-1,~/Data/Wallpaper.jpg";
+      };
+    };
+
 # Обои: модуль services.hyprpaper сейчас нестабилен (его контент утекает
   # прямо в hyprland.conf вместо отдельного hyprpaper.conf — похоже на баг
   # на фоне миграции экосистемы Hyprland на Lua). Пишем hyprpaper.conf
   # напрямую как обычный текстовый файл — так надёжнее.
   # Замени путь на свою картинку.
-  xdg.configFile."hypr/hyprpaper.conf".text = ''
-    preload = ${config.home.homeDirectory}/Data/Wallpaper.jpg
-    wallpaper = ,${config.home.homeDirectory}/Data/Wallpaper.jpg
-    splash = false
-  '';
 
   home.packages = with pkgs; [
     # Статус-бар
