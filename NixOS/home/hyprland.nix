@@ -23,7 +23,7 @@ in
       exec-once = [
         "waybar"
         "hypridle"
-        "hyprpaper"
+        "sh -c 'pkill hyprpaper; sleep 1; hyprpaper'"
         "nm-applet --indicator"
         "wl-paste --watch cliphist store"
         "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
@@ -113,7 +113,7 @@ in
   # Замени путь на свою картинку.
   xdg.configFile."hypr/hyprpaper.conf".text = ''
     preload=${config.home.homeDirectory}/Data/Wallpaper.jpg
-    wallpaper=eDp-1,${config.home.homeDirectory}/Data/Wallpaper.jpg
+    wallpaper=,${config.home.homeDirectory}/Data/Wallpaper.jpg
     splash = false
   '';
 
