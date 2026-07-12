@@ -40,7 +40,7 @@ in
         follow_mouse = 1;
         touchpad = {
           natural_scroll = true;
-          clickfinger_behaviour = true;
+          clickfinger_behavior = true;
         };
       };
 
