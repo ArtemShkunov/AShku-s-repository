@@ -67,7 +67,7 @@ in
         "$mod, Q, exec, kitty"
         "$mod, C, killactive"
         "$mod, M, exit"
-        "$mod, E, exec, thunar"
+        "$mod, E, exec, nautilus"
         "$mod, V, togglefloating"
         "$mod, R, exec, wofi --show drun"
         "$mod, P, pseudo"
