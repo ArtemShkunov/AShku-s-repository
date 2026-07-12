@@ -115,8 +115,8 @@ in
     settings = {
       wallpaper = [ 
         {
-          monitor = "eDP-1"; 
-          path = "${config.home.homeDirectory/Data/Wallpaper.jpg}";
+          monitor = ""; 
+          path = "${config.home.homeDirectory}/Data/Wallpaper.jpg";
         }
       ];
     };
