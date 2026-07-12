@@ -23,6 +23,7 @@ in
       exec-once = [
         "waybar"
         "hypridle"
+        "hyprpaper"
         "nm-applet --indicator"
         "wl-paste --watch cliphist store"
         "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
