@@ -110,25 +110,28 @@ in
     };
   };
 
-    #  services.hyprpaper = {
-    # enable = true;
-    # settings = {
-    #   preload = [ "${config.home.homeDirectory}/Data/Wallpaper.jpg" ];
-    #   wallpaper = [ "eDP-1,${config.home.homeDirectory}/Data/Wallpaper.jpg" ];
-    # };
-  #};
+  services.hyprpaper = {
+    enable = true;
+    settings = {
+      wallpaper = [ 
+        {
+          monitor = "eDP-1"; 
+          path = "${config.home.homeDirectory/Data/Wallpaper.jpg}";
+        }
+      ];
+    };
+  };
 
 # Обои: модуль services.hyprpaper сейчас нестабилен (его контент утекает
   # прямо в hyprland.conf вместо отдельного hyprpaper.conf — похоже на баг
   # на фоне миграции экосистемы Hyprland на Lua). Пишем hyprpaper.conf
   # напрямую как обычный текстовый файл — так надёжнее.
   # Замени путь на свою картинку.
-  xdg.configFile."hypr/hyprpaper.conf".text=''
-    preload = ${config.home.homeDirectory}/Data/Wallpaper.jpg
-    wallpaper = eDP-1,${config.home.homeDirectory}/Data/Wallpaper.jpg
-    ipc = on
-
-  '';
+  #xdg.configFile."hypr/hyprpaper.conf".text=''
+  #  preload = ${config.home.homeDirectory}/Data/Wallpaper.jpg
+   # wallpaper = eDP-1,${config.home.homeDirectory}/Data/Wallpaper.jpg
+   # ipc = on
+  #'';
 
 
 
