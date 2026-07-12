@@ -56,6 +56,10 @@
     extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
   };
 
+
+  # Enable dconf
+  programs.dconf.enable = true;
+
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";

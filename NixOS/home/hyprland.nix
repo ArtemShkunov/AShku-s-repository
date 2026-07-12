@@ -23,11 +23,7 @@ in
       exec-once = [
         "waybar"
         "hypridle"
-        # pkill гарантирует, что не останется старого "осиротевшего" процесса
-        # с прошлой сессии (иначе новый hyprpaper не сможет занять сокет).
-        # sleep даёт монитору время зарегистрироваться перед тем, как
-        # hyprpaper попробует применить обои — иначе возможна гонка на старте.
-        "hyprpaper -c /home/artemmkk-sh/.config/hypr/hyprpaper.conf"
+        "hyprpaper"
         "nm-applet --indicator"
         "wl-paste --watch cliphist store"
         "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
@@ -35,6 +31,9 @@ in
 
       env = [
         "XCURSOR_SIZE,24"
+        "XCURSOR_THEME,Adwaita"
+        "HYPRCURSOR_THEME,Adwaita"
+        "HYPRCURSOR_SIZE,24"
         "NIXOS_OZONE_WL,1"
       ];
 
@@ -122,16 +121,35 @@ in
     };
   };
 
-# Обои: модуль services.hyprpaper сейчас нестабилен (его контент утекает
-  # прямо в hyprland.conf вместо отдельного hyprpaper.conf — похоже на баг
-  # на фоне миграции экосистемы Hyprland на Lua). Пишем hyprpaper.conf
-  # напрямую как обычный текстовый файл — так надёжнее.
-  # Замени путь на свою картинку.
-  #xdg.configFile."hypr/hyprpaper.conf".text=''
-  #  preload = ${config.home.homeDirectory}/Data/Wallpaper.jpg
-   # wallpaper = eDP-1,${config.home.homeDirectory}/Data/Wallpaper.jpg
-   # ipc = on
-  #'';
+  gtk = {
+    enable = true;
+
+    theme = {
+      name = "Yaru-dark-red";
+      package = pkgs.yaru-theme;
+    };
+
+    iconTheme = {
+      name = "Yaru";
+      package = pkgs.yaru-theme;
+    };
+
+    cursorTheme = {
+      name = "Adwaita";
+      package = pkgs.adwaita-icon-theme;
+      size = 24;
+    };
+  };
+
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      gtk-theme = "Yaru-dark-red";
+      icon-theme = "Yaru";
+      cursor-theme = "Adwaita";
+      cursor-size = 24;
+      color-scheme = "prefer-dark";
+    };
+  };
 
 
 
@@ -172,8 +190,10 @@ in
     # Сетевой апплет
     networkmanagerapplet
 
-    # Файловый менеджер
+    # Пакеты из Gnome Shell
     nautilus
+    gnome-system-monitor
+    yaru-theme
 
     # Nerd Font — та же семья, что используется в zsh-промпте
     nerd-fonts.jetbrains-mono
