@@ -113,8 +113,8 @@ in
   services.hyprpaper = {
       enable = true;
       settings = {
-        preload = "~/Data/Wallpaper.jpg";
-        wallpaper = "eDP-1,~/Data/Wallpaper.jpg";
+        preload = [ "${config.home.homeDirectory}/Data/Wallpaper.jpg" ];
+        wallpaper = [ "eDP-1,${config.home.homeDirectory}/Data/Wallpaper.jpg" ];
       };
     };
 
