@@ -112,7 +112,8 @@ in
   # напрямую как обычный текстовый файл — так надёжнее.
   # Замени путь на свою картинку.
   xdg.configFile."hypr/hyprpaper.conf".text = ''
-    preload = ${config.home.homeDirectory}/Data/Wallpaper.jpg
+    preload=${config.home.homeDirectory}/Data/Wallpaper.jpg
+    wallpaper=${config.home.homeDirectory}/Data/Wallpaper.jpg
     splash = false
   '';
 
