@@ -14,22 +14,6 @@
   ];
 
 
-  programs.alacritty = {
-    enable = true;
-    settings = {
-      font = {
-        normal = {
-          family = "Fira Code";
-          style = "Nerd";
-        };
-        size = 12;
-      };
-      window = {
-        opacity = 0.90;
-      };
-    };
-  };
-
   programs.git = {
     enable = true;
     userName = "shayu25u578";

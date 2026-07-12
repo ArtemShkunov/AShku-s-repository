@@ -38,7 +38,10 @@ in
         kb_layout = "us,ru";
         kb_options = "grp:alt_shift_toggle";
         follow_mouse = 1;
-        touchpad.natural_scroll = true;
+        touchpad = {
+          natural_scroll = true;
+          clickfinger_behaviour = true;
+        };
       };
 
       general = {
@@ -62,8 +65,8 @@ in
       "$mod" = "SUPER";
 
       bind = [
-        "$mod, Return, exec, kitty"
-        "$mod, Q, killactive"
+        "$mod, Q, exec, kitty"
+        "$mod, C, killactive"
         "$mod, M, exit"
         "$mod, E, exec, thunar"
         "$mod, V, togglefloating"
@@ -72,6 +75,10 @@ in
         "$mod, J, layoutmsg, togglesplit"
         "$mod, L, exec, hyprlock"
         ", Print, exec, grim -g \"$(slurp)\" - | wl-copy"
+        "$mod, left, movefocus, l"
+        "$mod, right, movefocus, r"
+        "$mod, up, movefocus, u"
+        "$mod, down, movefocus, d"
       ] ++ workspaceBinds;
 
       bindm = [
@@ -79,6 +86,23 @@ in
         "$mod, mouse:273, resizewindow"
       ];
 
+      bindel = [
+        ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
+        ", XF86MonBrightnessUp, exec, brightnessctl set 5%+"
+        ", XF86AudioLowerVolume, exec, pamixer -d 5"
+        ", XF86AudioRaiseVolume, exec, pamixer -i 5"
+      ];
+      bindl = [
+        ", XF86AudioMute, exec, pamixer -t"
+      ];
+    };
+  };
+
+  programs.kitty = {
+    enable = true;
+    settings = {
+      background_opacity = "0.85";
+      confirm_os_window_close = 0;
     };
   };
 
@@ -89,7 +113,7 @@ in
   # Замени путь на свою картинку.
   xdg.configFile."hypr/hyprpaper.conf".text = ''
     preload = ${config.home.homeDirectory}/Data/Wallpaper.png
-    wallpaper = ,${config.home.homeDirectory}/Data/wallpaper.png
+    wallpaper = ,${config.home.homeDirectory}/Data/Wallpaper.png
     splash = false
   '';
 
@@ -130,11 +154,8 @@ in
     # Сетевой апплет
     networkmanagerapplet
 
-    # Терминал
-    kitty
-
     # Файловый менеджер
-    xfce.thunar
+    nautilus
 
     # Nerd Font — та же семья, что используется в zsh-промпте
     nerd-fonts.jetbrains-mono
