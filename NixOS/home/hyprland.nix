@@ -23,7 +23,11 @@ in
       exec-once = [
         "waybar"
         "hypridle"
-        "sh -c 'pkill hyprpaper; sleep 10; hyprpaper'"
+        # pkill гарантирует, что не останется старого "осиротевшего" процесса
+        # с прошлой сессии (иначе новый hyprpaper не сможет занять сокет).
+        # sleep даёт монитору время зарегистрироваться перед тем, как
+        # hyprpaper попробует применить обои — иначе возможна гонка на старте.
+        "sh -c 'pkill hyprpaper; sleep 1; hyprpaper'"
         "nm-applet --indicator"
         "wl-paste --watch cliphist store"
         "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
@@ -112,8 +116,8 @@ in
   # напрямую как обычный текстовый файл — так надёжнее.
   # Замени путь на свою картинку.
   xdg.configFile."hypr/hyprpaper.conf".text = ''
-    preload=${config.home.homeDirectory}/Data/Wallpaper.jpg
-    wallpaper=eDP-1,${config.home.homeDirectory}/Data/Wallpaper.jpg
+    preload = ${config.home.homeDirectory}/Data/Wallpaper.jpg
+    wallpaper = ,${config.home.homeDirectory}/Data/Wallpaper.jpg
     splash = false
   '';
 
