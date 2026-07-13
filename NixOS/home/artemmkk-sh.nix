@@ -4,6 +4,7 @@
     ./zsh.nix
     ./neovim.nix
     ./hyprland.nix
+    ./waybar.nix
   ];
 
   home.username = "artemmkk-sh";
