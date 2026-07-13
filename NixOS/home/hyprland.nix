@@ -21,6 +21,7 @@ in
       monitor = ",2560x1600@120,auto,1.33";
 
       exec-once = [
+        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP HYPRLAND_INSTANCE_SIGNATURE"
         "waybar"
         "hypridle"
         "hyprpaper"
