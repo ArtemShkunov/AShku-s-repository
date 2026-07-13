@@ -5,6 +5,8 @@
     ./neovim.nix
     ./hyprland.nix
     ./waybar.nix
+    ./mako.nix
+    ./wofi.nix
   ];
 
   home.username = "artemmkk-sh";

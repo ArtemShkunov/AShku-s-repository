@@ -1,4 +1,3 @@
-
 { config, pkgs, lib, ... }:
 
 let
@@ -53,8 +52,9 @@ in
         gaps_in = 5;
         gaps_out = 10;
         border_size = 2;
-        "col.active_border" = "rgba(89b4faee)";
-        "col.inactive_border" = "rgba(595959aa)";
+        # Градиент оранжевый -> золото под цвет заката с обоев
+        "col.active_border" = "rgba(f2994aee) rgba(f7ce68ee) 45deg";
+        "col.inactive_border" = "rgba(4a3b4faa)";
         layout = "dwindle";
       };
 
@@ -108,6 +108,22 @@ in
     settings = {
       background_opacity = "0.75";
       confirm_os_window_close = 0;
+
+      # Цвета терминала в тон закатным обоям
+      background = "#16141f";
+      foreground = "#f5e9dc";
+      cursor     = "#f7ce68";
+      selection_background = "#4a3b4f";
+      selection_foreground = "#f5e9dc";
+
+      color0  = "#16141f"; color8  = "#8a7a8a"; # black
+      color1  = "#e8613c"; color9  = "#f2994a"; # red/orange
+      color2  = "#a3b18a"; color10 = "#c9d6b1"; # green
+      color3  = "#f7ce68"; color11 = "#ffe29a"; # yellow/gold
+      color4  = "#7a8bbd"; color12 = "#a3b1d6"; # blue
+      color5  = "#b47aa0"; color13 = "#d1a3c4"; # magenta
+      color6  = "#6ea8a0"; color14 = "#9fcac2"; # cyan
+      color7  = "#f5e9dc"; color15 = "#ffffff"; # white
     };
   };
 
@@ -116,10 +132,10 @@ in
     settings = {
       splash = false;
       ipc = "on";
-      wallpaper = [ 
+      wallpaper = [
         {
-          monitor = ""; 
-          path = "${config.home.homeDirectory}/Data/Wallpaper.jpg";
+          monitor = "";
+          path = "${config.home.homeDirectory}/Data/Wallpaper.png";
         }
       ];
     };
@@ -138,12 +154,12 @@ in
     enable = true;
 
     theme = {
-      name = "Yaru-dark-red";
+      name = "Yaru-dark-orange";
       package = pkgs.yaru-theme;
     };
 
     iconTheme = {
-      name = "Yaru";
+      name = "Yaru-orange";
       package = pkgs.yaru-theme;
     };
 
@@ -163,21 +179,20 @@ in
 
   dconf.settings = {
     "org/gnome/desktop/interface" = {
-      gtk-theme = "Yaru-dark-red";
-      icon-theme = "Yaru";
+      gtk-theme = "Yaru-dark-orange";
+      icon-theme = "Yaru-orange";
       cursor-theme = "Adwaita";
       cursor-size = 24;
       color-scheme = "prefer-dark";
-      accent-color = "red";
+      accent-color = "orange";
     };
   };
-
 
   services.xsettingsd = {
     enable = true;
     settings = {
-      "Net/ThemeName" = "Yaru-dark-red";
-      "Net/IconThemeName" = "Yaru";
+      "Net/ThemeName" = "Yaru-dark-orange";
+      "Net/IconThemeName" = "Yaru-orange";
       "Gtk/CursorThemeName" = "Adwaita";
       "Gtk/CursorThemeSize" = 24;
     };
@@ -186,12 +201,6 @@ in
   home.packages = with pkgs; [
     # Статус-бар
     waybar
-
-    # Лаунчер приложений
-    wofi
-
-    # Демон уведомлений
-    mako
 
     # Обои
     hyprpaper
@@ -244,5 +253,4 @@ in
     XDG_SESSION_TYPE = "wayland";
     XDG_SESSION_DESKTOP = "Hyprland";
   };
-
 }
