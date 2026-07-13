@@ -18,7 +18,7 @@ in
     configType = "hyprlang";
 
     settings = {
-      monitor = ",2560x1600@120,auto,1.33";
+      monitor = ",2560x1600@120,auto,1.25";
 
       exec-once = [
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP HYPRLAND_INSTANCE_SIGNATURE"
@@ -121,6 +121,15 @@ in
           path = "${config.home.homeDirectory}/Data/Wallpaper.jpg";
         }
       ];
+    };
+  };
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    config = {
+      common.default = [ "gtk" ];
+      hyprland.default = [ "hyprland" "gtk" ];
     };
   };
 
