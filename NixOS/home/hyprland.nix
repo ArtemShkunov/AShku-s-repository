@@ -173,7 +173,7 @@ in
 
   qt = {
     enable = true;
-    platformTheme.name = "gtk";
+    platformTheme.name = [ "gtk2" "gtk3" ];
     style.name = "adwaita-dark";
   };
 

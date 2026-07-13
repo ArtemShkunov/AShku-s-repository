@@ -17,8 +17,12 @@
 
   programs.git = {
     enable = true;
-    userName = "shayu25u578";
-    userEmail = "shkunovayu@student.bmstu.ru";
+    settings = {
+      user = {
+        name = "shayu25u578";
+        email = "shkunovayu@student.bmstu.ru";
+      };
+    };
   };
 
   home.stateVersion = "26.05";

@@ -101,7 +101,7 @@ in
 
     # --- Nix ---
     nixd
-    nixfmt-rfc-style
+    nixfmt
     statix
     deadnix
     

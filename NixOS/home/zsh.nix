@@ -58,7 +58,7 @@
       ramus = "/home/artemmkk-sh/.local/opt/ramus/start.sh";
     };
 
-    initExtra = ''
+    initContent = ''
       # ---- Логика Git: получение ветки со значком, статуса или хеша ----
       __git_prompt_info() {
           if git rev-parse --git-dir > /dev/null 2>&1; then
