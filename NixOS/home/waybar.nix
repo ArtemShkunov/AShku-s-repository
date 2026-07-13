@@ -4,7 +4,7 @@ let
   # Скрипт для кастомного меню питания через wofi с позиционированием в верхнем правом углу
   powerMenu = pkgs.writeShellScriptBin "powermenu" ''
     entries="⏻ Power off\n⟳ Reboot\n⏾ Suspend\n󰗽 Exit"
-    selected=$(echo -e "$entries" | wofi --dmenu --prompt "Power" --location top_right --xoffset -16 --yoffset 45 --width 250 --height 210)
+    selected=$(echo -e "$entries" | wofi --dmenu --prompt "Power" --location top_right --xoffset -16 --yoffset 45 --width 250 --height 150)
     case $selected in
       "⏻ Power off")
         exec systemctl poweroff -i;;
@@ -38,7 +38,7 @@ in
         # Кнопка Wofi с позиционированием под левым краем панели
         "custom/wofi" = {
           format = ""; 
-          on-click = "wofi --show drun --location top_left --xoffset 16 --yoffset 45";
+          on-click = "wofi --show drun --location top_left --xoffset 16 --yoffset 45 --width 350";
           tooltip = false;
         };
 
