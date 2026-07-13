@@ -172,11 +172,6 @@ in
     };
   };
 
-  qt = {
-    enable = true;
-    platformTheme.name = "gtk2";
-    style.name = "adwaita-dark";
-  };
 
   services.xsettingsd = {
     enable = true;
@@ -230,6 +225,7 @@ in
     gnome-system-monitor
     yaru-theme
 
+    # Nerd Font — та же семья, что используется в zsh-промпте
     nerd-fonts.jetbrains-mono
     nerd-fonts.fira-code
 
@@ -247,7 +243,6 @@ in
     XDG_CURRENT_DESKTOP = "Hyprland";
     XDG_SESSION_TYPE = "wayland";
     XDG_SESSION_DESKTOP = "Hyprland";
-    GTK_THEME = "Yaru-dark-red";
   };
 
 }
