@@ -18,7 +18,7 @@ in
     configType = "hyprlang";
 
     settings = {
-      monitor = ",1920x1200@120,auto,1";
+      monitor = ",2560x1600@120,auto,1.33";
 
       exec-once = [
         "waybar"
@@ -112,6 +112,8 @@ in
   services.hyprpaper = {
     enable = true;
     settings = {
+      splash = false;
+      ipc = "on";
       wallpaper = [ 
         {
           monitor = ""; 
@@ -139,6 +141,13 @@ in
       package = pkgs.adwaita-icon-theme;
       size = 24;
     };
+
+    gtk3.extraConfig = {
+      gtk-application-prefer-dark-theme = 1;
+    };
+    gtk4.extraConfig = {
+      gtk-application-prefer-dark-theme = 1;
+    };
   };
 
   dconf.settings = {
@@ -148,6 +157,7 @@ in
       cursor-theme = "Adwaita";
       cursor-size = 24;
       color-scheme = "prefer-dark";
+      accent-color = "red";
     };
   };
 
