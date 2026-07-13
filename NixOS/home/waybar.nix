@@ -1,23 +1,26 @@
 { config, pkgs, lib, ... }:
 
 let
-  # Скрипт для кастомного меню питания через wofi
+  # Скрипт для кастомного меню питания через wofi с позиционированием в верхнем правом углу
   powerMenu = pkgs.writeShellScriptBin "powermenu" ''
-    entries="⏻ Выключение\n⟳ Перезагрузка\n⏾ Спящий режим\n󰗽 Выйти"
-    selected=$(echo -e $entries | wofi --dmenu --prompt "Питание" --width 250 --height 210)
+    entries="⏻ Power off\n⟳ Reboot\n⏾ Suspend\n󰗽 Exit"
+    selected=$(echo -e "$entries" | wofi --dmenu --prompt "Power" --location top_right --xoffset -16 --yoffset 45 --width 250 --height 210)
     case $selected in
-      "⏻ Выключение")
+      "⏻ Power off")
         exec systemctl poweroff -i;;
-      "⟳ Перезагрузка")
+      "⟳ Reboot")
         exec systemctl reboot;;
-      "⏾ Спящий режим")
+      "⏾ Suspend")
         exec systemctl suspend;;
-      "󰗽 Выйти")
+      "󰗽 Exit")
         hyprctl dispatch exit;;
     esac
   '';
 in
 {
+  # Добавляем gnome-calendar прямо в этот модуль для вызова по клику на часы
+  home.packages = [ pkgs.gnome-calendar ];
+
   programs.waybar = {
     enable = true;
     
@@ -25,18 +28,17 @@ in
       mainBar = {
         layer = "top";
         position = "top";
-        height = 30;
-        spacing = 5;
+        height = 34;
+        spacing = 14; # Увеличенное базовое расстояние между модулями
         
-        # Размещение модулей на панели
         modules-left = [ "custom/wofi" "hyprland/workspaces" ];
         modules-center = [ "clock" ];
         modules-right = [ "tray" "network" "backlight" "pulseaudio" "pulseaudio#microphone" "battery" "custom/power" ];
 
-        # Кнопка запуска Wofi
+        # Кнопка Wofi с позиционированием под левым краем панели
         "custom/wofi" = {
-          format = ""; # Иконка NixOS или любая другая
-          on-click = "wofi --show drun";
+          format = ""; 
+          on-click = "wofi --show drun --location top_left --xoffset 16 --yoffset 45";
           tooltip = false;
         };
 
@@ -52,23 +54,25 @@ in
           };
         };
 
-        # Дата, время и день недели
+        # Дата и время. По клику запускается календарь
         clock = {
           format = "{:%H:%M  |  %A, %d %b}";
           tooltip-format = "<tt><small>{calendar}</small></tt>";
+          on-click = "gnome-calendar";
         };
 
-        # Фоновые приложения
+        # Фоновые приложения в трее
         tray = {
-          spacing = 10;
+          spacing = 12; # Расстояние между иконками приложений в трее
         };
 
-        # Сеть
+        # Сеть. По клику открывается менеджер подключений NM
         network = {
           format-wifi = "  {essid}";
           format-ethernet = "󰈀  {ipaddr}/{cidr}";
           format-disconnected = "󰤭  Отключено";
           tooltip-format = "{ifname} via {gwaddr}";
+          on-click = "nm-connection-editor";
         };
 
         # Яркость
@@ -108,7 +112,7 @@ in
           format-icons = ["" "" "" "" ""];
         };
 
-        # Кнопка меню питания
+        # Кнопка питания (скрипт позиционирует окно wofi вверху справа)
         "custom/power" = {
           format = "⏻";
           on-click = "${powerMenu}/bin/powermenu";
@@ -117,7 +121,6 @@ in
       };
     };
 
-    # Кастомизация внешнего вида панели
     style = ''
       * {
         font-family: "JetBrainsMono Nerd Font", "Fira Code Nerd Font", sans-serif;
@@ -127,18 +130,35 @@ in
       window#waybar {
         background-color: rgba(30, 30, 30, 0.9);
         color: #ffffff;
+        
+        /* Отступы панели от краев экрана: 8px сверху, 16px по бокам */
+        margin: 8px 16px 0 16px;
+        
+        /* Скругление краев всей панели под стиль окон Hyprland */
+        border-radius: 8px;
+      }
+
+      /* Увеличенные внутренние отступы для каждого элемента управления */
+      #custom-wofi,
+      #clock,
+      #network,
+      #backlight,
+      #pulseaudio,
+      #pulseaudio\.microphone,
+      #battery,
+      #custom-power {
+        padding: 0 10px;
       }
 
       /* Стилизация кнопок рабочих столов */
       #workspaces button {
-        padding: 0 8px;
+        padding: 0 10px;
         color: #ffffff;
         background: transparent;
-        border-radius: 5px;
-        margin: 2px;
+        border-radius: 6px;
+        margin: 2px 4px; /* Зазор между кнопками номеров столов */
       }
 
-      /* Цвет активного рабочего стола (под красную тему Yaru) */
       #workspaces button.active {
         background-color: #e01b24; 
         color: #ffffff;
@@ -148,29 +168,22 @@ in
         background: #5e5c64;
       }
 
-      /* Общие стили для блоков */
-      .modules-left > widget > span,
-      .modules-center > widget > span,
-      .modules-right > widget > span {
-        margin: 0 5px;
-        padding: 0 10px;
-      }
-
+      /* Дополнительный отступ слева для самой первой иконки */
       #custom-wofi {
         color: #e01b24;
         font-size: 18px;
-        padding-right: 15px;
+        padding-left: 14px;
       }
 
+      /* Дополнительный отступ справа для самой последней иконки */
       #custom-power {
         color: #e01b24;
         font-size: 16px;
-        padding-left: 10px;
-        padding-right: 15px;
+        padding-right: 14px;
       }
 
       #tray {
-        margin-right: 10px;
+        margin-right: 4px;
       }
     '';
   };
