@@ -124,12 +124,9 @@ in
       color5  = "#b47aa0"; color13 = "#d1a3c4"; # magenta
       color6  = "#6ea8a0"; color14 = "#9fcac2"; # cyan
       color7  = "#f5e9dc"; color15 = "#ffffff"; # white
-      font = {
-        normal = {
-          family = "JetBrainsMono Nerd Font";
-          style = "Regular";
-        };
-      };
+    };
+    font = {
+      name = "JetBrainsMono Nerd Font";
     };
   };
 

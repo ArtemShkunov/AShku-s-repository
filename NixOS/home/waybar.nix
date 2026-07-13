@@ -89,9 +89,9 @@ in
           format-muted = "󰖁 Muted";
           format-icons = {
             default = [ 
-              "\uf026" # Тихо 
-              "\uf027" # Средне 
-              "\uf028" # Громко 
+              "" # Тихо 
+              "" # Средне 
+              "" # Громко  
             ];
           };
           on-click = "pavucontrol";
