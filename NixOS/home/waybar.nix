@@ -40,7 +40,7 @@ in
         # Кнопка Wofi с позиционированием под левым краем панели
         "custom/wofi" = {
           format = ""; 
-          on-click = "wofi --show drun --location top_left --xoffset 16 --yoffset 45 --width 350";
+          on-click = "wofi --show drun --location top_left --xoffset 16 --yoffset 45";
           tooltip = false;
         };
 
