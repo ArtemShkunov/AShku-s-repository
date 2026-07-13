@@ -8,7 +8,7 @@
       height = 400;
       location = "center";
       show = "drun";
-      prompt = "Поиск...";
+      prompt = "Apps";
       allow_markup = true;
       insensitive = true;
       allow_images = true;

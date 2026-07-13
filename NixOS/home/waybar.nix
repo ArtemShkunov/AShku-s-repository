@@ -3,7 +3,7 @@
 let
   # Скрипт для кастомного меню питания через wofi с позиционированием в верхнем правом углу 
   powerMenu = pkgs.writeShellScriptBin "powermenu" ''
-    entries="⏻ Power off\n⟳ Reboot\n⏾ Suspend\n Lock\n󰗽 Exit"
+    entries="⏻ Power off\n⟳ Reboot\n⏾ Suspend\n Lock\n󰗽 Exit"
     selected=$(echo -e "$entries" | wofi --dmenu --prompt "Power" --location top_right --xoffset -16 --yoffset 45 --width 250 --height 180)
     case $selected in
       "⏻ Power off")
@@ -12,7 +12,7 @@ let
         exec systemctl reboot;;
       "⏾ Suspend")
         exec systemctl suspend;;
-      " Lock")
+      " Lock")
         hyprlock;;
       "󰗽 Exit")
         hyprctl dispatch exit;;
@@ -39,7 +39,7 @@ in
 
         # Кнопка Wofi с позиционированием под левым краем панели
         "custom/wofi" = {
-          format = ""; 
+          format = ""; 
           on-click = "wofi --show drun --location top_left --xoffset 16 --yoffset 45";
           tooltip = false;
         };
@@ -70,7 +70,7 @@ in
 
         # Сеть. По клику открывается менеджер подключений NM
         network = {
-          format-wifi = "  {essid}";
+          format-wifi = "   {essid}";
           format-ethernet = "󰈀  {ipaddr}/{cidr}";
           format-disconnected = "󰤭  Disconnected";
           tooltip-format = "{ifname} via {gwaddr}";
@@ -80,7 +80,7 @@ in
         # Яркость
         backlight = {
           format = "{icon} {percent}%";
-          format-icons = ["" "" "" "" "" "" "" "" ""];
+          format-icons = ["" "" "" "" "" "" "" "" ""];
         };
 
         # Звук
@@ -88,7 +88,11 @@ in
           format = "{icon} {volume}%";
           format-muted = "󰖁 Muted";
           format-icons = {
-            default = ["" "" ""];
+            default = [ 
+              "\uf026" # Тихо 
+              "\uf027" # Средне 
+              "\uf028" # Громко 
+            ];
           };
           on-click = "pavucontrol";
         };
@@ -96,8 +100,8 @@ in
         # Микрофон
         "pulseaudio#microphone" = {
           format = "{format_source}";
-          format-source = " {volume}%";
-          format-source-muted = " Muted";
+          format-source = " {volume}%";
+          format-source-muted = " Muted";
           on-click = "pamixer --default-source -t";
           on-click-right = "pavucontrol";
         };
@@ -110,8 +114,8 @@ in
           };
           format = "{icon} {capacity}%";
           format-charging = "󰂄 {capacity}%";
-          format-plugged = " {capacity}%";
-          format-icons = ["" "" "" "" ""];
+          format-plugged = " {capacity}%";
+          format-icons = ["" "" "" "" ""];
         };
 
         # Кнопка питания (скрипт позиционирует окно wofi вверху справа)
