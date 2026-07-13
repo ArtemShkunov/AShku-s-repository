@@ -162,7 +162,7 @@ in
     };
 
     iconTheme = {
-      name = "Yaru-orange";
+      name = "Yaru";
       package = pkgs.yaru-theme;
     };
 
@@ -183,7 +183,7 @@ in
   dconf.settings = {
     "org/gnome/desktop/interface" = {
       gtk-theme = "Yaru-dark-orange";
-      icon-theme = "Yaru-orange";
+      icon-theme = "Yaru";
       cursor-theme = "Adwaita";
       cursor-size = 24;
       color-scheme = "prefer-dark";
@@ -195,7 +195,7 @@ in
     enable = true;
     settings = {
       "Net/ThemeName" = "Yaru-dark-orange";
-      "Net/IconThemeName" = "Yaru-orange";
+      "Net/IconThemeName" = "Yaru";
       "Gtk/CursorThemeName" = "Adwaita";
       "Gtk/CursorThemeSize" = 24;
     };
