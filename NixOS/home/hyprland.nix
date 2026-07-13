@@ -21,7 +21,8 @@ in
       monitor = ",2560x1600@120,auto,1.25";
 
       exec-once = [
-        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP HYPRLAND_INSTANCE_SIGNATURE"
+        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP HYPRLAND_INSTANCE_SIGNATURE GTK_THEME"
+        "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP GTK_THEME"
         "waybar"
         "hypridle"
         "hyprpaper"
@@ -175,6 +176,16 @@ in
     enable = true;
     platformTheme.name = "gtk2";
     style.name = "adwaita-dark";
+  };
+
+  services.xsettingsd = {
+    enable = true;
+    settings = {
+      "Net/ThemeName" = "Yaru-dark-red";
+      "Net/IconThemeName" = "Yaru";
+      "Gtk/CursorThemeName" = "Adwaita";
+      "Gtk/CursorThemeSize" = 24;
+    };
   };
 
   home.packages = with pkgs; [
