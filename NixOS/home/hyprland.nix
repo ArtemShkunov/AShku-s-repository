@@ -37,6 +37,7 @@ in
         "HYPRCURSOR_SIZE,24"
         "NIXOS_OZONE_WL,1"
         "GTK_THEME,Adwaita:dark"
+        "QT_QPA_PLATFORMTHEME, qt6ct"
       ];
 
       input = {
