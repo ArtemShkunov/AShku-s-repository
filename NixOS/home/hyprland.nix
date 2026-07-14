@@ -36,7 +36,7 @@ in
         "HYPRCURSOR_THEME,Adwaita"
         "HYPRCURSOR_SIZE,24"
         "NIXOS_OZONE_WL,1"
-        "GTK_THEME,Yaru-dark-orange"
+        "GTK_THEME,Adwaita:dark"
       ];
 
       input = {
@@ -165,12 +165,12 @@ in
     enable = true;
 
     theme = {
-      name = "Yaru-dark-orange";
+      name = "Awaita-dark";
       package = pkgs.yaru-theme;
     };
 
     iconTheme = {
-      name = "Yaru-orange";
+      name = "Yaru";
       package = pkgs.yaru-theme;
     };
 
@@ -191,7 +191,7 @@ in
   dconf.settings = {
     "org/gnome/desktop/interface" = {
       icon-theme = "Yaru";
-      gtk-theme = "Yaru-dark-orange";
+      gtk-theme = "Adwaita-dark";
       cursor-theme = "Adwaita";
       cursor-size = 24;
       color-scheme = "prefer-dark";
@@ -202,8 +202,8 @@ in
   services.xsettingsd = {
     enable = true;
     settings = {
-      "Net/ThemeName" = "Yaru-dark-orange";
-      "Net/IconThemeName" = "Yaru-orange";
+      "Net/ThemeName" = "Adwaita-dark";
+      "Net/IconThemeName" = "Yaru";
       "Gtk/CursorThemeName" = "Adwaita";
       "Gtk/CursorThemeSize" = 24;
     };
@@ -269,6 +269,6 @@ in
     XDG_CURRENT_DESKTOP = "Hyprland";
     XDG_SESSION_TYPE = "wayland";
     XDG_SESSION_DESKTOP = "Hyprland";
-    GTK_THEME = "Yaru-dark-orange";
+    GTK_THEME = "Adwaita-dark";
   };
 }
