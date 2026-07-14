@@ -20,8 +20,8 @@ in
       monitor = ",2560x1600@120,auto,1.25";
 
       exec-once = [
-        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP HYPRLAND_INSTANCE_SIGNATURE GTK_THEME "
-        "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP GTK_THEME "        
+        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP HYPRLAND_INSTANCE_SIGNATURE GTK_THEME QT_QPA_PLATFORMTHEME QT_STYLE_OVERRIDE"
+        "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP GTK_THEME QT_QPA_PLATFORMTHEME QT_STYLE_OVERRIDE"        
         "waybar"
         "hypridle"
         "hyprpaper"
@@ -36,6 +36,7 @@ in
         "HYPRCURSOR_THEME,Adwaita"
         "HYPRCURSOR_SIZE,24"
         "NIXOS_OZONE_WL,1"
+        "GTK_THEME,Yaru-dark-orange"
       ];
 
       input = {
@@ -55,7 +56,7 @@ in
         # Градиент оранжевый -> золото под цвет заката с обоев
         "col.active_border" = "rgba(f2994aee) rgba(f7ce68ee) 45deg";
         "col.inactive_border" = "rgba(4a3b4faa)";
-        layout = "dwindle"; 
+        layout = "dwindle";
       };
 
       decoration = {
@@ -169,7 +170,7 @@ in
     };
 
     iconTheme = {
-      name = "Yaru";
+      name = "Yaru-orange";
       package = pkgs.yaru-theme;
     };
 
@@ -189,8 +190,8 @@ in
 
   dconf.settings = {
     "org/gnome/desktop/interface" = {
-      gtk-theme = "Adwaita";
       icon-theme = "Yaru";
+      gtk-theme = "Yaru-dark-orange";
       cursor-theme = "Adwaita";
       cursor-size = 24;
       color-scheme = "prefer-dark";
@@ -202,13 +203,18 @@ in
     enable = true;
     settings = {
       "Net/ThemeName" = "Yaru-dark-orange";
-      "Net/IconThemeName" = "Yaru";
+      "Net/IconThemeName" = "Yaru-orange";
       "Gtk/CursorThemeName" = "Adwaita";
       "Gtk/CursorThemeSize" = 24;
     };
   };
 
-  
+  qt = {
+    enable = true;
+    platformTheme.name = "gtk3";
+    style.name = "adwaita-dark";
+  };
+
   home.packages = with pkgs; [
     # Статус-бар
     waybar
