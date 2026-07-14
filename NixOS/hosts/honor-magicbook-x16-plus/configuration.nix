@@ -129,6 +129,7 @@
     gnome-themes-extra
     adwaita-icon-theme
     adwaita-qt
+    kdePackages.qtwayland
   ];
 
   # Fonts configuration

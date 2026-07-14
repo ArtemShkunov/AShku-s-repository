@@ -211,7 +211,7 @@ in
 
   qt = {
     enable = true;
-    platformTheme.name = "gtk3";
+    platformTheme.name = "kde";
     style.name = "breeze";
   };
 
@@ -279,5 +279,6 @@ in
     XDG_SESSION_TYPE = "wayland";
     XDG_SESSION_DESKTOP = "Hyprland";
     QT_STYLE_OVERRIDE = "breeze";
+    QT_QPA_PLATFORMTHEME = "kde";
   };
 }
