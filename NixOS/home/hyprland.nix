@@ -165,7 +165,7 @@ in
     enable = true;
 
     theme = {
-      name = "Awaita-dark";
+      name = "Adwaita-dark";
       package = pkgs.yaru-theme;
     };
 
