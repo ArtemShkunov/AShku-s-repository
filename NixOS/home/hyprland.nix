@@ -36,6 +36,7 @@ in
         "HYPRCURSOR_THEME,Adwaita"
         "HYPRCURSOR_SIZE,24"
         "NIXOS_OZONE_WL,1"
+        "GTK_THEME,Yaru-dark-orange"
       ];
 
       input = {
@@ -201,6 +202,12 @@ in
     };
   };
 
+  qt = {
+    enable = true;
+    platformTheme.name = "gtk3";
+    style.name = "adwaita-dark";
+  };
+
   home.packages = with pkgs; [
     # Статус-бар
     waybar
@@ -255,5 +262,6 @@ in
     XDG_CURRENT_DESKTOP = "Hyprland";
     XDG_SESSION_TYPE = "wayland";
     XDG_SESSION_DESKTOP = "Hyprland";
+    GTK_THEME = "Yaru-dark-orange";
   };
 }
