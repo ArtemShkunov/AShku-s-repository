@@ -14,6 +14,8 @@
   home.packages = with pkgs; [
     telegram-desktop
     obsidian
+    kdePackages.breeze
+    kdePackages.breeze-icons
   ];
 
 

@@ -212,8 +212,17 @@ in
   qt = {
     enable = true;
     platformTheme.name = "gtk3";
-    style.name = "adwaita-dark";
+    style.name = "breeze";
   };
+
+  xdg.configFile."kdeglobals".text = ''
+  [General]
+  ColorScheme=BreezeDark
+  Name=Breeze Dark
+
+  [Icons]
+  Theme=Adwaita
+  '';
 
   home.packages = with pkgs; [
     # Статус-бар
@@ -269,6 +278,6 @@ in
     XDG_CURRENT_DESKTOP = "Hyprland";
     XDG_SESSION_TYPE = "wayland";
     XDG_SESSION_DESKTOP = "Hyprland";
-    GTK_THEME = "Adwaita-dark";
+    QT_STYLE_OVERRIDE = "breeze";
   };
 }
