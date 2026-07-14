@@ -128,6 +128,7 @@
     git # need for flakes and many many other things
     gnome-themes-extra
     adwaita-icon-theme
+    adwaita-qt
   ];
 
   # Fonts configuration
