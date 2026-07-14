@@ -36,7 +36,6 @@ in
         "HYPRCURSOR_THEME,Adwaita"
         "HYPRCURSOR_SIZE,24"
         "NIXOS_OZONE_WL,1"
-        "GTK_THEME,Yaru-dark-orange"
       ];
 
       input = {
@@ -147,10 +146,17 @@ in
 
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-hyprland
+      xdg-desktop-portal-gtk
+    ];
+
     config = {
-      common.default = [ "gtk" ];
-      hyprland.default = [ "hyprland" "gtk" ];
+      hyprland.default = [
+        "hyprland"
+        "gtk"
+      ];
     };
   };
 
@@ -183,7 +189,7 @@ in
 
   dconf.settings = {
     "org/gnome/desktop/interface" = {
-      gtk-theme = "Yaru-dark-orange";
+      gtk-theme = "Adwaita";
       icon-theme = "Yaru";
       cursor-theme = "Adwaita";
       cursor-size = 24;

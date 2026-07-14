@@ -126,6 +126,8 @@
     kdePackages.ark # for archieves
     neovim # maybe someday i will turn it into an IDE
     git # need for flakes and many many other things
+    gnome-themes-extra
+    adwaita-icon-theme
   ];
 
   # Fonts configuration
