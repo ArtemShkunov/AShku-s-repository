@@ -20,8 +20,8 @@ in
       monitor = ",2560x1600@120,auto,1.25";
 
       exec-once = [
-        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP HYPRLAND_INSTANCE_SIGNATURE GTK_THEME"
-        "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP GTK_THEME"
+        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP HYPRLAND_INSTANCE_SIGNATURE GTK_THEME QT_QPA_PLATFORMTHEME QT_STYLE_OVERRIDE"
+        "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP GTK_THEME QT_QPA_PLATFORMTHEME QT_STYLE_OVERRIDE"        
         "waybar"
         "hypridle"
         "hyprpaper"
@@ -37,6 +37,8 @@ in
         "HYPRCURSOR_SIZE,24"
         "NIXOS_OZONE_WL,1"
         "GTK_THEME,Yaru-dark-orange"
+        "QT_QPA_PLATFORMTHEME,gtk3"
+        "QT_STYLE_OVERRIDE,adwaita-dark"
       ];
 
       input = {
