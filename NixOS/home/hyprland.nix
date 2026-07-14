@@ -267,8 +267,8 @@ in
     # Тема иконок
     adwaita-icon-theme
 
-    qt5ct
-    qt6ct
+    libsForQt5.qt5ct
+    qt6Packages.qt6ct
   ];
 
   fonts.fontconfig.enable = true;
