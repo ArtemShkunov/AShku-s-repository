@@ -16,6 +16,8 @@
     obsidian
     kdePackages.breeze
     kdePackages.breeze-icons
+    kdePackages.plasma-integration
+    kdePackages.qqc2-desktop-style
   ];
 
 
