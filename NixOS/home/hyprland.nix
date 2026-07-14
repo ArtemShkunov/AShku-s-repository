@@ -86,6 +86,7 @@ in
         "$mod, right, movefocus, r"
         "$mod, up, movefocus, u"
         "$mod, down, movefocus, d"
+        "$mod, F, exec, firefox"
       ] ++ workspaceBinds;
 
       bindm = [
