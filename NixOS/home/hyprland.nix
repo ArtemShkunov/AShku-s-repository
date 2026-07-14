@@ -211,7 +211,7 @@ in
 
   qt = {
     enable = true;
-    platformTheme.name = "kde";
+    platformTheme.name = "qtct";
     style.name = "breeze";
   };
 
@@ -266,6 +266,9 @@ in
 
     # Тема иконок
     adwaita-icon-theme
+
+    qt5ct
+    qt6ct
   ];
 
   fonts.fontconfig.enable = true;
@@ -279,6 +282,6 @@ in
     XDG_SESSION_TYPE = "wayland";
     XDG_SESSION_DESKTOP = "Hyprland";
     QT_STYLE_OVERRIDE = "breeze";
-    QT_QPA_PLATFORMTHEME = "kde";
+    QT_QPA_PLATFORMTHEME = "qt5ct";
   };
 }
