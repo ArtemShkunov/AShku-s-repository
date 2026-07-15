@@ -266,7 +266,7 @@ in
         {
           # Текущая раскладка клавиатуры, справа от поля ввода
           monitor = "";
-          text = "$LAYOUT";
+          text = "\$LAYOUT[..2]";
           font_size = 14;
           font_family = "JetBrainsMono Nerd Font";
           color = "rgb(8a7a8a)";
