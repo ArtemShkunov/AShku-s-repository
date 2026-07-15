@@ -221,7 +221,7 @@ in
 
         # Сеть. По клику открывается менеджер подключений NM
         network = {
-          format-wifi = " {essid}";
+          format-wifi = "  {essid}";
           format-ethernet = "󰈀  {ipaddr}/{cidr}";
           format-disconnected = "󰤭  Disconnected";
           tooltip-format = "{ifname} via {gwaddr}";
@@ -240,9 +240,9 @@ in
           format-muted = "󰖁 Muted";
           format-icons = {
             default = [ 
-              "" # Тихо 
-              "" # Средне 
-              "" # Громко  
+              " " # Тихо 
+              " " # Средне 
+              " " # Громко  
             ];
           };
           on-click = "pavucontrol";
@@ -266,7 +266,7 @@ in
           format = "{icon} {capacity}%";
           format-charging = "󰂄 {capacity}%";
           format-plugged = " {capacity}%";
-          format-icons = ["" "" "" "" ""];
+          format-icons = [" " " " " " " " " "];
         };
 
         # Раскладка клавиатуры. Отображение обновляется автоматически через
