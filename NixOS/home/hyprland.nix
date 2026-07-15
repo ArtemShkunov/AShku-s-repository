@@ -266,12 +266,12 @@ in
         {
           # Текущая раскладка клавиатуры, справа от поля ввода
           monitor = "";
-          text = "$LAYOUT";
+          text = "$LAYOUT[EN,RU]";
           font_size = 14;
           font_family = "JetBrainsMono Nerd Font";
-          color = "rgb(8a7a8a)";
-          position = "170, -100";
-          halign = "center";
+          color = "rgb(f2994a)";
+          position = "185, -100";
+          halign = "left";
           valign = "center";
         }
       ];
