@@ -18,10 +18,156 @@ let
         hyprctl dispatch exit;;
     esac
   '';
+
+  # Скрипт для комбинированного информационного поля:
+  # загрузка CPU, память, скорость сети, температура, IP и страна.
+  # Раз в 3 секунды пересчитывает CPU/RAM/сеть/температуру, а IP и страну
+  # кэширует на 5 минут, чтобы не дёргать внешний сервис на каждый тик.
+  sysInfo = pkgs.writeShellScriptBin "sysinfo" ''
+    set -euo pipefail
+
+    CACHE_FILE="/tmp/waybar-ip-cache.json"
+    CACHE_TTL=300  # секунд между обновлениями IP/страны
+
+    # --- Загрузка CPU и скорость сети: два снимка с интервалом 0.5с ---
+    read -r _ u1 n1 s1 i1 w1 irq1 sirq1 _ < /proc/stat
+    rx1=0; tx1=0
+    for dev in /sys/class/net/*/; do
+      name=$(basename "$dev")
+      [ "$name" = "lo" ] && continue
+      rx1=$((rx1 + $(cat "$dev/statistics/rx_bytes" 2>/dev/null || echo 0)))
+      tx1=$((tx1 + $(cat "$dev/statistics/tx_bytes" 2>/dev/null || echo 0)))
+    done
+
+    sleep 0.5
+
+    read -r _ u2 n2 s2 i2 w2 irq2 sirq2 _ < /proc/stat
+    rx2=0; tx2=0
+    for dev in /sys/class/net/*/; do
+      name=$(basename "$dev")
+      [ "$name" = "lo" ] && continue
+      rx2=$((rx2 + $(cat "$dev/statistics/rx_bytes" 2>/dev/null || echo 0)))
+      tx2=$((tx2 + $(cat "$dev/statistics/tx_bytes" 2>/dev/null || echo 0)))
+    done
+
+    idle1=$((i1 + w1)); idle2=$((i2 + w2))
+    total1=$((u1 + n1 + s1 + i1 + w1 + irq1 + sirq1))
+    total2=$((u2 + n2 + s2 + i2 + w2 + irq2 + sirq2))
+    dt=$((total2 - total1)); didle=$((idle2 - idle1))
+    cpu_pct=0
+    [ "$dt" -gt 0 ] && cpu_pct=$(( (1000 * (dt - didle) / dt + 5) / 10 ))
+
+    down_kb=$(( (rx2 - rx1) * 2 / 1024 ))
+    up_kb=$(( (tx2 - tx1) * 2 / 1024 ))
+
+    # --- Память из /proc/meminfo ---
+    mem_total_kb=0; mem_avail_kb=0
+    while read -r key value _; do
+      case "$key" in
+        MemTotal:) mem_total_kb=$value ;;
+        MemAvailable:) mem_avail_kb=$value ;;
+      esac
+    done < /proc/meminfo
+    mem_used_kb=$((mem_total_kb - mem_avail_kb))
+    mem_total_mb=$((mem_total_kb / 1024))
+    mem_used_mb=$((mem_used_kb / 1024))
+    mem_pct=0
+    [ "$mem_total_kb" -gt 0 ] && mem_pct=$((mem_used_kb * 100 / mem_total_kb))
+
+    # --- Температура: максимум среди всех термозон ---
+    temp=0
+    for z in /sys/class/thermal/thermal_zone*/temp; do
+      [ -r "$z" ] || continue
+      t=$(( $(cat "$z") / 1000 ))
+      [ "$t" -gt "$temp" ] && temp=$t
+    done
+
+    # --- IP и страна (кэшируются на CACHE_TTL секунд) ---
+    now=$(date +%s)
+    cached_ts=0
+    if [ -f "$CACHE_FILE" ]; then
+      cached_ts=$(jq -r '.ts // 0' "$CACHE_FILE" 2>/dev/null || echo 0)
+    fi
+
+    if [ -f "$CACHE_FILE" ] && [ $((now - cached_ts)) -lt "$CACHE_TTL" ]; then
+      ip=$(jq -r '.ip' "$CACHE_FILE")
+      country=$(jq -r '.country' "$CACHE_FILE")
+    else
+      resp=$(curl -s --max-time 3 https://ipapi.co/json/ || echo '{}')
+      ip=$(echo "$resp" | jq -r '.ip // "N/A"')
+      country=$(echo "$resp" | jq -r '.country // "N/A"')
+      jq -n --arg ip "$ip" --arg country "$country" --argjson ts "$now" \
+        '{ip: $ip, country: $country, ts: $ts}' > "$CACHE_FILE"
+    fi
+
+    text=$(printf "  %d%%    %d%%   ↓%dK ↑%dK    %d°C    %s (%s)" \
+      "$cpu_pct" "$mem_pct" "$down_kb" "$up_kb" "$temp" "$ip" "$country")
+
+    tooltip=$(printf "CPU: %d%%\nRAM: %d%% (%d МБ / %d МБ)\nСеть: ↓%d КБ/с  ↑%d КБ/с\nТемпература: %d°C\nIP: %s (%s)" \
+      "$cpu_pct" "$mem_pct" "$mem_used_mb" "$mem_total_mb" "$down_kb" "$up_kb" "$temp" "$ip" "$country")
+
+    class="normal"
+    if [ "$cpu_pct" -ge 85 ] || [ "$mem_pct" -ge 90 ] || [ "$temp" -ge 85 ]; then
+      class="critical"
+    elif [ "$cpu_pct" -ge 65 ] || [ "$mem_pct" -ge 75 ] || [ "$temp" -ge 70 ]; then
+      class="warning"
+    fi
+
+    jq -n --arg text "$text" --arg tooltip "$tooltip" --arg class "$class" \
+      '{text: $text, tooltip: $tooltip, class: $class}'
+  '';
+
+  # Кастомное меню выбора раскладки клавиатуры через wofi.
+  # Список раскладок берётся динамически из input:kb_layout в Hyprland,
+  # так что работает с любым набором раскладок без правки индексов.
+  layoutMenu = pkgs.writeShellScriptBin "layoutmenu" ''
+    set -euo pipefail
+
+    layouts_raw=$(hyprctl getoption input:kb_layout -j | jq -r '.str')
+
+    # Человекочитаемое имя раскладки по её короткому коду.
+    # Дополните под свой набор раскладок.
+    pretty_name() {
+      case "$1" in
+        us) echo "🇺🇸 " ;;
+        ru) echo "🇷🇺" ;;
+        de) echo "🇩🇪" ;;
+        fr) echo "🇫🇷" ;;
+        ua) echo "🇺🇦" ;;
+        *) echo "$1" ;;
+      esac
+    }
+
+    menu=""
+    map=""
+    idx=0
+    old_ifs=$IFS
+    IFS=','
+    for code in $layouts_raw; do
+      label=$(pretty_name "$code")
+      menu="$menu$label
+    "
+      map="$map$idx	$label
+    "
+      idx=$((idx + 1))
+    done
+    IFS=$old_ifs
+
+    selected=$(printf "%s" "$menu" | wofi --dmenu --prompt "Layout" --location top_right --xoffset -16 --yoffset 45 --width 250 --height 250)
+
+    [ -z "$selected" ] && exit 0
+
+    chosen_index=$(printf "%s" "$map" | awk -F'\t' -v sel="$selected" '$2 == sel {print $1; exit}')
+
+    [ -z "$chosen_index" ] && exit 0
+
+    hyprctl switchxkblayout current "$chosen_index"
+  '';
 in
 {
-  # Добавляем gnome-calendar прямо в этот модуль для вызова по клику на часы
-  home.packages = [ pkgs.gnome-calendar ];
+  # Добавляем gnome-calendar прямо в этот модуль для вызова по клику на часы.
+  # curl и jq нужны для скрипта sysInfo (запрос IP/страны и сборка JSON).
+  home.packages = [ pkgs.gnome-calendar pkgs.curl pkgs.jq ];
 
   programs.waybar = {
     enable = true;
@@ -33,9 +179,9 @@ in
         height = 34;
         spacing = 14; # Увеличенное базовое расстояние между модулями
 
-        modules-left = [ "custom/wofi" "hyprland/workspaces" ];
+        modules-left = [ "custom/wofi" "hyprland/workspaces" "custom/sysinfo" ];
         modules-center = [ "clock" ];
-        modules-right = [ "tray" "network" "backlight" "pulseaudio" "pulseaudio#microphone" "battery" "custom/power" ];
+        modules-right = [ "tray" "network" "backlight" "pulseaudio" "pulseaudio#microphone" "battery" "hyprland/language" "custom/power" ];
 
         # Кнопка Wofi с позиционированием под левым краем панели
         "custom/wofi" = {
@@ -56,6 +202,16 @@ in
           };
         };
 
+        # Комбинированное поле: CPU, RAM, скорость сети, температура, IP и страна.
+        # По клику открывается системный монитор.
+        "custom/sysinfo" = {
+          exec = "${sysInfo}/bin/sysinfo";
+          interval = 3;
+          return-type = "json";
+          on-click = "gnome-system-monitor";
+          tooltip = true;
+        };
+
         # Дата и время. По клику запускается календарь
         clock = {
           format = "{:%H:%M  |  %A, %d %b}";
@@ -70,7 +226,7 @@ in
 
         # Сеть. По клику открывается менеджер подключений NM
         network = {
-          format-wifi = "   {essid}";
+          format-wifi = " {essid}";
           format-ethernet = "󰈀  {ipaddr}/{cidr}";
           format-disconnected = "󰤭  Disconnected";
           tooltip-format = "{ifname} via {gwaddr}";
@@ -89,9 +245,9 @@ in
           format-muted = "󰖁 Muted";
           format-icons = {
             default = [ 
-              "" # Тихо 
-              "" # Средне 
-              "" # Громко  
+              "" # Тихо 
+              "" # Средне 
+              "" # Громко  
             ];
           };
           on-click = "pavucontrol";
@@ -116,6 +272,17 @@ in
           format-charging = "󰂄 {capacity}%";
           format-plugged = " {capacity}%";
           format-icons = ["" "" "" "" ""];
+        };
+
+        # Раскладка клавиатуры. Отображение обновляется автоматически через
+        # IPC Hyprland, по клику открывается кастомное wofi-меню выбора раскладки.
+        "hyprland/language" = {
+          format = "{}";
+          format-en = "EN";
+          format-ru = "RU";
+          keyboard-name = "at-translated-set-2-keyboard"; # проверьте через `hyprctl devices`
+          on-click = "${layoutMenu}/bin/layoutmenu";
+          tooltip = false;
         };
 
         # Кнопка питания (скрипт позиционирует окно wofi вверху справа)
@@ -152,6 +319,8 @@ in
       #pulseaudio,
       #pulseaudio\.microphone,
       #battery,
+      #language,
+      #custom-sysinfo,
       #custom-power {
         padding: 0 10px;
       }
@@ -193,6 +362,15 @@ in
       }
 
       #battery.critical {
+        color: #e8613c;
+      }
+
+      /* Предупреждающие цвета для системного индикатора, как у батареи */
+      #custom-sysinfo.warning {
+        color: #f7ce68;
+      }
+
+      #custom-sysinfo.critical {
         color: #e8613c;
       }
 

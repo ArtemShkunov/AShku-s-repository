@@ -194,12 +194,8 @@ in
       background = [
         {
           monitor = "";
-          path = "${config.home.homeDirectory}/Data/Wallpaper.png";
-          blur_passes = 3;
-          blur_size = 8;
-          contrast = 0.85;
-          brightness = 0.55; # затемняем, чтобы поле ввода читалось
-          vibrancy = 0.2;
+          path = "";
+          color = "rgba(1a1a1aff)";
         }
       ];
 
@@ -225,8 +221,8 @@ in
           check_color = "rgb(a3b18a)";
           fail_color = "rgb(e8613c)";
 
-          placeholder_text = ''<span foreground="##8a7a8a">Пароль...</span>'';
-          fail_text = ''<span foreground="##e8613c">Неверный пароль</span>'';
+          placeholder_text = ''<span foreground="##8a7a8a">Password...</span>'';
+          fail_text = ''<span foreground="##e8613c">Wrong password</span>'';
 
           shadow_passes = 2;
           shadow_size = 3;
@@ -248,7 +244,7 @@ in
         {
           # Дата
           monitor = "";
-          text = ''cmd[update:60000] echo "$(date +'%A, %d %B')"'';
+          text = ''cmd[update:60000] echo "$(LC_TIME=en_US.UTF-8 date +'%A, %d %B')"'';          
           font_size = 22;
           font_family = "JetBrainsMono Nerd Font";
           color = "rgb(f5e9dc)";
@@ -264,6 +260,17 @@ in
           font_family = "JetBrainsMono Nerd Font";
           color = "rgb(f2994a)";
           position = "0, -30";
+          halign = "center";
+          valign = "center";
+        }
+        {
+          # Текущая раскладка клавиатуры, справа от поля ввода
+          monitor = "";
+          text = "$LAYOUT";
+          font_size = 14;
+          font_family = "JetBrainsMono Nerd Font";
+          color = "rgb(8a7a8a)";
+          position = "170, -100";
           halign = "center";
           valign = "center";
         }
