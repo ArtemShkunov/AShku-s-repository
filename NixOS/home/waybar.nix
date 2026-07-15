@@ -129,11 +129,6 @@ let
     # Дополните под свой набор раскладок.
     pretty_name() {
       case "$1" in
-        us) echo "🇺🇸 " ;;
-        ru) echo "🇷🇺" ;;
-        de) echo "🇩🇪" ;;
-        fr) echo "🇫🇷" ;;
-        ua) echo "🇺🇦" ;;
         *) echo "$1" ;;
       esac
     }
