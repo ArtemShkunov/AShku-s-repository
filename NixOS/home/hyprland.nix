@@ -270,7 +270,7 @@ in
           font_size = 14;
           font_family = "JetBrainsMono Nerd Font";
           color = "rgb(f2994a)";
-          position = "185, -100";
+          position = "175, -100";
           halign = "center";
           valign = "center";
         }
