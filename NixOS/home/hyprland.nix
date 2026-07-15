@@ -271,7 +271,7 @@ in
           font_family = "JetBrainsMono Nerd Font";
           color = "rgb(f2994a)";
           position = "185, -100";
-          halign = "left";
+          halign = "center";
           valign = "center";
         }
       ];
