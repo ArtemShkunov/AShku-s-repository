@@ -73,7 +73,7 @@ in
         "$mod, Q, exec, kitty"
         "$mod, C, killactive"
         "$mod, M, exit"
-        "$mod, E, exec, nautilus"
+        "$mod, E, exec, thunar"
         "$mod, V, togglefloating"
         "$mod, R, exec, wofi --show drun"
         "$mod, P, pseudo"
@@ -389,7 +389,6 @@ in
     networkmanagerapplet
 
     # Пакеты из Gnome Shell
-    nautilus
     gnome-system-monitor
     yaru-theme
 

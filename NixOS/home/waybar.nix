@@ -25,9 +25,7 @@ let
   # кэширует на 5 минут, чтобы не дёргать внешний сервис на каждый тик.
   sysInfo = pkgs.writeShellScriptBin "sysinfo" ''
     set -euo pipefail
-    # Абсолютные пути вместо PATH — не зависим от окружения, в котором стартовал waybar
-    CURL="${pkgs.curl}/bin/curl"
-    JQ="${pkgs.jq}/bin/jq"
+
     CACHE_FILE="/tmp/waybar-ip-cache.json"
     CACHE_TTL=300  # секунд между обновлениями IP/страны
 
@@ -88,17 +86,17 @@ let
     now=$(date +%s)
     cached_ts=0
     if [ -f "$CACHE_FILE" ]; then
-      cached_ts=$($JQ -r '.ts // 0' "$CACHE_FILE" 2>/dev/null || echo 0)    
+      cached_ts=$(jq -r '.ts // 0' "$CACHE_FILE" 2>/dev/null || echo 0)
     fi
 
     if [ -f "$CACHE_FILE" ] && [ $((now - cached_ts)) -lt "$CACHE_TTL" ]; then
-      ip=$($JQ -r '.ip' "$CACHE_FILE")
-      country=$($JQ -r '.country' "$CACHE_FILE")
+      ip=$(jq -r '.ip' "$CACHE_FILE")
+      country=$(jq -r '.country' "$CACHE_FILE")
     else
-      resp=$($CURL -s --max-time 3 https://ipapi.co/json/ || echo '{}')
-      ip=$(echo "$resp" | $JQ -r '.ip // "N/A"')
-      country=$(echo "$resp" | $JQ -r '.country // "N/A"')
-      $JQ -n --arg ip "$ip" --arg country "$country" --argjson ts "$now" \
+      resp=$(curl -s --max-time 3 https://ipapi.co/json/ || echo '{}')
+      ip=$(echo "$resp" | jq -r '.ip // "N/A"')
+      country=$(echo "$resp" | jq -r '.country // "N/A"')
+      jq -n --arg ip "$ip" --arg country "$country" --argjson ts "$now" \
         '{ip: $ip, country: $country, ts: $ts}' > "$CACHE_FILE"
     fi
 
@@ -115,7 +113,7 @@ let
       class="warning"
     fi
 
-    $JQ -n --arg text "$text" --arg tooltip "$tooltip" --arg class "$class" \
+    jq -n --arg text "$text" --arg tooltip "$tooltip" --arg class "$class" \
       '{text: $text, tooltip: $tooltip, class: $class}'
   '';
 
@@ -125,7 +123,7 @@ let
   layoutMenu = pkgs.writeShellScriptBin "layoutmenu" ''
     set -euo pipefail
 
-    layouts_raw=$(hyprctl getoption input:kb_layout -j | $JQ -r '.str')
+    layouts_raw=$(hyprctl getoption input:kb_layout -j | jq -r '.str')
 
     # Человекочитаемое имя раскладки по её короткому коду.
     # Дополните под свой набор раскладок.
@@ -223,7 +221,7 @@ in
 
         # Сеть. По клику открывается менеджер подключений NM
         network = {
-          format-wifi = "  {essid}";
+          format-wifi = " {essid}";
           format-ethernet = "󰈀  {ipaddr}/{cidr}";
           format-disconnected = "󰤭  Disconnected";
           tooltip-format = "{ifname} via {gwaddr}";
@@ -242,9 +240,9 @@ in
           format-muted = "󰖁 Muted";
           format-icons = {
             default = [ 
-              " " # Тихо 
-              " " # Средне 
-              " " # Громко  
+              "" # Тихо 
+              "" # Средне 
+              "" # Громко  
             ];
           };
           on-click = "pavucontrol";
@@ -268,7 +266,7 @@ in
           format = "{icon} {capacity}%";
           format-charging = "󰂄 {capacity}%";
           format-plugged = " {capacity}%";
-          format-icons = [" " " " " " " " " "];
+          format-icons = ["" "" "" "" ""];
         };
 
         # Раскладка клавиатуры. Отображение обновляется автоматически через
