@@ -15,15 +15,13 @@ in
     xwayland.enable = true;
 
     configType = "hyprlang";
+    systemd.variables = [ "--all" ];
 
     settings = {
       monitor = ",2560x1600@120,auto,1.25";
 
       exec-once = [
-        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP HYPRLAND_INSTANCE_SIGNATURE GTK_THEME QT_QPA_PLATFORMTHEME QT_STYLE_OVERRIDE"
-        "systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP GTK_THEME QT_QPA_PLATFORMTHEME QT_STYLE_OVERRIDE"        
         "waybar"
-        "hypridle"
         "hyprpaper"
         "nm-applet --indicator"
         "wl-paste --watch cliphist store"
@@ -142,6 +140,132 @@ in
         {
           monitor = "";
           path = "${config.home.homeDirectory}/Data/Wallpaper.png";
+        }
+      ];
+    };
+  };
+
+  services.hypridle = {
+    enable = true;
+    settings = {
+      general = {
+        # Запускать hyprlock именно по dbus/logind-событию блокировки,
+        # но не плодить несколько инстансов, если он уже открыт.
+        lock_cmd = "pidof hyprlock || hyprlock";
+        # Срабатывает на ЛЮБОЙ уход в сон: по таймауту, вручную (systemctl
+        # suspend / loginctl suspend) или при закрытии крышки — поэтому
+        # экран будет блокироваться независимо от того, как вызван сон.
+        before_sleep_cmd = "loginctl lock-session";
+        # Чтобы монитор не приходилось "будить" двойным нажатием клавиши.
+        after_sleep_cmd = "hyprctl dispatch dpms on";
+        ignore_dbus_inhibit = false;
+      };
+
+      listener = [
+        {
+          timeout = 300; # 5 минут бездействия — блокировка экрана
+          on-timeout = "loginctl lock-session";
+        }
+        {
+          timeout = 330; # 5.5 минут — гасим подсветку экрана
+          on-timeout = "hyprctl dispatch dpms off";
+          on-resume = "hyprctl dispatch dpms on";
+        }
+        {
+          timeout = 360; # 6 минут — уход в спящий режим
+          on-timeout = "systemctl suspend";
+        }
+      ];
+    };
+  };
+
+  # ─── hyprlock: экран блокировки в теме "sunset pines" ───
+  programs.hyprlock = {
+    enable = true;
+    settings = {
+      general = {
+        disable_loading_bar = true;
+        grace = 0; # без "льготного" периода без пароля — это экран блокировки
+        hide_cursor = true;
+        no_fade_in = false;
+        no_fade_out = true;
+      };
+
+      background = [
+        {
+          monitor = "";
+          path = "${config.home.homeDirectory}/Data/Wallpaper.png";
+          blur_passes = 3;
+          blur_size = 8;
+          contrast = 0.85;
+          brightness = 0.55; # затемняем, чтобы поле ввода читалось
+          vibrancy = 0.2;
+        }
+      ];
+
+      input-field = [
+        {
+          monitor = "";
+          size = "260, 60";
+          position = "0, -100";
+          halign = "center";
+          valign = "center";
+
+          outline_thickness = 3;
+          dots_size = 0.25;
+          dots_spacing = 0.25;
+          dots_center = true;
+          fade_on_empty = false;
+
+          # Оранжево-золотой контур на тёмно-фиолетовом поле ввода —
+          # та же палитра, что и в hyprland.nix / kitty.
+          outer_color = "rgba(f2994aee)";
+          inner_color = "rgba(16141fd8)";
+          font_color = "rgb(f5e9dc)";
+          check_color = "rgb(a3b18a)";
+          fail_color = "rgb(e8613c)";
+
+          placeholder_text = ''<span foreground="##8a7a8a">Пароль...</span>'';
+          fail_text = ''<span foreground="##e8613c">Неверный пароль</span>'';
+
+          shadow_passes = 2;
+          shadow_size = 3;
+        }
+      ];
+
+      label = [
+        {
+          # Часы
+          monitor = "";
+          text = "$TIME";
+          font_size = 90;
+          font_family = "JetBrainsMono Nerd Font";
+          color = "rgb(f7ce68)";
+          position = "0, 160";
+          halign = "center";
+          valign = "center";
+        }
+        {
+          # Дата
+          monitor = "";
+          text = ''cmd[update:60000] echo "$(date +'%A, %d %B')"'';
+          font_size = 22;
+          font_family = "JetBrainsMono Nerd Font";
+          color = "rgb(f5e9dc)";
+          position = "0, 80";
+          halign = "center";
+          valign = "center";
+        }
+        {
+          # Имя пользователя
+          monitor = "";
+          text = "  $USER";
+          font_size = 18;
+          font_family = "JetBrainsMono Nerd Font";
+          color = "rgb(f2994a)";
+          position = "0, -30";
+          halign = "center";
+          valign = "center";
         }
       ];
     };
