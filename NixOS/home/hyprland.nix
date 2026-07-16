@@ -35,7 +35,7 @@ in
         "HYPRCURSOR_SIZE,24"
         "NIXOS_OZONE_WL,1"
         "GTK_THEME,Adwaita:dark"
-        "QT_QPA_PLATFORMTHEME,qt6ct"
+        "QT_QPA_PLATFORMTHEME,kde"
       ];
 
       input = {
@@ -341,23 +341,23 @@ in
 
   qt = {
     enable = true;
-    platformTheme.name = "qtct";
+    platformTheme.name = "kde";
     style = {
       name = "breeze";
       package = pkgs.kdePackages.breeze;    
     };
-    qt6ctSettings = {
-      Appearance = {
-        style = "Breeze";
-        color_scheme_path = "${pkgs.kdePackages.breeze}/share/color-schemes/BreezeDark.colors";
-      };
-    };
-    qt5ctSettings = {
-      Appearance = {
-        style = "Breeze";
-        color_scheme_path = "${pkgs.kdePackages.breeze}/share/color-schemes/BreezeDark.colors";
-      };
-    };
+      #qt6ctSettings = {      
+    #Appearance = {
+      #   style = "Breeze";
+      # color_scheme_path = "${pkgs.kdePackages.breeze}/share/color-schemes/BreezeDark.colors";
+      #};
+    #};
+      #qt5ctSettings = {
+      #Appearance = {
+      #  style = "Breeze";
+      #  color_scheme_path = "${pkgs.kdePackages.breeze}/share/color-schemes/BreezeDark.colors";
+      # };
+    #};
   };
 
   xdg.configFile."kdeglobals".text = ''
