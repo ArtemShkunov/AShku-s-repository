@@ -135,6 +135,7 @@
     kdePackages.ark # for archieves
     neovim # maybe someday i will turn it into an IDE
     git # need for flakes and many many other things
+    kitty
     gnome-themes-extra
     adwaita-icon-theme
     adwaita-qt
@@ -161,6 +162,9 @@
   ];
 
 
+  environment.variables = {
+    TERMINAL = "kitty";
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

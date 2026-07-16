@@ -453,7 +453,4 @@ in
   };
 
 
-  environment.variables = {
-    TERMINAL = "kitty";
-  };
-}
+ }
