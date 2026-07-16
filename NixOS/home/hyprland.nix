@@ -363,14 +363,25 @@ in
     #};
   };
 
-  xdg.configFile."kdeglobals".text = ''
-  [General]
-  ColorScheme=BreezeDark
-  Name=Breeze Dark
+    # xdg.configFile."kdeglobals".text = ''
+  #[General]
+  #ColorScheme=BreezeDark
+    #Name=Breeze Dark
 
+  #[Icons]
+    #Theme=Yaru
+  #'';
+
+
+  xdg.configFile."kdeglobals".text = ''
   [Icons]
   Theme=Yaru
+
+  [General]
+        
+  ${builtins.readFile "${pkgs.kdePackages.breeze}/share/color-schemes/BreezeDark.colors"}
   '';
+
 
   home.packages = with pkgs; [
     # Статус-бар
