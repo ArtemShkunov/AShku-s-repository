@@ -343,8 +343,9 @@ in
     platformTheme.name = "qtct";
     style = {
       name = "breeze";
-      package = [ pkgs.libsForQt5.breeze pkgs.kdePackages.breeze ];
+      package = pkgs.kdePackages.breeze;    
     };
+
   };
 
   xdg.configFile."kdeglobals".text = ''
