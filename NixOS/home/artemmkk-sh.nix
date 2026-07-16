@@ -20,8 +20,7 @@
     kdePackages.qqc2-desktop-style
     kdePackages.okular
     kdePackages.kconfig
-    kdePackages.breeze-qt6
-    vlc
+    kdePackages.breeze-gtk
   ];
 
 
