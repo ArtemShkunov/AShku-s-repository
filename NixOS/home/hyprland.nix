@@ -450,6 +450,7 @@ in
     XDG_SESSION_TYPE = "wayland";
     XDG_SESSION_DESKTOP = "Hyprland";
     QT_STYLE_OVERRIDE = "breeze";
+    TERMINAL = "kitty";
   };
 
 

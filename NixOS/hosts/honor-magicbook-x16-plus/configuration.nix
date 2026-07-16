@@ -141,8 +141,8 @@
     adwaita-qt
     kdePackages.qtwayland
     # Пакеты из xfce
-    xfce.mousepad
-    xfce.ristretto
+    mousepad
+    ristretto
 
     polkit_gnome
   ];
