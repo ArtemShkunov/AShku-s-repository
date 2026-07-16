@@ -105,6 +105,10 @@ in
         ", XF86AudioMute, exec, pamixer -t"
         ", XF86AudioMicMute, exec, pamixer --default-source -t"
       ];
+
+      xwayland = {
+        force_zero_scaling = true;
+      };
     };
   };
 
@@ -446,5 +450,10 @@ in
     XDG_SESSION_TYPE = "wayland";
     XDG_SESSION_DESKTOP = "Hyprland";
     QT_STYLE_OVERRIDE = "breeze";
+  };
+
+
+  environment.variables = {
+    TERMINAL = "kitty";
   };
 }

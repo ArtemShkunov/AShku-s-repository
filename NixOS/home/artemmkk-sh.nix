@@ -21,6 +21,7 @@
     kdePackages.okular
     kdePackages.kconfig
     kdePackages.breeze-gtk
+    vlc
   ];
 
 
