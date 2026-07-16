@@ -133,7 +133,7 @@ EOF
 # JSON output
 # -------------------------
 
-jq -n \
+jq -n -c \
     --arg text "$text" \
     --arg tooltip "$tooltip" \
     '{
