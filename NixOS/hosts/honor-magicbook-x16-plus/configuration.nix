@@ -53,7 +53,7 @@
   services.gvfs.enable = true; # Удаленный доступ к файлам и корзина
   services.tumbler.enable = true; # Генерация миниатюр (картинок) для Thunar
   programs.thunar.enable = true; # Сам Thunar + интеграция в систему
-  programs.thunar.plugins = with pkgs.xfce; [
+  programs.thunar.plugins = with pkgs; [
     thunar-archive-plugin # Интеграция с архиватором (у вас стоит Ark)
     thunar-volman # Автомонтирование флешек
   ];
