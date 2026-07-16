@@ -144,7 +144,7 @@
     xfce.ristretto
 
     # Агент выбора профилей / аутентификации polkit от XFCE:
-    xfce.xfce4-polkit
+    xfce4-polkit
   ];
 
   # Fonts configuration
