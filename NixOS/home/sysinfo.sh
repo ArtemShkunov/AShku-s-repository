@@ -114,10 +114,10 @@ temp=$(get_temp)
 net=$(get_network)
 
 
-text=" ${cpu}%  ${ram} GB ${net}"
+text=" ${cpu}%   ${ram}GB  ${net}"
 
 [ -n "$temp" ] && \
-    text+="  ${temp}"
+    text+="  ${temp}"
 
 
 tooltip=$(cat <<EOF

@@ -130,7 +130,7 @@ in
 
         # Сеть. По клику открывается менеджер подключений NM
         network = {
-          format-wifi = "  {essid} ({signalStrenght}%)";
+          format-wifi = "  {essid} ({signalStrength}%)";
           format-ethernet = "󰈀  {ipaddr}/{cidr}";
           format-disconnected = "󰤭  Disconnected";
           tooltip-format = "{ifname} via {gwaddr}";
