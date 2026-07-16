@@ -299,7 +299,6 @@ in
 
     theme = {
       name = "Adwaita-dark";
-      package = pkgs.yaru-theme;
     };
 
     iconTheme = {
@@ -314,9 +313,6 @@ in
     };
 
     gtk3.extraConfig = {
-      gtk-application-prefer-dark-theme = 1;
-    };
-    gtk4.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
     };
   };
@@ -398,6 +394,13 @@ in
 
     # Тема иконок
     adwaita-icon-theme
+    gnome.gnome-themes-extra      # полноценная тема Adwaita-dark для GTK3
+  
+    # Для GTK4/Libadwaita (современные приложения GNOME)
+    gnome.gnome-desktop           # содержит Adwaita для GTK4
+
+    # Дополнительно для старых приложений
+    gtk-engine-murrine            # движок тем для GTK2
 
     libsForQt5.qt5ct
     qt6Packages.qt6ct
