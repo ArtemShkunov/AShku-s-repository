@@ -143,8 +143,7 @@
     xfce.mousepad
     xfce.ristretto
 
-    # Агент выбора профилей / аутентификации polkit от XFCE:
-    xfce4-polkit
+    polkit_gnome
   ];
 
   # Fonts configuration
