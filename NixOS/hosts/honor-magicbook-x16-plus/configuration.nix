@@ -48,8 +48,15 @@
 
   # Enable the XFCE Desktop Environment.
   services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.desktopManager.xfce.enable = true;
-
+  # services.xserver.desktopManager.xfce.enable = true;
+  # Отдельно включить thunar
+  services.gvfs.enable = true; # Удаленный доступ к файлам и корзина
+  services.tumblr.enable = true; # Генерация миниатюр (картинок) для Thunar
+  programs.thunar.enable = true; # Сам Thunar + интеграция в систему
+  programs.thunar.plugins = with pkgs.xfce; [
+    thunar-archive-plugin # Интеграция с архиватором (у вас стоит Ark)
+    thunar-volman # Автомонтирование флешек
+  ];
   # Enable Hyprland
   programs.hyprland.enable = true;
   #xdg.portal = {
@@ -132,6 +139,12 @@
     adwaita-icon-theme
     adwaita-qt
     kdePackages.qtwayland
+    # Пакеты из xfce
+    xfce.mousepad
+    xfce.ristretto
+
+    # Агент выбора профилей / аутентификации polkit от XFCE:
+    xfce.xfce4-polkit
   ];
 
   # Fonts configuration
