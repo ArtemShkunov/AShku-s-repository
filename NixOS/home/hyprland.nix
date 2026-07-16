@@ -35,7 +35,6 @@ in
         "HYPRCURSOR_SIZE,24"
         "NIXOS_OZONE_WL,1"
         "GTK_THEME,Adwaita:dark"
-        "QT_QPA_PLATFORMTHEME, qt6ct"
       ];
 
       input = {
@@ -342,7 +341,10 @@ in
   qt = {
     enable = true;
     platformTheme.name = "qtct";
-    style.name = "breeze";
+    style = {
+      name = "breeze";
+      package = [ pkgs.libsForQt5.breeze pkgs.kdePackages.breeze ];
+    };
   };
 
   xdg.configFile."kdeglobals".text = ''
@@ -417,6 +419,5 @@ in
     XDG_SESSION_TYPE = "wayland";
     XDG_SESSION_DESKTOP = "Hyprland";
     QT_STYLE_OVERRIDE = "breeze";
-    QT_QPA_PLATFORMTHEME = "qt5ct";
   };
 }
