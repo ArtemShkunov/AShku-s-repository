@@ -7,7 +7,7 @@ let
       "$mod, ${toString i}, workspace, ${toString i}"
       "$mod SHIFT, ${toString i}, movetoworkspace, ${toString i}"
     ])
-    (lib.range 1 9));
+    (lib.range 1 6));
 in
 {
   wayland.windowManager.hyprland = {

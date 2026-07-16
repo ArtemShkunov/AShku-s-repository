@@ -35,6 +35,8 @@ let
     # Дополните под свой набор раскладок.
     pretty_name() {
       case "$1" in
+        us) echo "EN(US)";;
+        ru) echo "RU";;
         *) echo "$1" ;;
       esac
     }
@@ -99,8 +101,8 @@ in
           all-outputs = true;
           active-only = false;
           persistent-workspaces = {
-             "1" = []; "2" = []; "3" = []; "4" = []; "5" = []; 
-             "6" = []; "7" = []; "8" = []; "9" = [];
+            "1" = []; "2" = []; "3" = []; "4" = []; "5" = []; 
+            "6" = [];           
           };
         };
 
@@ -123,12 +125,12 @@ in
 
         # Фоновые приложения в трее
         tray = {
-          spacing = 12; # Расстояние между иконками приложений в трее
+          spacing = 8; # Расстояние между иконками приложений в трее
         };
 
         # Сеть. По клику открывается менеджер подключений NM
         network = {
-          format-wifi = "  {essid}";
+          format-wifi = "  {essid} ({signalStrenght}%)";
           format-ethernet = "󰈀  {ipaddr}/{cidr}";
           format-disconnected = "󰤭  Disconnected";
           tooltip-format = "{ifname} via {gwaddr}";
@@ -224,7 +226,7 @@ in
       #language,
       #custom-sysinfo,
       #custom-power {
-        padding: 0 10px;
+        padding: 0 8px;
       }
 
       /* Стилизация кнопок рабочих столов */
