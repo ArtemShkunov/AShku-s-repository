@@ -69,7 +69,7 @@ in
   # Добавляем gnome-calendar прямо в этот модуль для вызова по клику на часы.
   # jq, gawk и iproute2 нужны для sysinfo.sh (jq — сборка JSON, awk — парсинг
   # /proc/meminfo и вывода `ip route`, ip — определение сетевого интерфейса).
-  home.packages = [ pkgs.gnome-calendar pkgs.jq pkgs.gawk pkgs.iproute2 ];
+  home.packages = [ pkgs.gnome-calendar pkgs.jq pkgs.gawk pkgs.iproute2 sysInfo ];
 
   programs.waybar = {
     enable = true;
