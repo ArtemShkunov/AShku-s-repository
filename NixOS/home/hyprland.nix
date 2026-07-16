@@ -36,6 +36,8 @@ in
         "NIXOS_OZONE_WL,1"
         "GTK_THEME,Adwaita:dark"
         "QT_QPA_PLATFORMTHEME,kde"
+        "QT_STYLE_OVERRIDE,breeze"
+        "KDE_SESSION_VERSION,6"
       ];
 
       input = {
@@ -366,7 +368,7 @@ in
   Name=Breeze Dark
 
   [Icons]
-  Theme=Adwaita
+  Theme=Yaru
   '';
 
   home.packages = with pkgs; [

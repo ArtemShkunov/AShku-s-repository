@@ -19,6 +19,7 @@
     kdePackages.plasma-integration
     kdePackages.qqc2-desktop-style
     kdePackages.okular
+    kdePackages.kconfig
     vlc
   ];
 
