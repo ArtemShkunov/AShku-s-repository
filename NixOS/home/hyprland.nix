@@ -100,6 +100,7 @@ in
       ];
       bindl = [
         ", XF86AudioMute, exec, pamixer -t"
+        ", XF86AudioMicMute, exec, pamixer --default-source -t"
       ];
     };
   };
