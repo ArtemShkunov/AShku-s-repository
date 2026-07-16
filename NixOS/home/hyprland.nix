@@ -385,7 +385,6 @@ in
     networkmanagerapplet
 
     # Пакеты из Gnome Shell
-    gnome-system-monitor
     yaru-theme
 
     # Nerd Font — та же семья, что используется в zsh-промпте

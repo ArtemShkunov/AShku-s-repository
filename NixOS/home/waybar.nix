@@ -71,7 +71,7 @@ in
   # Добавляем gnome-calendar прямо в этот модуль для вызова по клику на часы.
   # jq, gawk и iproute2 нужны для sysinfo.sh (jq — сборка JSON, awk — парсинг
   # /proc/meminfo и вывода `ip route`, ip — определение сетевого интерфейса).
-  home.packages = [ pkgs.gnome-calendar pkgs.jq pkgs.gawk pkgs.iproute2 sysInfo ];
+  home.packages = [ pkgs.gnome-calendar pkgs.jq pkgs.gawk pkgs.iproute2 sysInfo pkgs.btop ];
 
   programs.waybar = {
     enable = true;
@@ -94,7 +94,7 @@ in
           tooltip = false;
         };
 
-        # 9 рабочих столов
+        # 6 рабочих столов
         "hyprland/workspaces" = {
           format = "{name}";
           on-click = "activate";
@@ -112,7 +112,7 @@ in
           exec = "${sysInfo}/bin/sysinfo";
           interval = 3;
           return-type = "json";
-          on-click = "gnome-system-monitor";
+          on-click = "btop";
           tooltip = true;
         };
 
