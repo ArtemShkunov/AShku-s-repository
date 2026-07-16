@@ -397,7 +397,7 @@ in
     gnome-themes-extra      # полноценная тема Adwaita-dark для GTK3
   
     # Для GTK4/Libadwaita (современные приложения GNOME)
-    gnome.gnome-desktop           # содержит Adwaita для GTK4
+    gnome-desktop           # содержит Adwaita для GTK4
 
     # Дополнительно для старых приложений
     gtk-engine-murrine            # движок тем для GTK2
