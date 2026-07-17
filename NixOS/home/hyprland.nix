@@ -25,7 +25,6 @@ in
         "hyprpaper"
         "nm-applet --indicator"
         "wl-paste --watch cliphist store"
-        "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
       ];
 
       env = [
@@ -88,6 +87,7 @@ in
         "$mod, down, movefocus, d"
         "$mod, F, exec, firefox"
         "$mod, T, exec, Throne"
+        "$mod, N, exec, nvim"
       ] ++ workspaceBinds;
 
       bindm = [
@@ -152,6 +152,8 @@ in
       ];
     };
   };
+
+  services.hyprpolkitagent.enable = true;
 
   services.hypridle = {
     enable = true;
@@ -302,6 +304,17 @@ in
     };
   };
 
+  # ─── hyprland-qt-support: стиль QML для hypr*-приложений (hyprpolkitagent и др.) ───
+  # Отвечает только за "форму" (скругление углов, толщина рамки) — те же
+  # значения, что и у окон в decoration/general выше (rounding = 8,
+  # border_size = 2). Цвета в саму QML-тему не входят — их даёт активная
+  # цветовая схема Qt/KDE, см. kdeglobals ниже.
+  xdg.configFile."hypr/application-style.conf".text = ''
+    roundness = 2
+    border_width = 2
+    reduce_motion = false
+  '';
+
   gtk = {
     enable = true;
 
@@ -376,16 +389,139 @@ in
     #Theme=Yaru
   #'';
 
+  # ------------------------------------- Прошлая кастомная тема ---
+  # xdg.configFile."kdeglobals".text = ''
+  # [Icons]
+  # Theme=Yaru
+  #
+  # [General]
+  #       
+  # ${builtins.readFile "${pkgs.kdePackages.breeze}/share/color-schemes/BreezeDark.colors"}
+  # '';
 
-  xdg.configFile."kdeglobals".text = ''
-  [Icons]
-  Theme=Yaru
+ # ── Кастомная KColorScheme "Sunset Pines" для Qt/KDE-приложений ───
+  # Та же палитра, что и в kitty/hyprlock/hyprland (см. выше: #16141f фон,
+  # #f2994a/#f7ce68 акцент, #f5e9dc текст). Схема кладётся в
+  # ~/.local/share/color-schemes как отдельный .colors-файл правильного
+  # формата (секции Colors:Window/Button/View/Selection/... — так же, как
+  # устроен BreezeDark.colors), а kdeglobals лишь ссылается на неё по имени.
+  # Стиль виджетов остаётся Breeze (см. qt.style ниже) — меняется только
+  # цветовая схема поверх него, это и есть штатный способ кастомизации в KDE.
+  # Подхватывается всеми Qt-приложениями через qt.platformTheme.name = "kde"
+  # (Ark, Telegram, hyprpolkitagent) — без необходимости лезть в qt5ct/qt6ct.
+  xdg.dataFile."color-schemes/SunsetPines.colors".text = ''
+    [ColorEffects:Disabled]
+    Color=112,111,110
+    ColorAmount=0
+    ColorEffect=0
+    ContrastAmount=0.65
+    ContrastEffect=1
+    IntensityAmount=0.1
+    IntensityEffect=2
 
-  [General]
-        
-  ${builtins.readFile "${pkgs.kdePackages.breeze}/share/color-schemes/BreezeDark.colors"}
+    [ColorEffects:Inactive]
+    ChangeSelectionColor=true
+    Color=112,111,110
+    ColorAmount=0.025
+    ColorEffect=2
+    ContrastAmount=0.1
+    ContrastEffect=2
+    Enable=false
+    IntensityAmount=0
+    IntensityEffect=0
+
+    [Colors:Button]
+    BackgroundAlternate=30,27,38
+    BackgroundNormal=26,23,34
+    DecorationFocus=242,153,74
+    DecorationHover=247,206,104
+    ForegroundActive=247,206,104
+    ForegroundInactive=138,122,138
+    ForegroundLink=122,139,189
+    ForegroundNegative=232,97,60
+    ForegroundNeutral=247,206,104
+    ForegroundNormal=245,233,220
+    ForegroundPositive=163,177,138
+    ForegroundVisited=180,122,164
+
+    [Colors:Selection]
+    BackgroundAlternate=242,153,74
+    BackgroundNormal=74,59,79
+    DecorationFocus=242,153,74
+    DecorationHover=247,206,104
+    ForegroundActive=245,233,220
+    ForegroundInactive=245,233,220
+    ForegroundLink=163,177,213
+    ForegroundLinkVisited=209,163,196
+    ForegroundNegative=232,97,60
+    ForegroundNeutral=247,206,104
+    ForegroundNormal=245,233,220
+    ForegroundPositive=163,177,138
+    ForegroundVisited=209,163,196
+
+    [Colors:Tooltip]
+    BackgroundAlternate=30,27,38
+    BackgroundNormal=22,20,31
+    ForegroundActive=247,206,104
+    ForegroundInactive=138,122,138
+    ForegroundLink=122,139,189
+    ForegroundNegative=232,97,60
+    ForegroundNeutral=247,206,104
+    ForegroundNormal=245,233,220
+    ForegroundPositive=163,177,138
+    ForegroundVisited=180,122,164
+
+    [Colors:View]
+    BackgroundAlternate=30,27,38
+    BackgroundNormal=22,20,31
+    DecorationFocus=242,153,74
+    DecorationHover=247,206,104
+    ForegroundActive=247,206,104
+    ForegroundInactive=138,122,138
+    ForegroundLink=122,139,189
+    ForegroundNegative=232,97,60
+    ForegroundNeutral=247,206,104
+    ForegroundNormal=245,233,220
+    ForegroundPositive=163,177,138
+    ForegroundVisited=180,122,164
+
+    [Colors:Window]
+    BackgroundAlternate=30,27,38
+    BackgroundNormal=22,20,31
+    ForegroundActive=247,206,104
+    ForegroundInactive=138,122,138
+    ForegroundLink=122,139,189
+    ForegroundNegative=232,97,60
+    ForegroundNeutral=247,206,104
+    ForegroundNormal=245,233,220
+    ForegroundPositive=163,177,138
+    ForegroundVisited=180,122,164
+
+    [General]
+    ColorScheme=SunsetPines
+    Name=Sunset Pines
+    shadeSortColumn=true
+
+    [KDE]
+    contrast=4
+
+    [WM]
+    activeBackground=22,20,31
+    activeBlend=245,233,220
+    activeForeground=245,233,220
+    inactiveBackground=26,23,34
+    inactiveBlend=138,122,138
+    inactiveForeground=138,122,138
   '';
 
+  xdg.configFile."kdeglobals".text = ''
+    [General]
+    ColorScheme=SunsetPines
+    Name=Sunset Pines
+
+    [Icons]
+    Theme=Yaru
+  '';
 
   home.packages = with pkgs; [
     # Статус-бар
@@ -406,8 +542,11 @@ in
     wl-clipboard
     cliphist
 
+    # Polkit-agent hyprland
+    hyprpolkitagent
+
     # Polkit-агент для запроса прав (нужен для GUI-программ с sudo)
-    polkit_gnome
+    # polkit_gnome
 
     # Яркость, звук, медиаклавиши
     brightnessctl

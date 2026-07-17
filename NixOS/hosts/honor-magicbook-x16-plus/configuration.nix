@@ -72,6 +72,11 @@
   programs.dconf.enable = true;
   security.pam.services.hyprlock = {};
 
+  # Демон polkit. networkmanager обычно включает его сам через mkDefault,
+  # но полагаться на неявное поведение другого модуля — плохая идея:
+  # без него hyprpolkitagent просто не будет к чему подключаться.
+  security.polkit.enable = true;
+
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
@@ -144,7 +149,7 @@
     mousepad
     ristretto
 
-    polkit_gnome
+    # polkit_gnome
   ];
 
   # Fonts configuration

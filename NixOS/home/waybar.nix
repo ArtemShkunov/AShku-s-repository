@@ -112,7 +112,7 @@ in
           exec = "${sysInfo}/bin/sysinfo";
           interval = 3;
           return-type = "json";
-          on-click = "kitty -e btop";
+          on-click = "btop";
           tooltip = true;
         };
 
