@@ -22,6 +22,7 @@
     kdePackages.kconfig
     kdePackages.breeze-gtk
     vlc
+    xdg-terminal-exec
   ];
 
 
@@ -32,6 +33,13 @@
         name = "shayu25u578";
         email = "shkunovayu@student.bmstu.ru";
       };
+    };
+  };
+
+  xdg.terminal-exec = {
+    enable = true;
+    settings = {
+      default = [ "kitty.desktop" ];
     };
   };
 
