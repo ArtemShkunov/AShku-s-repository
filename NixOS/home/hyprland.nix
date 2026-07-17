@@ -390,14 +390,14 @@ in
   #'';
 
   # ------------------------------------- Прошлая кастомная тема ---
-  # xdg.configFile."kdeglobals".text = ''
-  # [Icons]
-  # Theme=Yaru
-  #
-  # [General]
-  #       
-  # ${builtins.readFile "${pkgs.kdePackages.breeze}/share/color-schemes/BreezeDark.colors"}
-  # '';
+  xdg.configFile."kdeglobals".text = ''
+  [Icons]
+  Theme=Yaru
+
+  [General]
+        
+  ${builtins.readFile "${pkgs.kdePackages.breeze}/share/color-schemes/BreezeDark.colors"}
+  '';
 
  # ── Кастомная KColorScheme "Sunset Pines" для Qt/KDE-приложений ───
   # Та же палитра, что и в kitty/hyprlock/hyprland (см. выше: #16141f фон,
@@ -409,119 +409,119 @@ in
   # цветовая схема поверх него, это и есть штатный способ кастомизации в KDE.
   # Подхватывается всеми Qt-приложениями через qt.platformTheme.name = "kde"
   # (Ark, Telegram, hyprpolkitagent) — без необходимости лезть в qt5ct/qt6ct.
-  xdg.dataFile."color-schemes/SunsetPines.colors".text = ''
-    [ColorEffects:Disabled]
-    Color=112,111,110
-    ColorAmount=0
-    ColorEffect=0
-    ContrastAmount=0.65
-    ContrastEffect=1
-    IntensityAmount=0.1
-    IntensityEffect=2
-
-    [ColorEffects:Inactive]
-    ChangeSelectionColor=true
-    Color=112,111,110
-    ColorAmount=0.025
-    ColorEffect=2
-    ContrastAmount=0.1
-    ContrastEffect=2
-    Enable=false
-    IntensityAmount=0
-    IntensityEffect=0
-
-    [Colors:Button]
-    BackgroundAlternate=30,27,38
-    BackgroundNormal=26,23,34
-    DecorationFocus=242,153,74
-    DecorationHover=247,206,104
-    ForegroundActive=247,206,104
-    ForegroundInactive=138,122,138
-    ForegroundLink=122,139,189
-    ForegroundNegative=232,97,60
-    ForegroundNeutral=247,206,104
-    ForegroundNormal=245,233,220
-    ForegroundPositive=163,177,138
-    ForegroundVisited=180,122,164
-
-    [Colors:Selection]
-    BackgroundAlternate=242,153,74
-    BackgroundNormal=74,59,79
-    DecorationFocus=242,153,74
-    DecorationHover=247,206,104
-    ForegroundActive=245,233,220
-    ForegroundInactive=245,233,220
-    ForegroundLink=163,177,213
-    ForegroundLinkVisited=209,163,196
-    ForegroundNegative=232,97,60
-    ForegroundNeutral=247,206,104
-    ForegroundNormal=245,233,220
-    ForegroundPositive=163,177,138
-    ForegroundVisited=209,163,196
-
-    [Colors:Tooltip]
-    BackgroundAlternate=30,27,38
-    BackgroundNormal=22,20,31
-    ForegroundActive=247,206,104
-    ForegroundInactive=138,122,138
-    ForegroundLink=122,139,189
-    ForegroundNegative=232,97,60
-    ForegroundNeutral=247,206,104
-    ForegroundNormal=245,233,220
-    ForegroundPositive=163,177,138
-    ForegroundVisited=180,122,164
-
-    [Colors:View]
-    BackgroundAlternate=30,27,38
-    BackgroundNormal=22,20,31
-    DecorationFocus=242,153,74
-    DecorationHover=247,206,104
-    ForegroundActive=247,206,104
-    ForegroundInactive=138,122,138
-    ForegroundLink=122,139,189
-    ForegroundNegative=232,97,60
-    ForegroundNeutral=247,206,104
-    ForegroundNormal=245,233,220
-    ForegroundPositive=163,177,138
-    ForegroundVisited=180,122,164
-
-    [Colors:Window]
-    BackgroundAlternate=30,27,38
-    BackgroundNormal=22,20,31
-    ForegroundActive=247,206,104
-    ForegroundInactive=138,122,138
-    ForegroundLink=122,139,189
-    ForegroundNegative=232,97,60
-    ForegroundNeutral=247,206,104
-    ForegroundNormal=245,233,220
-    ForegroundPositive=163,177,138
-    ForegroundVisited=180,122,164
-
-    [General]
-    ColorScheme=SunsetPines
-    Name=Sunset Pines
-    shadeSortColumn=true
-
-    [KDE]
-    contrast=4
-
-    [WM]
-    activeBackground=22,20,31
-    activeBlend=245,233,220
-    activeForeground=245,233,220
-    inactiveBackground=26,23,34
-    inactiveBlend=138,122,138
-    inactiveForeground=138,122,138
-  '';
-
-  xdg.configFile."kdeglobals".text = ''
-    [General]
-    ColorScheme=SunsetPines
-    Name=Sunset Pines
-
-    [Icons]
-    Theme=Yaru
-  '';
+  # xdg.dataFile."color-schemes/SunsetPines.colors".text = ''
+  #   [ColorEffects:Disabled]
+  #   Color=112,111,110
+  #   ColorAmount=0
+  #   ColorEffect=0
+  #   ContrastAmount=0.65
+  #   ContrastEffect=1
+  #   IntensityAmount=0.1
+  #   IntensityEffect=2
+  #
+  #   [ColorEffects:Inactive]
+  #   ChangeSelectionColor=true
+  #   Color=112,111,110
+  #   ColorAmount=0.025
+  #   ColorEffect=2
+  #   ContrastAmount=0.1
+  #   ContrastEffect=2
+  #   Enable=false
+  #   IntensityAmount=0
+  #   IntensityEffect=0
+  #
+  #   [Colors:Button]
+  #   BackgroundAlternate=30,27,38
+  #   BackgroundNormal=26,23,34
+  #   DecorationFocus=242,153,74
+  #   DecorationHover=247,206,104
+  #   ForegroundActive=247,206,104
+  #   ForegroundInactive=138,122,138
+  #   ForegroundLink=122,139,189
+  #   ForegroundNegative=232,97,60
+  #   ForegroundNeutral=247,206,104
+  #   ForegroundNormal=245,233,220
+  #   ForegroundPositive=163,177,138
+  #   ForegroundVisited=180,122,164
+  #
+  #   [Colors:Selection]
+  #   BackgroundAlternate=242,153,74
+  #   BackgroundNormal=74,59,79
+  #   DecorationFocus=242,153,74
+  #   DecorationHover=247,206,104
+  #   ForegroundActive=245,233,220
+  #   ForegroundInactive=245,233,220
+  #   ForegroundLink=163,177,213
+  #   ForegroundLinkVisited=209,163,196
+  #   ForegroundNegative=232,97,60
+  #   ForegroundNeutral=247,206,104
+  #   ForegroundNormal=245,233,220
+  #   ForegroundPositive=163,177,138
+  #   ForegroundVisited=209,163,196
+  #
+  #   [Colors:Tooltip]
+  #   BackgroundAlternate=30,27,38
+  #   BackgroundNormal=22,20,31
+  #   ForegroundActive=247,206,104
+  #   ForegroundInactive=138,122,138
+  #   ForegroundLink=122,139,189
+  #   ForegroundNegative=232,97,60
+  #   ForegroundNeutral=247,206,104
+  #   ForegroundNormal=245,233,220
+  #   ForegroundPositive=163,177,138
+  #   ForegroundVisited=180,122,164
+  #
+  #   [Colors:View]
+  #   BackgroundAlternate=30,27,38
+  #   BackgroundNormal=22,20,31
+  #   DecorationFocus=242,153,74
+  #   DecorationHover=247,206,104
+  #   ForegroundActive=247,206,104
+  #   ForegroundInactive=138,122,138
+  #   ForegroundLink=122,139,189
+  #   ForegroundNegative=232,97,60
+  #   ForegroundNeutral=247,206,104
+  #   ForegroundNormal=245,233,220
+  #   ForegroundPositive=163,177,138
+  #   ForegroundVisited=180,122,164
+  #
+  #   [Colors:Window]
+  #   BackgroundAlternate=30,27,38
+  #   BackgroundNormal=22,20,31
+  #   ForegroundActive=247,206,104
+  #   ForegroundInactive=138,122,138
+  #   ForegroundLink=122,139,189
+  #   ForegroundNegative=232,97,60
+  #   ForegroundNeutral=247,206,104
+  #   ForegroundNormal=245,233,220
+  #   ForegroundPositive=163,177,138
+  #   ForegroundVisited=180,122,164
+  #
+  #   [General]
+  #   ColorScheme=SunsetPines
+  #   Name=Sunset Pines
+  #   shadeSortColumn=true
+  #
+  #   [KDE]
+  #   contrast=4
+  #
+  #   [WM]
+  #   activeBackground=22,20,31
+  #   activeBlend=245,233,220
+  #   activeForeground=245,233,220
+  #   inactiveBackground=26,23,34
+  #   inactiveBlend=138,122,138
+  #   inactiveForeground=138,122,138
+  # '';
+  #
+  # xdg.configFile."kdeglobals".text = ''
+  #   [General]
+  #   ColorScheme=SunsetPines
+  #   Name=Sunset Pines
+  #
+  #   [Icons]
+  #   Theme=Yaru
+  # '';
 
   home.packages = with pkgs; [
     # Статус-бар
