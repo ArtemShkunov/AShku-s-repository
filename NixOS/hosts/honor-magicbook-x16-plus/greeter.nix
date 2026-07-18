@@ -1,75 +1,138 @@
 { config, lib, pkgs, ... }:
 
-# ─── LightDM greeter: экран входа в теме "sunset pines" ───
+# ─── Экран входа: greetd + ReGreet, тема "sunset pines" ───
 #
-# Это системный модуль (не home-manager!), потому что greeter рисуется
-# демоном lightdm ещё ДО входа в чей-либо сеанс — у него нет доступа
-# к home-manager конфигу пользователя.
+# LightDM отсюда убран — он был нужен только для XFCE-гритера, а XFCE
+# теперь удалён. ReGreet — GTK4-гритер для минималистичного демона greetd,
+# из всех вариантов под Wayland/Hyprland он ближе всего по духу к
+# hyprlock/hyprpolkitagent: тёмный, кастомизируется через тему + CSS,
+# без лишнего "десктопного" функционала LightDM.
 #
-# Выбор сессии (Hyprland / XFCE) остаётся полностью рабочим: он идёт
-# через индикатор "~session" ниже и никак не завязан на тему.
+# Важная оговорка о том, что реально означает "похож на hyprlock во всём":
+# цвета, скругления, шрифт и тёмный фон — воспроизводятся полностью.
+# А вот РАСКЛАДКА экрана (у hyprlock она обьявляется вручную, элемент за
+# элементом, через labels/image в hyprlock.conf) у ReGreet фиксирована
+# самим приложением: поле пароля, список пользователей/сессий и кнопки
+# питания стоят там, где их разместили авторы ReGreet, подвинуть их нельзя.
+# Это компромисс, на который идут все, кто использует greetd — более точное
+# повторение потребовало бы поднимать на экране входа полноценный Hyprland
+# с самописной imitation-of-hyprlock сценой, что уже не "гритер", а отдельный
+# хрупкий костыль поверх PAM. ReGreet — разумный максимум за вменяемые деньги.
+#
+# Это системный модуль (не home-manager!) — гритер рисуется демоном greetd
+# ещё ДО входа в чей-либо сеанс, от имени системного пользователя "greeter",
+# у которого нет доступа к home-manager конфигу artemmkk-sh.
 {
-  services.xserver.displayManager.lightdm = {
-    enable = true; # уже включено в configuration.nix, дублируется для ясности модуля
+  services.greetd = {
+    enable = true;
+    settings = {
+      # user для default_session по умолчанию уже "greeter" (задаётся самим
+      # модулем services.greetd), явно не указываем.
+    };
+  };
 
-    # Цвет фона греетера — самый тёмный тон из палитры (тот же, что
-    # background в kitty.nix и hyprlock). Работает сразу, без каких-либо
-    # дополнительных файлов и без проблем с правами доступа.
-    background = "#16141f";
+  # greetd — не x11-программа и не читает /usr/share/{x,wayland}-sessions
+  # (эти пути на NixOS попросту не существуют). ReGreet ищет .desktop файлы
+  # сессий только через $XDG_DATA_DIRS, поэтому явно подсовываем ему тот же
+  # каталог с сессиями, который NixOS собирает для дисплей-менеджеров
+  # (туда автоматически попадает hyprland.desktop благодаря
+  # programs.hyprland.enable = true в configuration.nix).
+  systemd.services.greetd.environment.XDG_DATA_DIRS =
+    "${config.services.xserver.displayManager.sessionData.desktops}/share:/run/current-system/sw/share:/usr/share";
 
-    # ── Вариант с реальными обоями вместо плоского цвета ──
-    # lightdm рисует greeter от имени системного пользователя lightdm,
-    # а не artemmkk-sh, поэтому путь вида /home/artemmkk-sh/Data/Wallpaper.png
-    # может оказаться недоступен из-за прав на домашнюю директорию (обычно 700).
-    # Надёжный способ — скопировать обои в репозиторий конфига и подключить
-    # как относительный путь: Nix сам скопирует файл в /nix/store, и
-    # никаких проблем с правами уже не будет.
+  programs.regreet = {
+    enable = true;
+
+    # Та же связка темы, что и на десктопе в hyprland.nix.
+    theme = {
+      name = "Adwaita-dark";
+      package = pkgs.gnome-themes-extra;
+    };
+
+    iconTheme = {
+      name = "Yaru";
+      package = pkgs.yaru-theme;
+    };
+
+    cursorTheme = {
+      name = "Adwaita";
+      package = pkgs.adwaita-icon-theme;
+    };
+
+    font = {
+      name = "JetBrainsMono Nerd Font";
+      size = 14;
+    };
+
+    # Тёмный режим и мигающий курсор — не покрываются typed-опциями выше,
+    # поэтому идут через settings.GTK. ВАЖНО: theme_name/icon_theme_name/
+    # cursor_theme_name/font_name сюда НЕ дублируем — модуль сам генерирует
+    # их из theme/iconTheme/cursorTheme/font выше, а повторное определение
+    # тех же ключей в settings ловит баг с "double settings definition"
+    # (nixpkgs issue #335082).
+    settings = {
+      GTK = {
+        application_prefer_dark_theme = true;
+        cursor_blink = true;
+      };
+    };
+
+    # Фон — плоский цвет, как и у hyprlock (у него тоже нет обоев, только
+    # rgba(1a1a1aff)), поэтому никакой [background]-секции с картинкой не
+    # заводим — заодно нет и риска нарваться на проблему прав доступа
+    # к ~/Data/Wallpaper.png (гритер работает от пользователя "greeter",
+    # который не может залезть в домашний каталог artemmkk-sh).
+    #
+    # Если позже захочется настоящие обои вместо плоского цвета — тот же
+    # трюк, что был в старой версии этого файла для LightDM: скопировать
+    # картинку в репозиторий конфига и подключить относительным путём,
+    # тогда Nix сам положит её в /nix/store, и прав уже хватит:
     #
     #   cp ~/Data/Wallpaper.png ~/.nixos-config/hosts/thinkpad-t480/greeter-wallpaper.png
     #
-    # background = ./greeter-wallpaper.png;
+    # settings.background = { path = ./greeter-wallpaper.png; fit = "Cover"; };
 
-    greeters.gtk = {
-      enable = true;
+    # extraCss — единственное место, где реально настраивается "форма":
+    # скругления/рамки/цвета конкретных виджетов. Здесь используются только
+    # универсальные GTK4-селекторы (window/entry/button/label), которые
+    # гарантированно существуют в любом GTK4-приложении. Точную подгонку
+    # под внутреннюю структуру ReGreet (например, отдельный класс у контейнера
+    # с часами) авторы ReGreet сами рекомендуют делать через GTK Inspector
+    # в demo-режиме (regreet --demo), а не угадывать селекторы вслепую —
+    # см. https://github.com/rharish101/ReGreet#css.
+    extraCss = ''
+      window {
+        background-color: #16141f;
+      }
 
-      # Та же связка, что и на десктопе в hyprland.nix: Adwaita-dark + Yaru.
-      theme = {
-        name = "Adwaita-dark";
-        package = pkgs.gnome-themes-extra;
-      };
+      entry {
+        background-color: rgba(22, 20, 31, 0.85);
+        border: 2px solid rgba(242, 153, 74, 0.85);
+        border-radius: 14px;
+        color: #f5e9dc;
+        padding: 8px 12px;
+      }
 
-      iconTheme = {
-        name = "Yaru";
-        package = pkgs.yaru-theme;
-      };
+      entry:focus-within {
+        border-color: #f7ce68;
+        box-shadow: 0 0 0 1px rgba(247, 206, 104, 0.35);
+      }
 
-      cursorTheme = {
-        name = "Adwaita";
-        package = pkgs.adwaita-icon-theme;
-        size = 24; # совпадает с HYPRCURSOR_SIZE / XCURSOR_SIZE
-      };
+      button {
+        background-color: transparent;
+        border: 1px solid rgba(242, 153, 74, 0.4);
+        border-radius: 10px;
+        color: #f5e9dc;
+      }
 
-      clock-format = "%H:%M";
+      button:hover {
+        background-color: rgba(242, 153, 74, 0.15);
+        border-color: #f7ce68;
+      }
 
-      # ~session оставляет переключатель сеанса на экране входа —
-      # именно он даёт возможность выбрать XFCE вместо Hyprland.
-      indicators = [
-        "~host"
-        "~spacer"
-        "~clock"
-        "~spacer"
-        "~session"
-        "~language"
-        "~a11y"
-        "~power"
-      ];
-
-      extraConfig = ''
-        font-name = JetBrainsMono Nerd Font 11
-        # Не даём AccountsService подставлять случайный per-user фон
-        # поверх нашего — иначе тема может "слететь" после первого входа.
-        user-background = false
-      '';
-    };
+      label {
+        color: #f5e9dc;
+      }
+    '';
   };
 }
