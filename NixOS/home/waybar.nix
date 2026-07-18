@@ -4,7 +4,7 @@ let
   # Скрипт для кастомного меню питания через wofi с позиционированием в верхнем правом углу 
   powerMenu = pkgs.writeShellScriptBin "powermenu" ''
     entries="⏻ Power off\n⟳ Reboot\n⏾ Suspend\n Lock\n󰗽 Exit"
-    selected=$(echo -e "$entries" | wofi --dmenu --prompt "Power" --location top_right --xoffset -16 --yoffset 45 --width 250 --height 250)
+    selected=$(echo -e "$entries" | wofi -L 6 --dmenu --prompt "Power" --location top_right --xoffset -16 --yoffset 45 --width 250 --height 250)
     case $selected in
       "⏻ Power off")
         exec systemctl poweroff -i;;
@@ -56,7 +56,7 @@ let
     done
     IFS=$old_ifs
 
-    selected=$(printf "%s" "$menu" | wofi --dmenu --prompt "Layout" --location top_right --xoffset -16 --yoffset 45 --width 250 --height 250)
+    selected=$(printf "%s" "$menu" | wofi -L 3 --dmenu --prompt "Layout" --location top_right --xoffset -16 --yoffset 45 --width 250 --height 250)
 
     [ -z "$selected" ] && exit 0
 
@@ -112,7 +112,7 @@ in
           exec = "${sysInfo}/bin/sysinfo";
           interval = 3;
           return-type = "json";
-          on-click = "btop";
+          on-click = "kitty -e btop";
           tooltip = true;
         };
 
