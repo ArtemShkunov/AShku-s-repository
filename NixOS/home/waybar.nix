@@ -208,7 +208,6 @@ in
           format-charging = "󰂄 {capacity}%";
           format-plugged = " {capacity}%";
           format-icons = [" " " " " " " " " "];
-          on-click = "tlpui";
         };
 
         # Раскладка клавиатуры. Отображение обновляется автоматически через

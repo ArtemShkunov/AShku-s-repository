@@ -23,7 +23,6 @@
     kdePackages.breeze-gtk
     vlc
     xdg-terminal-exec
-    tlpui
   ];
 
 
