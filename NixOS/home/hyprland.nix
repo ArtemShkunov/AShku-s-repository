@@ -6,6 +6,8 @@ let
     (i: [
       "$mod, ${toString i}, workspace, ${toString i}"
       "$mod SHIFT, ${toString i}, movetoworkspace, ${toString i}"
+      "$mod, KP_${toString i}, workspace, ${toString i}"
+      "$mod SHIFT, KP_${toString i}, movetoworkspace, ${toString i}"
     ])
     (lib.range 1 6));
 in
