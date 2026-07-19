@@ -25,6 +25,7 @@
     xdg-terminal-exec
   ];
 
+  services.avizo.enable = true;
 
   programs.git = {
     enable = true;

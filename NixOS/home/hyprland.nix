@@ -87,6 +87,7 @@ in
         "$mod, down, movefocus, d"
         "$mod, F, exec, firefox"
         "$mod, T, exec, Throne"
+        "$mod, N, exec, pkill hyprsunset || hyprsunset -t 4000"
       ] ++ workspaceBinds;
 
       bindm = [
@@ -95,8 +96,8 @@ in
       ];
 
       bindel = [
-        ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
-        ", XF86MonBrightnessUp, exec, brightnessctl set 5%+"
+        ", XF86MonBrightnessDown, exec, brightnessctl set 5%- && avizo-client --brightness"
+        ", XF86MonBrightnessUp, exec, brightnessctl set 5%+ && avizo-client --brightness"
         ", XF86AudioLowerVolume, exec, pamixer -d 5"
         ", XF86AudioRaiseVolume, exec, pamixer -i 5"
       ];
@@ -552,6 +553,9 @@ in
     pamixer
     pavucontrol
     playerctl
+
+    # Ночной свет
+    hyprsunset
 
     # Сетевой апплет
     networkmanagerapplet
