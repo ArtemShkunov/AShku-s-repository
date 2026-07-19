@@ -19,6 +19,36 @@ let
     esac
   '';
 
+  
+    # Скрипт для яркости/ночного света
+    # Меню по клику на яркость: тумблер ночного режима или GUI-регулятор
+    brightnessMenu = pkgs.writeShellScriptBin "brightnessmenu" ''
+    set -euo pipefail
+
+    entries="🌙 Night mode\n☀ Brightness"
+    selected=$(echo -e "$entries" | wofi -L 2 --dmenu --prompt "Backlight" --location top_right --xoffset -16 --yoffset 45 --width 250 --height 150)
+
+    case "$selected" in
+      "🌙 Night mode")
+        # Значение температуры держим синхронно с bind $mod,N в hyprland.nix
+        pkill hyprsunset || hyprsunset -t 3500 &
+        ;;
+      "☀ Brightness")
+        current=$(brightnessctl get)
+        max=$(brightnessctl max)
+        percent=$(( current * 100 / max ))
+
+        yad --title="Brightness" --width=320 --center \
+          --scale --print-partial --text="Regulate brightness..." \
+          --min=1 --max=100 --value="$percent" --step=1 \
+          --button="Ready:0" |
+        while IFS= read -r val; do
+          brightnessctl set "''${val}%" >/dev/null 2>&1
+        done
+        ;;    esac
+    '';
+
+
   # Скрипт для комбинированного информационного поля (CPU, RAM, сеть, температура)
   # лежит рядом с этим файлом как sysinfo.sh и подключается как есть.
   sysInfo = pkgs.writeShellScriptBin "sysinfo" (builtins.readFile ./sysinfo.sh);
@@ -141,6 +171,8 @@ in
         backlight = {
           format = "{icon} {percent}%";
           format-icons = ["" "" "" "" "" "" "" "" ""];
+          on-click = "${brightnessMenu}/bin/brightnessmenu";
+          tooltip=false;
         };
 
         # Звук
@@ -161,7 +193,7 @@ in
         "pulseaudio#microphone" = {
           format = "{format_source}";
           format-source = " {volume}%";
-          format-source-muted = " Muted";
+          format-source-muted = "  Muted";
           on-click = "pamixer --default-source -t";
           on-click-right = "pavucontrol";
         };
@@ -176,6 +208,7 @@ in
           format-charging = "󰂄 {capacity}%";
           format-plugged = " {capacity}%";
           format-icons = [" " " " " " " " " "];
+          on-click = "tlpui";
         };
 
         # Раскладка клавиатуры. Отображение обновляется автоматически через

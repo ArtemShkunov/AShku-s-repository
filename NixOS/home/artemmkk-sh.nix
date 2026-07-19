@@ -23,9 +23,9 @@
     kdePackages.breeze-gtk
     vlc
     xdg-terminal-exec
+    tlpui
   ];
 
-  services.avizo.enable = true;
 
   programs.git = {
     enable = true;
