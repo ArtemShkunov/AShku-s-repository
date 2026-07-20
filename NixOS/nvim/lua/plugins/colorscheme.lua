@@ -4,11 +4,14 @@ return {
     dir = plugin_path("rose-pine"),
     name = "rose-pine",
     lazy = false,
-    priority = 1000, -- цветовая схема должна грузиться раньше остальных плагинов
+    priority = 1000,
     config = function()
       require("rose-pine").setup({
-        variant = "auto", -- "main" | "moon" | "dawn" | "auto"
+        variant = "auto",
         dark_variant = "main",
+        styles = {
+          transparency = true,
+        },
       })
 
       vim.cmd("colorscheme rose-pine")

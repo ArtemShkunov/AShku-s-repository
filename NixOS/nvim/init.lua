@@ -52,14 +52,4 @@ require("lazy").setup("plugins", {
     },
   },
 })
--- Включаем поддержку прозрачности фона
-vim.opt.termguicolors = true
-
--- Глобальное отключение фона (делает всё прозрачным)
-vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-
--- Дополнительно: отключаем фон для статус-бара (например, для lualine)
-vim.api.nvim_set_hl(0, "StatusLine", { bg = "none" })
-vim.api.nvim_set_hl(0, "StatusLineNC", { bg = "none" })
 

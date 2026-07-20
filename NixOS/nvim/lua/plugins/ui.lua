@@ -6,8 +6,10 @@ return {
     event = "VeryLazy",
     dependencies = {
       { "nvim-web-devicons", dir = plugin_path("nvim-web-devicons"), name = "nvim-web-devicons" },
-    }, config = function() require("lualine").setup({
-        options = { theme = "auto" },
+    },
+    config = function()
+      require("lualine").setup({
+        options = { theme = "rose-pine" },
       })
     end,
   },
@@ -19,9 +21,12 @@ return {
     event = "VeryLazy",
     dependencies = {
       { "nvim-web-devicons", dir = plugin_path("nvim-web-devicons"), name = "nvim-web-devicons" },
+      "rose-pine",
     },
     config = function()
-      require("bufferline").setup({})
+      require("bufferline").setup({
+        highlights = require("rose-pine.plugins.bufferline"),
+      })
     end,
   },
 

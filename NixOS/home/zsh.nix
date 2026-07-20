@@ -59,6 +59,17 @@
     };
 
     initContent = ''
+
+# ---- Обёртка над `nix develop`, чтобы поднимался zsh, а не bash ----
+nix() {
+    if [[ "$1" == "develop" ]]; then
+        command nix "$@" --command zsh
+    else
+        command nix "$@"
+    fi
+}
+
+
       # ---- Логика Git: получение ветки со значком, статуса или хеша ----
       __git_prompt_info() {
           if git rev-parse --git-dir > /dev/null 2>&1; then
@@ -102,6 +113,10 @@
           local COLOR_GIT="210;50;15"
           local COLOR_TIME="219;80;11"
 
+local DEVSHELL_BADGE=""
+    if [ -n "$IN_NIX_SHELL" ]; then
+        DEVSHELL_BADGE=$' %{\e[1;35m%}#devshell%{\e[0m%}'
+    fi
 
           local FRAME ERR
           if [ "$EXIT" -eq 0 ]; then
@@ -146,6 +161,10 @@
           # Финальный треугольник: уходит в цвет фона (сброс цвета)
           P+=$'%{\e[0;38;2;'"''${COLOR_TIME}"$'m%}'$'%{\e[0m%}'
 
+# DevShell Badge
+P+="''${DEVSHELL_BADGE}"
+
+
           # Ошибки и перенос
           P+="''${ERR}"$'\n'
 
@@ -170,8 +189,4 @@
     '';
   };
 
-  xfconf.settings.xfce4-terminal = {
-    "font-name" = "FiraCode Nerd Font 12";
-    "font-use-system" = false;
-  };
 }
