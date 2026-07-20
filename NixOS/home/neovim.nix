@@ -18,6 +18,8 @@ let
     plenary-nvim = plenary-nvim;
     nvim-tree-lua = nvim-tree-lua;
     nvim-web-devicons = nvim-web-devicons;
+    harpoon2=harpoon2;
+    undotree=undotree;
 
     gitsigns-nvim = gitsigns-nvim;
     vim-fugitive = vim-fugitive;
