@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 {
   imports = [
     ./zsh.nix
@@ -8,10 +8,6 @@
     ./mako.nix
     ./wofi.nix
   ];
-
-  inputs = {
-    zen-browser.url = "github:youwen5/zen-browser-flake";
-  };
 
   home.username = "artemmkk-sh";
   home.homeDirectory = "/home/artemmkk-sh";
