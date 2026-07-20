@@ -368,29 +368,7 @@ in
       name = "breeze";
       package = pkgs.kdePackages.breeze;    
     };
-      #qt6ctSettings = {      
-    #Appearance = {
-      #   style = "Breeze";
-      # color_scheme_path = "${pkgs.kdePackages.breeze}/share/color-schemes/BreezeDark.colors";
-      #};
-    #};
-      #qt5ctSettings = {
-      #Appearance = {
-      #  style = "Breeze";
-      #  color_scheme_path = "${pkgs.kdePackages.breeze}/share/color-schemes/BreezeDark.colors";
-      # };
-    #};
   };
-
-    # xdg.configFile."kdeglobals".text = ''
-  #[General]
-  #ColorScheme=BreezeDark
-    #Name=Breeze Dark
-
-  #[Icons]
-    #Theme=Yaru
-  #'';
-
   # ------------------------------------- Прошлая кастомная тема ---
   xdg.configFile."kdeglobals".text = ''
   [Icons]
