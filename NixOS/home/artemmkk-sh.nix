@@ -24,10 +24,12 @@
     vlc
     xdg-terminal-exec
     libreoffice
-    hyphen-dict-ru-ru-libreoffice
-    hunspell-dict-ru-ru-libreoffice
     hunspell
     hyphen
+    hyphenDicts.ru-ru
+    hyphenDicts.ru_RU
+    hunspellDicts.ru_RU
+    hunspellDicts.ru-ru
     inputs.zen-browser.packages."${system}".default
   ];
 
