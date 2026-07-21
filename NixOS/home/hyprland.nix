@@ -90,6 +90,7 @@ in
         "$mod, F, exec, firefox"
         "$mod, T, exec, Throne"
         "$mod, N, exec, pkill hyprsunset || hyprsunset -t 3500"
+        "$$mod, B, exec, zen-beta"
       ] ++ workspaceBinds;
 
       bindm = [
