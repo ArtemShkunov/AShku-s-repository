@@ -98,10 +98,9 @@ let
   '';
 in
 {
-  # Добавляем gnome-calendar прямо в этот модуль для вызова по клику на часы.
   # jq, gawk и iproute2 нужны для sysinfo.sh (jq — сборка JSON, awk — парсинг
   # /proc/meminfo и вывода `ip route`, ip — определение сетевого интерфейса).
-  home.packages = [ pkgs.gnome-calendar pkgs.jq pkgs.gawk pkgs.iproute2 sysInfo pkgs.btop ];
+  home.packages = [  pkgs.jq pkgs.gawk pkgs.iproute2 sysInfo pkgs.btop ];
 
   programs.waybar = {
     enable = true;
@@ -150,7 +149,6 @@ in
         clock = {
           format = "{:%H:%M  |  %A, %d %b}";
           tooltip-format = "<tt><small>{calendar}</small></tt>";
-          on-click = "gnome-calendar";
         };
 
         # Фоновые приложения в трее
