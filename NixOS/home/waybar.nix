@@ -26,7 +26,7 @@ let
     set -euo pipefail
 
     entries="🌙 Night mode\n☀ Brightness"
-    selected=$(echo -e "$entries" | wofi -L 2 --dmenu --prompt "Backlight" --location top_right --xoffset -16 --yoffset 45 --width 250 --height 150)
+    selected=$(echo -e "$entries" | wofi -L 3 --dmenu --prompt "Backlight" --location top_right --xoffset -16 --yoffset 45 --width 250 --height 150)
 
     case "$selected" in
       "🌙 Night mode")
@@ -119,7 +119,7 @@ in
         # Кнопка Wofi с позиционированием под левым краем панели
         "custom/wofi" = {
           format = ""; 
-          on-click = "wofi --show drun --location top_left --xoffset 16 --yoffset 45";
+          on-click = "wofi -L 8 --show drun --location top_left --xoffset 16 --yoffset 45";
           tooltip = false;
         };
 

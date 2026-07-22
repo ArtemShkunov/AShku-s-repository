@@ -29,6 +29,20 @@ return {
         },
       })
 
+      -- clangd не находит стандартные заголовки (iostream и т.п.) на NixOS,
+      -- потому что сам по себе не знает про include-пути, которые Nix
+      -- подставляет компилятору через cc-wrapper. Решаем через --query-driver:
+      -- clangd будет спрашивать реальный компилятор из PATH о его системных
+      -- include-путях и использовать их.
+      vim.lsp.config("clangd", {
+        cmd = {
+          "clangd",
+          "--query-driver=/nix/store/**/bin/*",
+          "--header-insertion=never",
+          "--background-index",
+        },
+      })
+
       vim.lsp.enable({
         "clangd",  -- C / C++ (пакет: clang-tools)
         "pyright", -- Python  (пакет: pyright)

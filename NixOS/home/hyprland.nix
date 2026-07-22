@@ -78,7 +78,7 @@ in
         "$mod, M, exit"
         "$mod, E, exec, thunar"
         "$mod, V, togglefloating"
-        "$mod, R, exec, wofi --show drun"
+        "$mod, R, exec, wofi -L 8 --show drun"
         "$mod, P, pseudo"
         "$mod, J, layoutmsg, togglesplit"
         "$mod, L, exec, hyprlock"

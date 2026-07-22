@@ -91,6 +91,7 @@ in
     # --- C / C++ ---
     clang-tools
     cppcheck
+    gcc
 
     # --- Python ---
     pyright
