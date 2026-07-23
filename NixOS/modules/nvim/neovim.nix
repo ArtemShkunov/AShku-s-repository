@@ -79,7 +79,7 @@ in
 
   # Весь каталог с lua-конфигом
   home.file.".config/nvim" = {
-    source = ../nvim;
+    source = ./nvim;
     recursive = true;
   };
 

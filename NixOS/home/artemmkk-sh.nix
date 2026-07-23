@@ -1,12 +1,12 @@
 { config, pkgs, inputs, ... }:
 {
   imports = [
-    ./zsh.nix
-    ./neovim.nix
-    ./hyprland.nix
-    ./waybar.nix
-    ./mako.nix
-    ./wofi.nix
+    ../modules/zsh.nix
+    ../modules/nvim/neovim.nix
+    ../modules/hyprland/hyprland.nix
+    ../modules/hyprland/waybar.nix
+    ../modules/hyprland/mako.nix
+    ../modules/hyprland/wofi.nix
   ];
 
   home.username = "artemmkk-sh";
