@@ -31,8 +31,8 @@ in
 
       env = [
         "XCURSOR_SIZE,24"
-        "XCURSOR_THEME,Adwaita"
-        "HYPRCURSOR_THEME,Adwaita"
+        "XCURSOR_THEME,rose-pine-hyprcursor"
+        "HYPRCURSOR_THEME,rose-pine-hyprcursor"
         "HYPRCURSOR_SIZE,24"
         "NIXOS_OZONE_WL,1"
         "GTK_THEME,Adwaita:dark"
@@ -330,11 +330,6 @@ in
       package = pkgs.yaru-theme;
     };
 
-    cursorTheme = {
-      name = "Adwaita";
-      package = pkgs.adwaita-icon-theme;
-      size = 24;
-    };
 
     gtk3.extraConfig = {
       gtk-application-prefer-dark-theme = 1;
@@ -345,7 +340,6 @@ in
     "org/gnome/desktop/interface" = {
       icon-theme = "Yaru";
       gtk-theme = "Adwaita-dark";
-      cursor-theme = "Adwaita";
       cursor-size = 24;
       color-scheme = "prefer-dark";
       accent-color = "orange";
@@ -357,7 +351,6 @@ in
     settings = {
       "Net/ThemeName" = "Adwaita-dark";
       "Net/IconThemeName" = "Yaru";
-      "Gtk/CursorThemeName" = "Adwaita";
       "Gtk/CursorThemeSize" = 24;
     };
   };
@@ -564,6 +557,9 @@ in
 
     libsForQt5.qt5ct
     qt6Packages.qt6ct
+
+    # Cursor
+    rose-pine-hyprcursor
   ];
 
   fonts.fontconfig.enable = true;
