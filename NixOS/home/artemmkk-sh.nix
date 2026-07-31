@@ -34,6 +34,13 @@
     discord
   ];
 
+  home.pointerCursor = {
+    gtk.enable = true;
+    x11.enable = true;
+    package = pkgs.rose-pine-cursor;
+    name = "BreezeX-RosePine-Linux"; # или BreezeX-RosePineDawn-Linux для светлой темы
+    size = 24;
+  };
 
   programs.git = {
     enable = true;
