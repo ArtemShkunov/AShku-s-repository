@@ -51,6 +51,11 @@ in
         };
       };
 
+
+      dwindle = {
+        preserve_split = true;
+      };
+
       general = {
         gaps_in = 5;
         gaps_out = 10;
