@@ -31,6 +31,7 @@
     hunspellDicts.ru_RU
     hunspellDicts.ru-ru
     inputs.zen-browser.packages."${system}".default
+    discord
   ];
 
 
