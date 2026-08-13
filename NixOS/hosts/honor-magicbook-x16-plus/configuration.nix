@@ -139,7 +139,8 @@
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
-    gnome-disk-utility # for disk formation 
+    gparted
+    ntfs3g
     kdePackages.ark # for archieves
     neovim # maybe someday i will turn it into an IDE
     git # need for flakes and many many other things
@@ -173,6 +174,9 @@
   environment.variables = {
     TERMINAL = "kitty";
   };
+
+
+  boot.supportedFilesystems = [ "ntfs" "exfat" ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
