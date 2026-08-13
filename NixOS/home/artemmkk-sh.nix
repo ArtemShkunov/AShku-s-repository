@@ -32,7 +32,6 @@
     hunspellDicts.ru-ru
     inputs.zen-browser.packages."${system}".default
     discord
-    gparted
   ];
 
   home.pointerCursor = {
