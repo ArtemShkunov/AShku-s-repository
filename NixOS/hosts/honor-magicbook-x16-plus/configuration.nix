@@ -76,6 +76,10 @@
   # без него hyprpolkitagent просто не будет к чему подключаться.
   security.polkit.enable = true;
 
+
+  # Enable gparted
+  programs.gparted.enable = true;
+
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
