@@ -32,6 +32,11 @@
     hunspellDicts.ru-ru
     inputs.zen-browser.packages."${system}".default
     discord
+    logiops
+    logitech-udev-rules
+    zapret
+    zapret2
+    zed-editor-fhs
   ];
 
   home.pointerCursor = {
