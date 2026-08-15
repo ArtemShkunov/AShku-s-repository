@@ -42,17 +42,22 @@ return {
     { "plenary-nvim", dir = plugin_path("plenary-nvim"), name = "plenary-nvim" },
   },
   keys = {
-    { "<leader>ha", function() require("harpoon"):list():add() end, desc = "Harpoon: добавить файл" },
+    { "<leader>ha", function() require("harpoon"):list():add() end, desc = "Harpoon: add file" },
     { "<leader>hh", function()
         local harpoon = require("harpoon")
         harpoon.ui:toggle_quick_menu(harpoon:list())
-      end, desc = "Harpoon: меню" },
-    { "<C-1>", function() require("harpoon"):list():select(1) end, desc = "Harpoon: файл 1" },
-    { "<C-2>", function() require("harpoon"):list():select(2) end, desc = "Harpoon: файл 2" },
-    { "<C-3>", function() require("harpoon"):list():select(3) end, desc = "Harpoon: файл 3" },
-    { "<C-4>", function() require("harpoon"):list():select(4) end, desc = "Harpoon: файл 4" },
-    { "<C-p>", function() require("harpoon"):list():prev() end, desc = "Harpoon: предыдущий" },
-    { "<C-n>", function() require("harpoon"):list():next() end, desc = "Harpoon: следующий" },
+      end, desc = "Harpoon: menu" },
+    { "<C-1>", function() require("harpoon"):list():select(1) end, desc = "Harpoon: file 1" },
+    { "<C-2>", function() require("harpoon"):list():select(2) end, desc = "Harpoon: file 2" },
+    { "<C-3>", function() require("harpoon"):list():select(3) end, desc = "Harpoon: file 3" },
+    { "<C-4>", function() require("harpoon"):list():select(4) end, desc = "Harpoon: file 4" },
+    { "<C-5>", function() require("harpoon"):list():select(5) end, desc = "Harpoon: file 5" },
+    { "<C-6>", function() require("harpoon"):list():select(6) end, desc = "Harpoon: file 6" },
+    { "<C-7>", function() require("harpoon"):list():select(7) end, desc = "Harpoon: file 7" },
+    { "<C-8>", function() require("harpoon"):list():select(8) end, desc = "Harpoon: file 8" },
+    { "<C-9>", function() require("harpoon"):list():select(9) end, desc = "Harpoon: file 9" },
+    { "<C-p>", function() require("harpoon"):list():prev() end, desc = "Harpoon: previous file" },
+    { "<C-n>", function() require("harpoon"):list():next() end, desc = "Harpoon: next file" },
   },
   config = function()
     require("harpoon"):setup()

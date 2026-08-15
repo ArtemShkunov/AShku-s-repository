@@ -36,6 +36,8 @@
     logitech-udev-rules
     zapret
     zed-editor-fhs
+    ripgrep
+    lazygit
   ];
 
   home.pointerCursor = {

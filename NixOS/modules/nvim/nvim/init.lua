@@ -35,6 +35,9 @@ vim.opt.incsearch = true
 
 vim.opt.scrolloff = 8
 
+
+require("remaps")
+
 -- Пути к плагинам, установленным через Nix (сгенерировано из neovim.nix).
 -- Экспортируем глобально, чтобы файлы в lua/plugins/*.lua могли
 -- использовать plugin_path("nvim-lspconfig") вместо "owner/repo".
