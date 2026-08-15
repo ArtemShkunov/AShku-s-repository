@@ -37,4 +37,6 @@ vim.keymap.set("n", "<leader>lj", "<cmd>lprev<CR>zz")
 -- Поиск/замена слова под курсором во всём файле
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
---Переключения по буферам из BufferLine
+
+-- Переключение проекта в tmux-sessionizer
+vim.keymap.set("n", "<C-f>", "<cmd>!tmux neww tmux-sessionizer")
