@@ -42,17 +42,17 @@ return {
     { "plenary-nvim", dir = plugin_path("plenary-nvim"), name = "plenary-nvim" },
   },
   keys = {
-    { "<leader>ha", function() require("harpoon"):list():add() end, desc = "Harpoon: добавить файл" },
+     "<leader>ha", function() require("harpoon"):list():add() end, desc = "Harpoon: add file" },
     { "<leader>hh", function()
         local harpoon = require("harpoon")
         harpoon.ui:toggle_quick_menu(harpoon:list())
       end, desc = "Harpoon: меню" },
-    { "<leader>h1", function() require("harpoon"):list():select(1) end, desc = "Harpoon: файл 1" },
-    { "<leader>h2", function() require("harpoon"):list():select(2) end, desc = "Harpoon: файл 2" },
-    { "<leader>h3", function() require("harpoon"):list():select(3) end, desc = "Harpoon: файл 3" },
-    { "<leader>h4", function() require("harpoon"):list():select(4) end, desc = "Harpoon: файл 4" },
-    { "<leader>hp", function() require("harpoon"):list():prev() end, desc = "Harpoon: предыдущий" },
-    { "<leader>hn", function() require("harpoon"):list():next() end, desc = "Harpoon: следующий" },
+    { "<C-1>", function() require("harpoon"):list():select(1) end, desc = "Harpoon: file 1" },
+    { "<C-2>", function() require("harpoon"):list():select(2) end, desc = "Harpoon: file 2" },
+    { "<C-3>", function() require("harpoon"):list():select(3) end, desc = "Harpoon: file 3" },
+    { "<C-4>", function() require("harpoon"):list():select(4) end, desc = "Harpoon: file 4" },
+    { "<C-p>", function() require("harpoon"):list():prev() end, desc = "Harpoon: previous" },
+    { "<C-n>", function() require("harpoon"):list():next() end, desc = "Harpoon: next" },
   },
   config = function()
     require("harpoon"):setup()

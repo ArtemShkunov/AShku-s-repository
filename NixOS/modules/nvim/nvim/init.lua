@@ -3,25 +3,38 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+
 local opt = vim.opt
+
 opt.number = true
 opt.relativenumber = true
+
 opt.mouse = "a"
 opt.ignorecase = true
 opt.smartcase = true
+
 opt.expandtab = true
-opt.shiftwidth = 2
-opt.tabstop = 2
+opt.shiftwidth = 4
+opt.tabstop = 4 
+opt.softtabstop = 4
 opt.smartindent = true
+
 opt.wrap = false
 opt.termguicolors = true
 opt.signcolumn = "yes"
-opt.updatetime = 250
+opt.updatetime = 50
 opt.timeoutlen = 300
+
 opt.splitright = true
 opt.splitbelow = true
 opt.clipboard = "unnamedplus"
 opt.undofile = true
+
+vim.opt.hlsearch = false
+vim.opt.incsearch = true
+
+vim.opt.scrolloff = 8
+
 -- Пути к плагинам, установленным через Nix (сгенерировано из neovim.nix).
 -- Экспортируем глобально, чтобы файлы в lua/plugins/*.lua могли
 -- использовать plugin_path("nvim-lspconfig") вместо "owner/repo".
