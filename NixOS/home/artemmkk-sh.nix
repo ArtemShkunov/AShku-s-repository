@@ -35,7 +35,6 @@
     logiops
     logitech-udev-rules
     zapret
-    zapret2
     zed-editor-fhs
   ];
 
