@@ -62,7 +62,6 @@
       set -g status-style "bg=#16141f,fg=#f5e9dc"
       set -g status-left-length 40
       set -g status-left "#[fg=#16141f,bg=#f2994a,bold] #S #[fg=#f2994a,bg=#16141f]"
-      set -g status-right "#[fg=#f7ce68] %H:%M #[fg=#f5e9dc]│ %d-%b-%Y "
       setw -g window-status-current-format "#[fg=#16141f,bg=#f7ce68,bold] #I:#W #[fg=#f7ce68,bg=#16141f]"
       setw -g window-status-format " #I:#W "
 
@@ -70,6 +69,9 @@
       set -g pane-active-border-style "fg=#f2994a"
 
       set -g message-style "bg=#f2994a,fg=#16141f"
+
+      # ---- Автосохранение сессии при отключении (prefix+d и любой detach) ----
+      set-hook -g client-detached 'run-shell -b "${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/scripts/save.sh"'
     '';
   };
 }
