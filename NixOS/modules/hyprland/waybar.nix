@@ -159,9 +159,9 @@ in
                 # Bluetooth. Значок меняется в зависимости от состояния адаптера
                 # и наличия подключённого устройства. По клику открывается bluetui. 󰂲 
                 bluetooth = {
-                    format = "󰂯";
-                    format-disabled = "󰂲";
-                    format-off = "󰂲";
+                    format = "󰂯 ";
+                    format-disabled = "󰂲 ";
+                    format-off = "󰂲 ";
                     format-connected = "󰂱 {device_alias}";
                     format-connected-battery = "󰂱 {device_alias} ({device_battery_percentage}%)";
                     tooltip-format = "{controller_alias}\t{controller_address}";

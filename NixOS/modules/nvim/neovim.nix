@@ -33,7 +33,7 @@ let
         comment-nvim = comment-nvim;
 
         nvim-treesitter = nvim-treesitter.withPlugins (p: [
-            p.c p.cpp p.python p.lua p.nix p.bash p.markdown p.vim p.query
+            p.c p.cpp p.python p.lua p.nix p.bash p.markdown p.vim p.query p.markdown_inline
         ]);
         nvim-treesitter-textobjects = nvim-treesitter-textobjects;
 
@@ -48,6 +48,8 @@ let
         nvim-dap-ui = nvim-dap-ui;
         nvim-nio = nvim-nio;
         lazygit-nvim = lazygit-nvim;
+
+        render-markdown-nvim = render-markdown-nvim;
     };
 
     # Генерируем Lua-таблицу вида:
@@ -111,6 +113,9 @@ in
         pkgs.bash-language-server
         shellcheck
         shfmt
+
+        # --- Markdown ---
+        marksman
 
         # Для копирования 
         wl-clipboard
