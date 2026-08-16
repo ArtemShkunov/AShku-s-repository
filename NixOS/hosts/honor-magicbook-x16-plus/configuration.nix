@@ -25,7 +25,7 @@
     # Enable networking
     networking.wireless.enable = false;
     networking.networkmanager.enable = true;
-    networking.networkmanager.backend = "iwd";
+    networking.networkmanager.wifi.backend = "iwd";
     networking.wireless.iwd.enable = true;
 
     # Set your time zone.
