@@ -39,4 +39,4 @@ vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><
 
 
 -- Переключение проекта в tmux-sessionizer
-vim.keymap.set("n", "<C-f>", "<cmd>!tmux neww tmux-sessionizer")
+vim.keymap.set("n", "<C-f>", "<cmd>!tmux neww tmux-sessionizer<CR>")
