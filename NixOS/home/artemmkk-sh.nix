@@ -41,6 +41,11 @@
         ripgrep
         lazygit
         tmux
+        fastfetch
+        bluetui
+        blueman
+        wiremix
+        impala
     ];
 
     home.pointerCursor = {

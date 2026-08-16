@@ -2,63 +2,65 @@
 { config, pkgs, ... }:
 
 {
-  programs.zsh = {
-    enable = true;
+    programs.zsh = {
+        enable = true;
 
-    history = {
-      size = 1000;
-      save = 2000;
-      path = "${config.home.homeDirectory}/.zsh_history";
-      ignoreDups = true;
-      ignoreSpace = true;
-      append = true;
-      share = false;
-    };
+        history = {
+            size = 1000;
+            save = 2000;
+            path = "${config.home.homeDirectory}/.zsh_history";
+            ignoreDups = true;
+            ignoreSpace = true;
+            append = true;
+            share = false;
+        };
 
-    oh-my-zsh = {
-      enable = true;
-      theme = "";
-      plugins = [
-        "git"
-        "sudo"
-      ];
-    };
+        oh-my-zsh = {
+            enable = true;
+            theme = "";
+            plugins = [
+                "git"
+                "sudo"
+            ];
+        };
 
-    plugins = [
-      {
-        name = "zsh-syntax-highlighting";
-        src = pkgs.zsh-syntax-highlighting;
-        file = "share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh";
-      }
-      {
-        name = "zsh-autosuggestions";
-        src = pkgs.zsh-autosuggestions;
-        file = "share/zsh-autosuggestions/zsh-autosuggestions.zsh";
-      }
-    ];
+        plugins = [
+            {
+                name = "zsh-syntax-highlighting";
+                src = pkgs.zsh-syntax-highlighting;
+                file = "share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh";
+            }
+            {
+                name = "zsh-autosuggestions";
+                src = pkgs.zsh-autosuggestions;
+                file = "share/zsh-autosuggestions/zsh-autosuggestions.zsh";
+            }
+        ];
 
-    setOptions = [
-      "EXTENDED_GLOB"
-      "HIST_IGNORE_DUPS"
-      "HIST_IGNORE_SPACE"
-      "APPEND_HISTORY"
-      "INC_APPEND_HISTORY"
-      "PROMPT_SUBST"
-    ];
+        setOptions = [
+            "EXTENDED_GLOB"
+            "HIST_IGNORE_DUPS"
+            "HIST_IGNORE_SPACE"
+            "APPEND_HISTORY"
+            "INC_APPEND_HISTORY"
+            "PROMPT_SUBST"
+        ];
 
-    shellAliases = {
-      ll = "ls -alF";
-      la = "ls -A";
-      l  = "ls -CF";
-      ls = "ls --color=auto";
-      grep = "grep --color=auto";
-      fgrep = "fgrep --color=auto";
-      egrep = "egrep --color=auto";
-      alert = ''notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history | tail -n1 | sed -e 's/^\\s*[0-9]\\+\\s*//;s/[;&|]\\s*alert$//')"'';
-      ramus = "/home/artemmkk-sh/.local/opt/ramus/start.sh";
-    };
+        shellAliases = {
+            ll = "ls -alF";
+            la = "ls -A";
+            l  = "ls -CF";
+            ls = "ls --color=auto";
+            grep = "grep --color=auto";
+            fgrep = "fgrep --color=auto";
+            egrep = "egrep --color=auto";
+            alert = ''notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history | tail -n1 | sed -e 's/^\\s*[0-9]\\+\\s*//;s/[;&|]\\s*alert$//')"'';
+            ramus = "/home/artemmkk-sh/.local/opt/ramus/start.sh";
+        };
 
-    initContent = ''
+        initExtra = "fastfetch";
+
+        initContent = ''
 
 # ---- Обёртка над `nix develop`, чтобы поднимался zsh, а не bash ----
 nix() {
@@ -132,10 +134,10 @@ local DEVSHELL_BADGE=""
 
           local IND_S="''${FRAME}"$'┌─'
           local IND_E="''${FRAME}"$'└─'
-          
+
           if [ -z "$GIT_CONTENT" ]; then
-	   GIT_CONTENT=""
-	  fi
+       GIT_CONTENT=""
+      fi
 
           # --- СТРОКА 1 ---
           local P="''${IND_S}"
@@ -186,7 +188,17 @@ P+="''${DEVSHELL_BADGE}"
               add-zsh-hook precmd precmd_title
               ;;
       esac
-    '';
-  };
+
+# ---- Быстрый вызов tmux-sessionizer по Ctrl+f ----
+      tmux-sessionizer-widget() {
+          zle push-input
+          BUFFER="tmux-sessionizer"
+          zle accept-line
+      }
+      zle -N tmux-sessionizer-widget
+      bindkey '^f' tmux-sessionizer-widget
+
+        '';
+    };
 
 }
