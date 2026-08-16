@@ -10,8 +10,25 @@
         escapeTime = 0;
         keyMode = "vi";
 
+        plugins = with pkgs; [
+
+            tmuxPlugins.resurrect
+            {
+                plugin = tmuxPlugins.continuum;
+                extraConfig = ''
+          set -g @continuum-restore 'on'
+          set -g @continuum-save-interval '15'
+                '';
+            }
+        ];
+
         extraConfig = ''
+# ---- Resurrect: что именно сохранять ----
+      set -g @resurrect-capture-pane-contents 'on'
+      set -g @resurrect-strategy-nvim 'session'
+
       # ---- Основные ----
+
 
       set -g renumber-windows on
       set -g focus-events on
