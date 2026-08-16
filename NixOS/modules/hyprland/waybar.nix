@@ -162,7 +162,7 @@ in
                     format-ethernet = "󰈀  {ipaddr}/{cidr}";
                     format-disconnected = "󰤭  Disconnected";
                     tooltip-format = "{ifname} via {gwaddr}";
-                    on-click = "nm-connection-editor";
+                    on-click = "kitty -e impala";
                 };
 
                 # Яркость
@@ -184,7 +184,7 @@ in
                             " " # Громко  
                         ];
                     };
-                    on-click = "pavucontrol";
+                    on-click = "kitty -e wiremix";
                 };
 
                 # Микрофон
@@ -193,7 +193,7 @@ in
                     format-source = " {volume}%";
                     format-source-muted = "  Muted";
                     on-click = "pamixer --default-source -t";
-                    on-click-right = "pavucontrol";
+                    on-click-right = "kitty -e wiremix";
                 };
 
                 # Батарея
