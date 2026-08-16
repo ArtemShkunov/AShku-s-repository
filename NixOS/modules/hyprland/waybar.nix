@@ -114,7 +114,7 @@ in
 
                 modules-left = [ "custom/wofi" "hyprland/workspaces" "custom/sysinfo" ];
                 modules-center = [ "clock" ];
-                modules-right = [ "tray" "network" "backlight" "pulseaudio" "pulseaudio#microphone" "battery" "hyprland/language" "custom/power" ];
+                modules-right = [ "tray" "bluetooth" "network" "backlight" "pulseaudio" "pulseaudio#microphone" "battery" "hyprland/language" "custom/power" ];
 
                 # Кнопка Wofi с позиционированием под левым краем панели
                 "custom/wofi" = {
@@ -156,13 +156,27 @@ in
                     spacing = 8; # Расстояние между иконками приложений в трее
                 };
 
+                # Bluetooth. Значок меняется в зависимости от состояния адаптера
+                # и наличия подключённого устройства. По клику открывается bluetui. 󰂲 
+                bluetooth = {
+                    format = "󰂯";
+                    format-disabled = "󰂲";
+                    format-off = "󰂲";
+                    format-connected = "󰂱 {device_alias}";
+                    format-connected-battery = "󰂱 {device_alias} ({device_battery_percentage}%)";
+                    tooltip-format = "{controller_alias}\t{controller_address}";
+                    tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{device_enumerate}";
+                    tooltip-format-enumerate-connected = "{device_alias}\t{device_address}";
+                    on-click = "kitty --title bluetui -e bluetui";
+                };
+
                 # Сеть. По клику открывается менеджер подключений NM
                 network = {
                     format-wifi = "  {essid} ({signalStrength}%)";
                     format-ethernet = "󰈀  {ipaddr}/{cidr}";
                     format-disconnected = "󰤭  Disconnected";
                     tooltip-format = "{ifname} via {gwaddr}";
-                    on-click = "kitty -e impala";
+                    on-click = "nm-connection-editor";
                 };
 
                 # Яркость
@@ -248,6 +262,7 @@ in
       /* Увеличенные внутренние отступы для каждого элемента управления */
       #custom-wofi,
       #clock,
+      #bluetooth,
       #network,
       #backlight,
       #pulseaudio,
