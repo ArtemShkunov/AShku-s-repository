@@ -42,9 +42,6 @@ vim.o.breakindent = true
 vim.o.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
-vim.o.cursorline = true
-
-
 require("remaps")
 
 -- Пути к плагинам, установленным через Nix (сгенерировано из neovim.nix).
