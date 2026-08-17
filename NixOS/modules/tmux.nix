@@ -11,25 +11,17 @@
         keyMode = "vi";
 
         plugins = with pkgs; [
-            tmuxPlugins.resurrect
-            {
-                plugin = tmuxPlugins.continuum;
-                extraConfig = ''
-          set -g @continuum-restore 'on'
-          set -g @continuum-save-interval '5'
-                '';
-            }
-            {
+{
                 plugin = tmuxPlugins.rose-pine;
                 extraConfig = ''
 set -g @rose_pine_variant 'moon' # Options are 'main', 'moon' or 'dawn'
 set -g @rose_pine_host 'on' # Enables hostname in the status bar
-# set -g @rose_pine_date_time 'Zaglooshka' # It accepts the date UNIX command format (man date for info)
+# set -g @rose_pine_date_time 'a' # It accepts the date UNIX command format (man date for info)
 set -g @rose_pine_user 'on' # Turn on the username component in the statusbar
 set -g @rose_pine_directory 'on' # Turn on the current folder component in the status bar
 
-set -g @rose_pine_bar_bg_disable 'on' 
-set -g @rose_pine_bar_bg_disabled_color_option 'xterm-256color'
+# set -g @rose_pine_bar_bg_disable 'on' 
+# set -g @rose_pine_bar_bg_disabled_color_option 'xterm-256color'
 
 set -g @rose_pine_window_tabs_enabled 'on'
 set -g @rose_pine_show_current_program 'on' # Forces tmux to show the current running program as window name
@@ -51,7 +43,16 @@ set -g @rose_pine_date_time_icon '󰃰' # Changes the default icon to the right 
 
                 '';
             }
-        ];
+
+            tmuxPlugins.resurrect
+            {
+                plugin = tmuxPlugins.continuum;
+                extraConfig = ''
+          set -g @continuum-restore 'on'
+          set -g @continuum-save-interval '5'
+                '';
+            }
+                    ];
 
         extraConfig = ''
       # ---- Resurrect: что именно сохранять ----
