@@ -80,4 +80,8 @@
     };
 
     home.stateVersion = "26.05";
+
+    home.sessionVariables = {
+        LC_TIME = "en_US.UTF-8";
+    };
 }
