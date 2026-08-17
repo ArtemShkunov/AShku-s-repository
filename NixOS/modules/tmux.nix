@@ -62,12 +62,12 @@
      
       set -g status-style "bg=#16141f,fg=#f5e9dc"
       set -g status-left-length 40
-      set -g status-left "#[fg=#16141f,bg=#f2994a,bold]    #S #[fg=#f2994a,bg=#16141f]"
-      setw -g window-status-current-format "#[fg=#16141f,bg=#f7ce68,bold] #I -> #W #[fg=#f7ce68,bg=#16141f]"
-      setw -g window-status-format " #I -> #W "
+      set -g status-left "#[fg=#16141f,bg=#f2994a,bold]  #S #[fg=#f2994a,bg=#16141f]"
+      setw -g window-status-current-format "#[fg=#16141f,bg=#f7ce68,bold] #I->#W #[fg=#f7ce68,bg=#16141f]"
+      setw -g window-status-format " #I->#W "
 
       set -g status-right-length 100
-      set -g status-right "#[fg=#f5e9dc,bg=#16141f]   #{b:pane_current_path} #[fg=#6b6b80,bg=#16141f]| #[fg=#f5e9dc,bg=#16141f]  %d.%m %H:%M #[fg=#6b6b80,bg=#16141f]| #[fg=#f5e9dc,bg=#16141f]  #h #[fg=#6b6b80,bg=#16141f]| #[fg=#f5e9dc,bg=#16141f]  #(whoami) "
+      set -g status-right "#[fg=#f5e9dc,bg=#16141f]   #{b:pane_current_path} #[fg=#6b6b80,bg=#16141f]| #[fg=#f5e9dc,bg=#16141f] %d.%m %H:%M #[fg=#6b6b80,bg=#16141f]| #[fg=#f5e9dc,bg=#16141f] #h #[fg=#6b6b80,bg=#16141f]| #[fg=#f5e9dc,bg=#16141f] #(whoami) "
 
       set -g pane-border-style "fg=#16141f"
       set -g pane-active-border-style "fg=#f2994a"
