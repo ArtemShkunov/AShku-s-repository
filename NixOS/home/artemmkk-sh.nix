@@ -46,6 +46,7 @@
         blueman
         wiremix
         impala
+        opencode
     ];
 
     home.pointerCursor = {

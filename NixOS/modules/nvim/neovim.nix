@@ -21,6 +21,8 @@ let
         harpoon2=harpoon2;
         undotree=undotree;
 
+        vim-obsession = vim-obsession;
+
         gitsigns-nvim = gitsigns-nvim;
 
         lualine-nvim = lualine-nvim;

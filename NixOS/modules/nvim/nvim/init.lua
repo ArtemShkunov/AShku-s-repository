@@ -108,3 +108,18 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
     callback = function() vim.hl.on_yank() end,
   })
 
+-- Автостарт :Obsession — пишет Session.vim в cwd и держит его актуальным.
+-- Без этого tmux-resurrect (@resurrect-strategy-nvim 'session') не сможет
+-- восстановить nvim: ему просто нечего будет открывать через `nvim -S`.
+vim.api.nvim_create_autocmd('VimEnter', {
+  desc = 'Auto-start Obsession session tracking for tmux-resurrect',
+  group = vim.api.nvim_create_augroup('obsession-autostart', { clear = true }),
+  callback = function()
+    -- не трогаем случаи вроде `nvim -` (stdin) или сложных многофайловых
+    -- вызовов, где явное mksession может быть нежелательно
+    if vim.fn.argc() <= 1 and vim.fn.exists(':Obsession') == 2 then
+      vim.cmd('Obsession')
+    end
+  end,
+})
+
