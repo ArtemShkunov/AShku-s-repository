@@ -47,6 +47,8 @@
         wiremix
         impala
         opencode
+        localsend
+        jocalsend
     ];
 
     home.pointerCursor = {
