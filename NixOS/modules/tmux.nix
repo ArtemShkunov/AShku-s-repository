@@ -34,7 +34,7 @@
       set -ga terminal-overrides ",xterm-256color:Tc"
 
       set -s extended-keys on
-      set -as terminal-features 'xterm-kitty:extkeys'
+      set -as terminal-features 'xterm-kitty*:extkeys'
 
       # ---- Разбиение окон ----
       unbind '"'
