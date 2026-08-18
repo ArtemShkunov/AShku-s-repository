@@ -142,6 +142,18 @@ in
             color5  = "#b47aa0"; color13 = "#d1a3c4"; # magenta
             color6  = "#6ea8a0"; color14 = "#9fcac2"; # cyan
             color7  = "#f5e9dc"; color15 = "#ffffff"; # white
+
+            map = [
+                "ctrl+1 send_text all \\x1b[49;5u"
+                "ctrl+2 send_text all \\x1b[50;5u"
+                "ctrl+3 send_text all \\x1b[51;5u"
+                "ctrl+4 send_text all \\x1b[52;5u"
+                "ctrl+5 send_text all \\x1b[53;5u"
+                "ctrl+6 send_text all \\x1b[54;5u"
+                "ctrl+7 send_text all \\x1b[55;5u"
+                "ctrl+8 send_text all \\x1b[56;5u"
+                "ctrl+9 send_text all \\x1b[57;5u"
+            ];
         };
         font = {
             name = "JetBrainsMono Nerd Font";
