@@ -58,7 +58,7 @@
             ramus = "/home/artemmkk-sh/.local/opt/ramus/start.sh";
         };
 
-        initExtra = "fastfetch";
+        # initExtra = "fastfetch";
 
         initContent = ''
 
