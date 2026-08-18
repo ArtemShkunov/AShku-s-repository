@@ -81,15 +81,6 @@
       set-hook -g client-detached 'run-shell -b "${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/scripts/save.sh"'
 
 
-bind-key -T root C-1 send-keys Escape "[49;5u"
-bind-key -T root C-2 send-keys Escape "[50;5u"
-bind-key -T root C-3 send-keys Escape "[51;5u"
-bind-key -T root C-4 send-keys Escape "[52;5u"
-bind-key -T root C-5 send-keys Escape "[53;5u"
-bind-key -T root C-6 send-keys Escape "[54;5u"
-bind-key -T root C-7 send-keys Escape "[55;5u"
-bind-key -T root C-8 send-keys Escape "[56;5u"
-bind-key -T root C-9 send-keys Escape "[57;5u"
 
         '';
     };
