@@ -7,8 +7,8 @@
         ../modules/hyprland/waybar.nix
         ../modules/hyprland/mako.nix
         ../modules/hyprland/wofi.nix
-        # ../modules/tmux.nix
-        # ../modules/sessionizer.nix
+        ../modules/tmux.nix
+        ../modules/sessionizer.nix
         # ../modules/zellij.nix
         # ../modules/zellij-sessionizer.nix
         # ../zellij.nix
