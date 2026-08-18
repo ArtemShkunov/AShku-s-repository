@@ -11,6 +11,8 @@
         # ../modules/sessionizer.nix
         # ../modules/zellij.nix
         # ../modules/zellij-sessionizer.nix
+        ../zellij.nix
+        ../zellij-sessionizer.nix
     ];
 
     home.username = "artemmkk-sh";
