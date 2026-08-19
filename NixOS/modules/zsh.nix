@@ -103,7 +103,8 @@ let
                         powerline_symbol = arrow;
                         background = colorGit;
                         foreground = fgCream;
-                        fallback_template = " ";
+                        display-mode = "always";
+                        home-enabled = true;
 
                         template = "{{ if .RepoName }}${gitRepo}{{ .HEAD }}{{ if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Staging.Changed }} ${gitStaged}{{ if gt .Staging.Added 0 }}${gitAdded}{{ .Staging.Added }} {{ end }}{{ if gt .Staging.Modified 0 }}${gitModified}{{ .Staging.Modified }} {{ end }}{{ if gt .Staging.Deleted 0 }}${gitDeleted}{{ .Staging.Deleted }} {{ end }}{{ if gt .Staging.Unmerged 0 }}${gitConflict}{{ .Staging.Unmerged }} {{ end }}{{ end }}{{ if .Working.Changed }}{{ if gt .Working.Untracked 0 }}${gitUntracked}{{ .Working.Untracked }} {{ end }}{{ if gt .Working.Added 0 }}${gitAdded}{{ .Working.Added }} {{ end }}{{ if gt .Working.Modified 0 }}${gitModified}{{ .Working.Modified }} {{ end }}{{ if gt .Working.Deleted 0 }}${gitDeleted}{{ .Working.Deleted }} {{ end }}{{ if gt .Working.Unmerged 0 }}${gitConflict}{{ .Working.Unmerged }} {{ end }}{{ end }}{{ end }}";
 
@@ -130,11 +131,11 @@ let
                         template = " ${iconC}{{ .Full }} ";
 
 
-                        fallback_template = " ";
 
                         options = {
                             name = "c";
-                            display_mode = "files";
+                            display-mode = "always";
+                            home-enabled = true;
 
                             extensions = [
                                 "*.c"
@@ -241,8 +242,10 @@ let
                         background = colorLang;
                         foreground = fgCream;
                         template = " ${iconRust}{{ .Full }} ";
-                        options = { display_mode = "files"; };
-                        fallback_template = " ";
+                        options = {
+                            display-mode = "always";
+                            home-enabled = true;
+                        };
                     }
                     # DevShell-бейдж — как и раньше, из $IN_NIX_SHELL
                     {
