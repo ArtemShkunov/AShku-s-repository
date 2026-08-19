@@ -92,6 +92,19 @@
     # Enable CUPS to print documents.
     services.printing.enable = true;
 
+    # Optional: Enable network printer discovery
+    services.avahi = {
+        enable = true;
+        nssmdns4 = true;
+        openFirewall = true;
+    };
+
+    services.printing.drivers = [
+        pkgs.gutenprint
+        pkgs.brlaser # Example for Brother printers
+        pkgs.hplipWithPlugin # Example for HP printers (requires unfree enabled)
+    ];
+
     # Enable sound with pipewire.
     services.pulseaudio.enable = false;
     security.rtkit.enable = true;
@@ -152,6 +165,8 @@
         # Пакеты из xfce
         mousepad
         ristretto
+
+        system-config-printer
 
         # polkit_gnome
     ];
@@ -222,6 +237,8 @@
             };
         };
     };
+
+
 
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions
