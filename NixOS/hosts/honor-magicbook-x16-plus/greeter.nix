@@ -38,9 +38,9 @@
   # (туда автоматически попадает hyprland.desktop благодаря
   # programs.hyprland.enable = true в configuration.nix).
   systemd.services.greetd.environment.XDG_DATA_DIRS =
-    "${config.services.xserver.displayManager.sessionData.desktops}/share:/run/current-system/sw/share:/usr/share";
+    "${config.services.displayManager.sessionData.desktops}/share:/run/current-system/sw/share:/usr/share";
 
-  programs.regreet = {
+  services.displayManager.regreet = {
     enable = true;
 
     # Та же связка темы, что и на десктопе в hyprland.nix.
