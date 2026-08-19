@@ -28,6 +28,7 @@ let
 
     # Иконки языков
     iconC        = " ";
+    iconCpp      = " ";
     iconCMake    = " ";
     iconPython   = " ";
     iconNode     = " ";
@@ -35,15 +36,16 @@ let
     iconRust     = " ";
 
     # Классические иконки Git статусов
-    gitUntracked = " "; # Untracked
-    gitModified  = " "; # Modified
-    gitAdded     = " "; # Added
-    gitDeleted   = " "; # Deleted
-    gitStaged    = " "; # Staged
-    gitConflict  = " "; # Conflict
-    gitAhead     = "⇡ "; # Ahead
-    gitBehind    = "⇣ "; # Behind
-    gitBranch    = "󰊢 "; # Branch
+    gitUntracked = "  "; # Untracked
+    gitModified  = "  "; # Modified
+    gitAdded     = "  "; # Added
+    gitDeleted   = "  "; # Deleted
+    gitStaged    = "  "; # Staged
+    gitConflict  = "  "; # Conflict
+    gitAhead     = "  "; # Ahead
+    gitBehind    = "  "; # Behind
+    gitBranch    = " "; # Branch󰊢
+    gitRepo      = "󰊢  ";
 
 
     ompSettings = {
@@ -75,7 +77,7 @@ let
                         powerline_symbol = arrow;
                         background = colorUser;
                         foreground = fgCream;
-                        template = " ${iconUser} {{ .UserName }} ";
+                        template = "${iconUser} {{ .UserName }} ";
                     }
 
                     # Путь + иконка (аналог %~ — полный путь с заменой $HOME на ~)
@@ -103,7 +105,7 @@ let
                         foreground = fgCream;
                         fallback_template = " ";
 
-                        template = "{{ if .RepoName }}${gitBranch}{{ .HEAD }}{{ if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Staging.Changed }} ${gitStaged}{{ if gt .Staging.Added 0 }}${gitAdded}{{ .Staging.Added }} {{ end }}{{ if gt .Staging.Modified 0 }}${gitModified}{{ .Staging.Modified }} {{ end }}{{ if gt .Staging.Deleted 0 }}${gitDeleted}{{ .Staging.Deleted }} {{ end }}{{ if gt .Staging.Unmerged 0 }}${gitConflict}{{ .Staging.Unmerged }} {{ end }}{{ end }}{{ if .Working.Changed }}{{ if gt .Working.Untracked 0 }}${gitUntracked}{{ .Working.Untracked }} {{ end }}{{ if gt .Working.Added 0 }}${gitAdded}{{ .Working.Added }} {{ end }}{{ if gt .Working.Modified 0 }}${gitModified}{{ .Working.Modified }} {{ end }}{{ if gt .Working.Deleted 0 }}${gitDeleted}{{ .Working.Deleted }} {{ end }}{{ if gt .Working.Unmerged 0 }}${gitConflict}{{ .Working.Unmerged }} {{ end }}{{ end }}{{ end }}";
+                        template = "{{ if .RepoName }}${gitRepo}{{ .HEAD }}{{ if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Staging.Changed }} ${gitStaged}{{ if gt .Staging.Added 0 }}${gitAdded}{{ .Staging.Added }} {{ end }}{{ if gt .Staging.Modified 0 }}${gitModified}{{ .Staging.Modified }} {{ end }}{{ if gt .Staging.Deleted 0 }}${gitDeleted}{{ .Staging.Deleted }} {{ end }}{{ if gt .Staging.Unmerged 0 }}${gitConflict}{{ .Staging.Unmerged }} {{ end }}{{ end }}{{ if .Working.Changed }}{{ if gt .Working.Untracked 0 }}${gitUntracked}{{ .Working.Untracked }} {{ end }}{{ if gt .Working.Added 0 }}${gitAdded}{{ .Working.Added }} {{ end }}{{ if gt .Working.Modified 0 }}${gitModified}{{ .Working.Modified }} {{ end }}{{ if gt .Working.Deleted 0 }}${gitDeleted}{{ .Working.Deleted }} {{ end }}{{ if gt .Working.Unmerged 0 }}${gitConflict}{{ .Working.Unmerged }} {{ end }}{{ end }}{{ end }}";
 
                         options = {
                             fetch_status = true;
@@ -118,15 +120,80 @@ let
                     # соответствующих файлов (display_mode = "files").
                     # Когда язык не активен, fallback_template оставляет
                     # пустую цветную плашку вместо исчезновения сегмента.
+                    # C
                     {
-                        type = "c";
+                        type = "language";
                         style = "powerline";
                         powerline_symbol = arrow;
                         background = colorLang;
                         foreground = fgCream;
                         template = " ${iconC}{{ .Full }} ";
-                        fallback_template = " ";
-                        options = { display_mode = "files"; };
+
+                        options = {
+                            name = "c";
+                            display_mode = "files";
+
+                            extensions = [
+                                "*.c"
+                                "*.h"
+                            ];
+
+                            tools = [
+                                {
+                                    name = "gcc";
+                                    executable = "gcc";
+                                    args = [ "--version" ];
+                                    regex = "gcc(?: \\([^)]*\\))? (?P<version>\\d+\\.\\d+(?:\\.\\d+)?)";
+                                }
+
+                                {
+                                    name = "clang";
+                                    executable = "clang";
+                                    args = [ "--version" ];
+                                    regex = "clang version (?P<version>\\d+\\.\\d+(?:\\.\\d+)?)";
+                                }
+                            ];
+                        };
+                    }
+
+                    # C++
+                    {
+                        type = "language";
+                        style = "powerline";
+                        powerline_symbol = arrow;
+                        background = colorLang;
+                        foreground = fgCream;
+                        template = " ${iconCpp}{{ .Full }} ";
+
+                        options = {
+                            name = "cpp";
+                            display_mode = "files";
+
+                            extensions = [
+                                "*.cpp"
+                                "*.cc"
+                                "*.cxx"
+                                "*.hpp"
+                                "*.hh"
+                                "*.hxx"
+                            ];
+
+                            tools = [
+                                {
+                                    name = "g++";
+                                    executable = "g++";
+                                    args = [ "--version" ];
+                                    regex = "g\\+\\+ \\([^)]*\\) (?P<version>\\d+\\.\\d+(?:\\.\\d+)?)";
+                                }
+
+                                {
+                                    name = "clang++";
+                                    executable = "clang++";
+                                    args = [ "--version" ];
+                                    regex = "clang version (?P<version>\\d+\\.\\d+(?:\\.\\d+)?)";
+                                }
+                            ];
+                        };
                     }
                     # CMake
                     {
@@ -210,7 +277,7 @@ let
                     {
                         type = "text";
                         style = "plain";
-                        template = "{{ if gt .Code 0 }}<${colorError}>└─</>{{ else }}<${colorSuccess}>└─</>{{ end }}❯ ";
+                        template = "{{ if gt .Code 0 }}<${colorError}>└─❯</>{{ else }}<${colorSuccess}>└─❯</>{{ end }}";
                     }
                 ];
             }
