@@ -5,6 +5,7 @@
     ripgrep
     lazygit
     opencode
+        opencode-desktop
   ];
 
   programs.direnv = {
