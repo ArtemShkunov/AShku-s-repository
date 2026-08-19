@@ -53,8 +53,9 @@
         opencode
         localsend
         jocalsend
-        zellij
+        oh-my-posh
     ];
+
 
     home.pointerCursor = {
         gtk.enable = true;

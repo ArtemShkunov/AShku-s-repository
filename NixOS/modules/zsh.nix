@@ -1,65 +1,263 @@
 # zsh.nix — модуль home-manager
 { config, pkgs, ... }:
 
+let
+  # ---- Палитра Sunset Pines ----
+  # "Sunset"-часть (как и раньше) — user / path / git / языки
+  colorUser = "#852E19";
+  colorPath = "#AA1E14";
+  colorGit  = "#D2320F";
+  colorLang = "#DB500B"; # бывшая секция времени, теперь — языки/версии
+
+  # "Pines"-часть — новые правые секции: успех/shell зелёный (pine),
+  # предупреждение о долгой команде — тёплый тёмно-красный
+  colorSuccess  = "#6FAE7B";
+  colorError    = "#C0392B";
+  colorDuration = "#B2472E";
+  colorShell    = "#6FAE7B";
+
+  fgCream = "#FFF6EE"; # единый тёплый светлый текст на всех цветных секциях
+
+  # ---- Иконки (Nerd Font) ----
+  iconUser   = ""; # nf-fa-user
+  iconFolder = ""; # nf-fa-folder-open
+  arrow      = ""; # powerline-стрелка (nf-pl-right_hard_divider)
+
+  ompSettings = {
+    "$schema" = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json";
+    version = 3;
+    final_space = true;
+
+    # Заменяет старый precmd_title/case "$TERM" — заголовок окна терминала
+    console_title_template = "{{ .UserName }}@{{ .HostName }}: {{ .Folder }}";
+
+    blocks = [
+      # ================= СТРОКА 1 =================
+      {
+        type = "prompt";
+        alignment = "left";
+        segments = [
+          # Открывающий угол, окрашен по коду возврата прошлой команды
+          {
+            type = "text";
+            style = "plain";
+            template = "{{ if gt .Code 0 }}<${colorError}>┌─</>{{ else }}<${colorSuccess}>┌─</>{{ end }}";
+          }
+
+          # Пользователь + иконка
+          {
+            type = "session";
+            style = "powerline";
+            powerline_symbol = arrow;
+            background = colorUser;
+            foreground = fgCream;
+            template = " ${iconUser} {{ .UserName }} ";
+          }
+
+          # Путь + иконка (аналог %~ — полный путь с заменой $HOME на ~)
+          {
+            type = "path";
+            style = "powerline";
+            powerline_symbol = arrow;
+            background = colorPath;
+            foreground = fgCream;
+            template = " ${iconFolder} {{ .Path }} ";
+            options = {
+              style = "full";
+              home_icon = "~";
+            };
+          }
+
+          # Git — то же самое, что и раньше делала __git_prompt_info,
+          # но статусами занимается сам oh-my-posh (fetch_status)
+          {
+            type = "git";
+            style = "powerline";
+            powerline_symbol = arrow;
+            background = colorGit;
+            foreground = fgCream;
+            template = " {{ .HEAD }}{{ if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} {{ .Working.String }}{{ end }}{{ if .Staging.Changed }} {{ .Staging.String }}{{ end }} ";
+            options = {
+              fetch_status = true;
+              branch_icon = "󰊢 ";
+              branch_ahead_icon = " ";
+              branch_behind_icon = " ";
+            };
+          }
+
+          # ---- Секция языков/версий вместо времени ----
+          # Каждый сегмент показывается сам по себе, только если в
+          # текущей директории есть соответствующие файлы
+          # (display_mode = "files" — штатное поведение oh-my-posh).
+          # Иконка и версия берутся из встроенного шаблона сегмента —
+          # template нарочно не переопределён.
+          {
+            type = "cmake";
+            style = "powerline";
+            powerline_symbol = arrow;
+            background = colorLang;
+            foreground = fgCream;
+            options = { display_mode = "files"; };
+          }
+          {
+            type = "python";
+            style = "powerline";
+            powerline_symbol = arrow;
+            background = colorLang;
+            foreground = fgCream;
+            options = { display_mode = "files"; };
+          }
+          {
+            type = "node";
+            style = "powerline";
+            powerline_symbol = arrow;
+            background = colorLang;
+            foreground = fgCream;
+            options = { display_mode = "files"; };
+          }
+          {
+            type = "go";
+            style = "powerline";
+            powerline_symbol = arrow;
+            background = colorLang;
+            foreground = fgCream;
+            options = { display_mode = "files"; };
+          }
+          {
+            type = "rust";
+            style = "powerline";
+            powerline_symbol = arrow;
+            background = colorLang;
+            foreground = fgCream;
+            options = { display_mode = "files"; };
+          }
+
+          # DevShell-бейдж — как и раньше, из $IN_NIX_SHELL
+          {
+            type = "text";
+            style = "plain";
+            foreground = "magenta";
+            template = "{{ if .Env.IN_NIX_SHELL }} #devshell{{ end }}";
+          }
+
+          # Код ошибки — показывается сам по себе только при exit != 0
+          {
+            type = "status";
+            style = "plain";
+            foreground = colorError;
+            template = " ✗ {{ .Code }}";
+          }
+        ];
+      }
+
+      # ================= СТРОКА 2 =================
+      {
+        type = "prompt";
+        alignment = "left";
+        newline = true;
+        segments = [
+          {
+            type = "text";
+            style = "plain";
+            template = "{{ if gt .Code 0 }}<${colorError}>└─</>{{ else }}<${colorSuccess}>└─</>{{ end }}❯ ";
+          }
+        ];
+      }
+
+      # ============ ПРАВАЯ ЧАСТЬ (та же строка, что и приглашение) ============
+      {
+        type = "rprompt";
+        segments = [
+          # Время выполнения прошлой команды — виден только если > 5с
+          {
+            type = "executiontime";
+            style = "plain";
+            foreground = colorDuration;
+            template = "  {{ .FormattedMs }} ";
+            options = { threshold = 5000; };
+          }
+          # Текущий shell
+          {
+            type = "shell";
+            style = "plain";
+            foreground = colorShell;
+            template = "  {{ .Name }} ";
+          }
+        ];
+      }
+    ];
+
+    # ---- Transient prompt: после Enter строка сворачивается в "❯ " ----
+    transient_prompt = {
+      background = "transparent";
+      template = "{{ if gt .Code 0 }}<${colorError}>❯</>{{ else }}<${colorSuccess}>❯</>{{ end }} ";
+    };
+  };
+in
 {
-    programs.zsh = {
-        enable = true;
+  programs.oh-my-posh = {
+    enable = true;
+    enableZshIntegration = true;
+    settings = ompSettings;
+  };
 
-        history = {
-            size = 1000;
-            save = 2000;
-            path = "${config.home.homeDirectory}/.zsh_history";
-            ignoreDups = true;
-            ignoreSpace = true;
-            append = true;
-            share = false;
-        };
+  programs.zsh = {
+    enable = true;
 
-        oh-my-zsh = {
-            enable = true;
-            theme = "";
-            plugins = [
-                "git"
-                "sudo"
-            ];
-        };
+    history = {
+      size = 1000;
+      save = 2000;
+      path = "${config.home.homeDirectory}/.zsh_history";
+      ignoreDups = true;
+      ignoreSpace = true;
+      append = true;
+      share = false;
+    };
 
-        plugins = [
-            {
-                name = "zsh-syntax-highlighting";
-                src = pkgs.zsh-syntax-highlighting;
-                file = "share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh";
-            }
-            {
-                name = "zsh-autosuggestions";
-                src = pkgs.zsh-autosuggestions;
-                file = "share/zsh-autosuggestions/zsh-autosuggestions.zsh";
-            }
-        ];
+    oh-my-zsh = {
+      enable = true;
+      theme = ""; # промпт рисует oh-my-posh, не oh-my-zsh
+      plugins = [
+        "git"
+        "sudo"
+      ];
+    };
 
-        setOptions = [
-            "EXTENDED_GLOB"
-            "HIST_IGNORE_DUPS"
-            "HIST_IGNORE_SPACE"
-            "APPEND_HISTORY"
-            "INC_APPEND_HISTORY"
-            "PROMPT_SUBST"
-        ];
+    plugins = [
+      {
+        name = "zsh-syntax-highlighting";
+        src = pkgs.zsh-syntax-highlighting;
+        file = "share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh";
+      }
+      {
+        name = "zsh-autosuggestions";
+        src = pkgs.zsh-autosuggestions;
+        file = "share/zsh-autosuggestions/zsh-autosuggestions.zsh";
+      }
+    ];
 
-        shellAliases = {
-            ll = "ls -alF";
-            la = "ls -A";
-            l  = "ls -CF";
-            ls = "ls --color=auto";
-            grep = "grep --color=auto";
-            fgrep = "fgrep --color=auto";
-            egrep = "egrep --color=auto";
-            alert = ''notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history | tail -n1 | sed -e 's/^\\s*[0-9]\\+\\s*//;s/[;&|]\\s*alert$//')"'';
-            ramus = "/home/artemmkk-sh/.local/opt/ramus/start.sh";
-        };
+    setOptions = [
+      "EXTENDED_GLOB"
+      "HIST_IGNORE_DUPS"
+      "HIST_IGNORE_SPACE"
+      "APPEND_HISTORY"
+      "INC_APPEND_HISTORY"
+      "PROMPT_SUBST"
+    ];
+
+    shellAliases = {
+      ll = "ls -alF";
+      la = "ls -A";
+      l  = "ls -CF";
+      ls = "ls --color=auto";
+      grep = "grep --color=auto";
+      fgrep = "fgrep --color=auto";
+      egrep = "egrep --color=auto";
+      alert = ''notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history | tail -n1 | sed -e 's/^\\s*[0-9]\\+\\s*//;s/[;&|]\\s*alert$//')"'';
+    };
 
 
-        initContent = ''
+    initContent = ''
 
 # ---- Обёртка над `nix develop`, чтобы поднимался zsh, а не bash ----
 nix() {
@@ -69,124 +267,6 @@ nix() {
         command nix "$@"
     fi
 }
-
-
-      # ---- Логика Git: получение ветки со значком, статуса или хеша ----
-      __git_prompt_info() {
-          if git rev-parse --git-dir > /dev/null 2>&1; then
-              local branch
-              branch=$(git branch --show-current 2>/dev/null)
-              [ -z "$branch" ] && branch=$(git rev-parse --short HEAD 2>/dev/null)
-
-              local status_info=""
-              local git_status
-              git_status=$(git status --porcelain 2>/dev/null)
-
-              [[ "$git_status" =~ ^([MADRC].|.[MADRC]) ]] && status_info+=" "
-              [[ "$git_status" =~ ^( .[MTADRC]) ]] && status_info+=" "
-              [[ "$git_status" =~ ^( .[D]) ]] && status_info+=" "
-              [[ "$git_status" =~ (UU|AA|DD|AU|UA|UD|DU) ]] && status_info+=" "
-              [[ "$git_status" =~ '\?\?' ]] && status_info+=" "
-
-              local upstream
-              upstream=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)
-              if [ -n "$upstream" ]; then
-                  local counts ahead behind
-                  counts=$(git rev-list --left-right --count HEAD...$upstream 2>/dev/null)
-                  ahead=$(echo $counts | awk '{print $1}')
-                  behind=$(echo $counts | awk '{print $2}')
-
-                  if [[ -n "$ahead" && "$ahead" -gt 0 ]]; then status_info+=" "; fi
-                  if [[ -n "$behind" && "$behind" -gt 0 ]]; then status_info+=" "; fi
-              fi
-
-              echo " 󰊢  ''${branch}''${status_info} "
-          fi
-      }
-
-      # ---- Основная функция формирования приглашения ----
-      set_custom_prompt() {
-          local EXIT=$?
-
-          # Цвета секций (RGB)
-          local COLOR_USER="133;46;25"
-          local COLOR_PATH="170;30;20"
-          local COLOR_GIT="210;50;15"
-          local COLOR_TIME="219;80;11"
-
-local DEVSHELL_BADGE=""
-    if [ -n "$IN_NIX_SHELL" ]; then
-        DEVSHELL_BADGE=$' %{\e[1;35m%}#devshell%{\e[0m%}'
-    fi
-
-          local FRAME ERR
-          if [ "$EXIT" -eq 0 ]; then
-              FRAME=$'%{\e[1;32m%}'
-              ERR=""
-          else
-              FRAME=$'%{\e[1;31m%}'
-              ERR=$' %{\e[38;5;52m%}✗ '"$EXIT"$'%{\e[0m%}'
-          fi
-
-          local GIT_CONTENT
-          GIT_CONTENT=$(__git_prompt_info)
-
-          local IND_S="''${FRAME}"$'┌─'
-          local IND_E="''${FRAME}"$'└─'
-
-          if [ -z "$GIT_CONTENT" ]; then
-       GIT_CONTENT=""
-      fi
-
-          # --- СТРОКА 1 ---
-          local P="''${IND_S}"
-
-          # Секция 1: Пользователь (Начало с полукруга)
-          P+=$'%{\e[38;2;'"''${COLOR_USER}"$'m%}'
-          P+=$'%{\e[1;97;48;2;'"''${COLOR_USER}"$'m%}'"''${USER}"$' '
-
-          # Переход: Секция 1 -> Секция 2 (Путь)
-          P+=$'%{\e[38;2;'"''${COLOR_USER}"$';48;2;'"''${COLOR_PATH}"$'m%}'
-          P+=$'%{\e[1;97;48;2;'"''${COLOR_PATH}"$'m%} %~ '
-
-
-          P+=$'%{\e[38;2;'"''${COLOR_PATH}"$';48;2;'"''${COLOR_GIT}"$'m%}'
-          P+=$'%{\e[1;97;48;2;'"''${COLOR_GIT}"$'m%}'"''${GIT_CONTENT}"
-
-          # Переход: Секция 3 -> Секция 4 (Время)
-          P+=$'%{\e[38;2;'"''${COLOR_GIT}"$';48;2;'"''${COLOR_TIME}"$'m%}'
-
-          # Секция 4: Время
-          P+=$'%{\e[1;97;48;2;'"''${COLOR_TIME}"$'m%} %T '
-
-          # Финальный треугольник: уходит в цвет фона (сброс цвета)
-          P+=$'%{\e[0;38;2;'"''${COLOR_TIME}"$'m%}'$'%{\e[0m%}'
-
-# DevShell Badge
-P+="''${DEVSHELL_BADGE}"
-
-
-          # Ошибки и перенос
-          P+="''${ERR}"$'\n'
-
-          # --- СТРОКА 2 ---
-          # Тонкая стрелка на конце рамки под цвет статуса выполнения
-          P+="''${IND_E}❯ "
-
-          PROMPT="$P"
-      }
-
-      autoload -Uz add-zsh-hook
-      add-zsh-hook precmd set_custom_prompt
-
-      case "$TERM" in
-          xterm*|rxvt*)
-              precmd_title() {
-                  print -Pn "\e]0;%n@%m: %~\a"
-              }
-              add-zsh-hook precmd precmd_title
-              ;;
-      esac
 
 # ---- Быстрый вызов tmux-sessionizer по Ctrl+f ----
       tmux-sessionizer-widget() {
