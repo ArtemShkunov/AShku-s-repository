@@ -19,9 +19,30 @@ let
   fgCream = "#FFF6EE"; # единый тёплый светлый текст на всех цветных секциях
 
   # ---- Иконки (Nerd Font) ----
-  iconUser   = ""; # nf-fa-user
-  iconFolder = ""; # nf-fa-folder-open
-  arrow      = ""; # powerline-стрелка (nf-pl-right_hard_divider)
+# ---- Иконки и разделители (Nerd Font) ----
+  iconUser     = " "; # nf-fa-user
+  iconFolder   = " "; # nf-fa-folder-open
+  arrow        = ""; # powerline-стрелка
+  leftRounded  = ""; # левое закругление (nf-ple-left_half_circle_thick)
+  rightRounded = ""; # правое закругление (nf-ple-right_half_circle_thick)
+
+# Иконки языков
+    iconC        = " ";
+  iconCMake    = " ";
+  iconPython   = " ";
+  iconNode     = " ";
+  iconGo       = " ";
+  iconRust     = " ";
+
+  # Классические иконки Git статусов
+  gitUntracked = " "; # Untracked / unindexed
+  gitModified  = " "; # Modified
+  gitStaged    = " "; # Staged
+  gitConflict  = " "; # Conflict
+  gitAhead     = "⇡ "; # Ahead
+  gitBehind    = "⇣ "; # Behind
+  gitBranch    = "󰊢 "; # Branch
+
 
   ompSettings = {
     "$schema" = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json";
@@ -47,7 +68,8 @@ let
           # Пользователь + иконка
           {
             type = "session";
-            style = "powerline";
+            style = "diamond";
+            leading_diamond = leftRounded;
             powerline_symbol = arrow;
             background = colorUser;
             foreground = fgCream;
@@ -68,70 +90,87 @@ let
             };
           }
 
-          # Git — то же самое, что и раньше делала __git_prompt_info,
-          # но статусами занимается сам oh-my-posh (fetch_status)
+          # Git — сжимается, если не в репозитории или чистый
           {
             type = "git";
             style = "powerline";
             powerline_symbol = arrow;
             background = colorGit;
             foreground = fgCream;
-            template = " {{ .HEAD }}{{ if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} {{ .Working.String }}{{ end }}{{ if .Staging.Changed }} {{ .Staging.String }}{{ end }} ";
+            always_enabled = true; # Показывается всегда
+            template = "{{ if .RepoName }} {{ .HEAD }}{{ if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} ${gitModified}{{ .Working.String }}{{ end }}{{ if .Staging.Changed }} ${gitStaged}{{ .Staging.String }}{{ end }}{{ if .Working.Unmerged }} ${gitConflict}{{ .Working.Unmerged }}{{ end }} {{ else }} ${gitBranch} {{ end }}";
             options = {
               fetch_status = true;
-              branch_icon = "󰊢 ";
-              branch_ahead_icon = " ";
-              branch_behind_icon = " ";
+              branch_icon = gitBranch;
+              branch_ahead_icon = gitAhead;
+              branch_behind_icon = gitBehind;
             };
           }
-
           # ---- Секция языков/версий вместо времени ----
           # Каждый сегмент показывается сам по себе, только если в
           # текущей директории есть соответствующие файлы
           # (display_mode = "files" — штатное поведение oh-my-posh).
           # Иконка и версия берутся из встроенного шаблона сегмента —
           # template нарочно не переопределён.
+                    {
+            type = "c";
+            style = "powerline";
+            powerline_symbol = arrow;
+            background = colorLang;
+            foreground = fgCream;
+            template = " {{ if .Full }}${iconC}{{ .Full }} ";
+            options = { display_mode = "always"; };
+          }
+          # CMake
           {
             type = "cmake";
             style = "powerline";
             powerline_symbol = arrow;
             background = colorLang;
             foreground = fgCream;
-            options = { display_mode = "files"; };
+            template = " {{ if .Full }}${iconCMake}{{ .Full }} ";
+            options = { display_mode = "always"; };
           }
+          # Python
           {
             type = "python";
             style = "powerline";
             powerline_symbol = arrow;
             background = colorLang;
             foreground = fgCream;
-            options = { display_mode = "files"; };
+            template = " {{ if .Full }}${iconPython}{{ .Full }} ";
+            options = { display_mode = "always"; };
           }
+          # Node.js
           {
             type = "node";
             style = "powerline";
             powerline_symbol = arrow;
             background = colorLang;
             foreground = fgCream;
-            options = { display_mode = "files"; };
+            template = " {{ if .Full }}${iconNode}{{ .Full }} ";
+            options = { display_mode = "always"; };
           }
+          # Go
           {
             type = "go";
             style = "powerline";
             powerline_symbol = arrow;
             background = colorLang;
             foreground = fgCream;
-            options = { display_mode = "files"; };
+            template = " {{ if .Full }}${iconGo}{{ .Full }} ";
+            options = { display_mode = "always"; };
           }
+          # Rust (последний в цепочке — закругляет правый край всей плашки)
           {
             type = "rust";
-            style = "powerline";
-            powerline_symbol = arrow;
+            style = "diamond";
+            trailing_diamond = rightRounded;
             background = colorLang;
             foreground = fgCream;
-            options = { display_mode = "files"; };
+            template = " {{ if .Full }}${iconRust}{{ .Full }} ";
+            options = { display_mode = "always"; };
           }
-
           # DevShell-бейдж — как и раньше, из $IN_NIX_SHELL
           {
             type = "text";
@@ -198,6 +237,7 @@ in
   programs.oh-my-posh = {
     enable = true;
     enableZshIntegration = true;
+        enableBashIntegration = true;
     settings = ompSettings;
   };
 
