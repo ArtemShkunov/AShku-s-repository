@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  theme,
+  ...
+}:
 {
   programs.wofi = {
     enable = true;
@@ -18,22 +23,22 @@
 
     style = ''
       * {
-        font-family: "JetBrainsMono Nerd Font", "Fira Code Nerd Font", sans-serif;
+        font-family: "${theme.fonts.mono}", "${theme.fonts.monoFallback}", sans-serif;
         font-size: 14px;
       }
 
       window {
-        background-color: #241f30;
-        border: 2px solid #f2994a;
+        background-color: #${theme.colors.surface};
+        border: 2px solid #${theme.colors.accent};
         border-radius: 10px;
       }
 
       #input {
         margin: 8px;
         padding: 8px 12px;
-        background-color: #16141f;
-        color: #f5e9dc;
-        border: 1px solid #4a3b4f;
+        background-color: #${theme.colors.bg};
+        color: #${theme.colors.fg};
+        border: 1px solid #${theme.colors.border};
         border-radius: 6px;
       }
 
@@ -48,15 +53,15 @@
       }
 
       #entry:selected {
-        background-color: #f2994a;
+        background-color: #${theme.colors.accent};
       }
 
       #entry:selected #text {
-        color: #16141f;
+        color: #${theme.colors.bg};
       }
 
       #text {
-        color: #f5e9dc;
+        color: #${theme.colors.fg};
       }
 
       #img {

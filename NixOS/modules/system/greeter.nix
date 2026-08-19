@@ -1,4 +1,10 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  theme,
+  ...
+}:
 
 # ─── Экран входа: greetd + ReGreet, тема "sunset pines" ───
 #
@@ -43,24 +49,25 @@
   services.displayManager.regreet = {
     enable = true;
 
-    # Та же связка темы, что и на десктопе в hyprland.nix.
+    # Та же связка темы, что и на десктопе (modules/home/theming.nix) —
+    # имена берутся из theme.gtk.
     theme = {
-      name = "Adwaita-dark";
+      name = theme.gtk.theme;
       package = pkgs.gnome-themes-extra;
     };
 
     iconTheme = {
-      name = "Yaru";
+      name = theme.gtk.iconTheme;
       package = pkgs.yaru-theme;
     };
 
     cursorTheme = {
-      name = "Adwaita";
+      name = theme.gtk.cursorTheme;
       package = pkgs.adwaita-icon-theme;
     };
 
     font = {
-      name = "JetBrainsMono Nerd Font";
+      name = theme.fonts.mono;
       size = 14;
     };
 
@@ -102,36 +109,36 @@
     # см. https://github.com/rharish101/ReGreet#css.
     extraCss = ''
       window {
-        background-color: #16141f;
+        background-color: #${theme.colors.bg};
       }
 
       entry {
-        background-color: rgba(22, 20, 31, 0.85);
-        border: 2px solid rgba(242, 153, 74, 0.85);
+        background-color: #${theme.colors.bg}d9;
+        border: 2px solid #${theme.colors.accent}d9;
         border-radius: 14px;
-        color: #f5e9dc;
+        color: #${theme.colors.fg};
         padding: 8px 12px;
       }
 
       entry:focus-within {
-        border-color: #f7ce68;
-        box-shadow: 0 0 0 1px rgba(247, 206, 104, 0.35);
+        border-color: #${theme.colors.accent-bright};
+        box-shadow: 0 0 0 1px #${theme.colors.accent-bright}59;
       }
 
       button {
         background-color: transparent;
-        border: 1px solid rgba(242, 153, 74, 0.4);
+        border: 1px solid #${theme.colors.accent}66;
         border-radius: 10px;
-        color: #f5e9dc;
+        color: #${theme.colors.fg};
       }
 
       button:hover {
-        background-color: rgba(242, 153, 74, 0.15);
-        border-color: #f7ce68;
+        background-color: #${theme.colors.accent}26;
+        border-color: #${theme.colors.accent-bright};
       }
 
       label {
-        color: #f5e9dc;
+        color: #${theme.colors.fg};
       }
     '';
   };

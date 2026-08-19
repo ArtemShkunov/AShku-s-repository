@@ -1,5 +1,10 @@
 # fastfetch.nix — модуль home-manager
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   home.packages = with pkgs; [
@@ -26,8 +31,8 @@
     executable = true;
   };
 
-  # Запуск fastfetch при старте шелла
-  programs.zsh.initExtra = ''
+  # Запуск fastfetch при старте шелла (дополняет initContent из zsh.nix)
+  programs.zsh.initContent = lib.mkAfter ''
     fastfetch
   '';
 }

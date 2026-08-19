@@ -1,31 +1,33 @@
-{ pkgs, ... }:
-{
-    programs.tmux = {
-        enable = true;
-        package = pkgs.tmux;
-        terminal = "tmux-256color";
-        historyLimit = 10000;
-        mouse = true;
-        baseIndex = 1;
-        escapeTime = 0;
-        keyMode = "vi";
+# tmux.nix — tmux multiplexer: keybinds, plugins, session restore.
+#
+# Status-bar colors come from theme.colors; all the keybinding/plugin logic
+# is theming-free.
+{ pkgs, theme, ... }: {
+  programs.tmux = {
+    enable = true;
+    package = pkgs.tmux;
+    terminal = "tmux-256color";
+    historyLimit = 10000;
+    mouse = true;
+    baseIndex = 1;
+    escapeTime = 0;
+    keyMode = "vi";
 
-        plugins = with pkgs; [
-            tmuxPlugins.resurrect
-            {
-                plugin = tmuxPlugins.continuum;
-                extraConfig = ''
+    plugins = with pkgs; [
+      tmuxPlugins.resurrect
+      {
+        plugin = tmuxPlugins.continuum;
+        extraConfig = ''
           set -g @continuum-restore 'on'
           set -g @continuum-save-interval '5'
-                '';
-            }
-        ];
+        '';
+      }
+    ];
 
-        extraConfig = ''
+    extraConfig = ''
       # ---- Resurrect: что именно сохранять ----
       set -g @resurrect-capture-pane-contents 'on'
       set -g @resurrect-strategy-nvim 'session'
-
 
       set -g renumber-windows on
       set -g focus-events on
@@ -62,27 +64,23 @@
 
       bind-key -r f run-shell "tmux neww tmux-sessionizer"
 
-     
-      set -g status-style "bg=#16141f,fg=#f5e9dc"
+      # ---- Статус-бар в цветах темы ----
+      set -g status-style "bg=#${theme.colors.bg},fg=#${theme.colors.fg}"
       set -g status-left-length 40
-      set -g status-left "#[fg=#16141f,bg=#f2994a,bold]  #S #[fg=#f2994a,bg=#16141f]"
-      setw -g window-status-current-format "#[fg=#16141f,bg=#f7ce68,bold] #I->#W #[fg=#f7ce68,bg=#16141f]"
+      set -g status-left "#[fg=#${theme.colors.bg},bg=#${theme.colors.accent},bold]  #S #[fg=#${theme.colors.accent},bg=#${theme.colors.bg}]"
+      setw -g window-status-current-format "#[fg=#${theme.colors.bg},bg=#${theme.colors.accent-bright},bold] #I->#W #[fg=#${theme.colors.accent-bright},bg=#${theme.colors.bg}]"
       setw -g window-status-format " #I->#W "
 
       set -g status-right-length 100
-      set -g status-right "#[fg=#f5e9dc,bg=#16141f]   #{b:pane_current_path} #[fg=#6b6b80,bg=#16141f]| #[fg=#f5e9dc,bg=#16141f] %d.%m %H:%M #[fg=#6b6b80,bg=#16141f]| #[fg=#f5e9dc,bg=#16141f] #h #[fg=#6b6b80,bg=#16141f]| #[fg=#f5e9dc,bg=#16141f] #(whoami) "
+      set -g status-right "#[fg=#${theme.colors.fg},bg=#${theme.colors.bg}]   #{b:pane_current_path} #[fg=#${theme.colors.grey},bg=#${theme.colors.bg}]| #[fg=#${theme.colors.fg},bg=#${theme.colors.bg}] %d.%m %H:%M #[fg=#${theme.colors.grey},bg=#${theme.colors.bg}]| #[fg=#${theme.colors.fg},bg=#${theme.colors.bg}] #h #[fg=#${theme.colors.grey},bg=#${theme.colors.bg}]| #[fg=#${theme.colors.fg},bg=#${theme.colors.bg}] #(whoami) "
 
-      set -g pane-border-style "fg=#16141f"
-      set -g pane-active-border-style "fg=#f2994a"
+      set -g pane-border-style "fg=#${theme.colors.bg}"
+      set -g pane-active-border-style "fg=#${theme.colors.accent}"
 
-      set -g message-style "bg=#f2994a,fg=#16141f"
+      set -g message-style "bg=#${theme.colors.accent},fg=#${theme.colors.bg}"
 
       # ---- Автосохранение сессии при отключении (prefix+d и любой detach) ----
       set-hook -g client-detached 'run-shell -b "${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/scripts/save.sh"'
-
-
-
-        '';
-    };
+    '';
+  };
 }
-

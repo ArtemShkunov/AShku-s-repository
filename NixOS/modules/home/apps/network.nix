@@ -1,0 +1,11 @@
+# network.nix — networking / file-transfer / network tools.
+{ pkgs, ... }: {
+  home.packages = with pkgs; [
+    zapret # censorship bypass
+    blueman # bluetooth GUI
+    bluetui # bluetooth TUI
+    impala # network monitoring
+    localsend # LAN file transfer
+    jocalsend # local-send companion
+  ];
+}
