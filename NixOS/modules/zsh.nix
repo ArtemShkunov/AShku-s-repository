@@ -22,7 +22,7 @@ let
     # ---- Иконки и разделители (Nerd Font) ----
     iconUser     = " "; # nf-fa-user
     iconFolder   = " "; # nf-fa-folder-open
-    arrow        = ""; # powerline-стрелка
+    arrow        = ""; # powerline-стрелка
     leftRounded  = ""; # левое закругление (nf-ple-left_half_circle_thick)
     rightRounded = ""; # правое закругление (nf-ple-right_half_circle_thick)
 
@@ -128,6 +128,9 @@ let
                         background = colorLang;
                         foreground = fgCream;
                         template = " ${iconC}{{ .Full }} ";
+
+
+                        fallback_template = " ";
 
                         options = {
                             name = "c";
@@ -239,6 +242,7 @@ let
                         foreground = fgCream;
                         template = " ${iconRust}{{ .Full }} ";
                         options = { display_mode = "files"; };
+                        fallback_template = " ";
                     }
                     # DevShell-бейдж — как и раньше, из $IN_NIX_SHELL
                     {
