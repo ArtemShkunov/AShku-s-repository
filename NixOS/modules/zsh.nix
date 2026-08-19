@@ -58,7 +58,6 @@
             ramus = "/home/artemmkk-sh/.local/opt/ramus/start.sh";
         };
 
-        # initExtra = "fastfetch";
 
         initContent = ''
 
@@ -198,6 +197,8 @@ P+="''${DEVSHELL_BADGE}"
       zle -N tmux-sessionizer-widget
       bindkey '^f' tmux-sessionizer-widget
 
+
+      fastfetch
         '';
     };
 
