@@ -44,8 +44,8 @@ let
     gitConflict  = "  "; # Conflict
     gitAhead     = "  "; # Ahead
     gitBehind    = "  "; # Behind
-    gitBranch    = " "; # Branch󰊢
-    gitRepo      = "󰊢  ";
+    gitBranch    = "  "; # Branch󰊢
+    gitRepo      = " 󰊢 ";
 
 
     ompSettings = {
@@ -124,7 +124,6 @@ let
                     {
                         type = "language";
                         style = "powerline";
-                        powerline_symbol = arrow;
                         background = colorLang;
                         foreground = fgCream;
                         template = " ${iconC}{{ .Full }} ";
@@ -160,7 +159,6 @@ let
                     {
                         type = "language";
                         style = "powerline";
-                        powerline_symbol = arrow;
                         background = colorLang;
                         foreground = fgCream;
                         template = " ${iconCpp}{{ .Full }} ";
@@ -199,44 +197,36 @@ let
                     {
                         type = "cmake";
                         style = "powerline";
-                        powerline_symbol = arrow;
                         background = colorLang;
                         foreground = fgCream;
                         template = " ${iconCMake}{{ .Full }} ";
-                        fallback_template = " ";
                         options = { display_mode = "files"; };
                     }
                     # Python
                     {
                         type = "python";
                         style = "powerline";
-                        powerline_symbol = arrow;
                         background = colorLang;
                         foreground = fgCream;
                         template = " ${iconPython}{{ .Full }} ";
-                        fallback_template = " ";
                         options = { display_mode = "files"; };
                     }
                     # Node.js
                     {
                         type = "node";
                         style = "powerline";
-                        powerline_symbol = arrow;
                         background = colorLang;
                         foreground = fgCream;
                         template = " ${iconNode}{{ .Full }} ";
-                        fallback_template = " ";
                         options = { display_mode = "files"; };
                     }
                     # Go
                     {
                         type = "go";
                         style = "powerline";
-                        powerline_symbol = arrow;
                         background = colorLang;
                         foreground = fgCream;
                         template = " ${iconGo}{{ .Full }} ";
-                        fallback_template = " ";
                         options = { display_mode = "files"; };
                     }
                     # Rust (последний в цепочке — закругляет правый край всей плашки)
@@ -247,7 +237,6 @@ let
                         background = colorLang;
                         foreground = fgCream;
                         template = " ${iconRust}{{ .Full }} ";
-                        fallback_template = " ";
                         options = { display_mode = "files"; };
                     }
                     # DevShell-бейдж — как и раньше, из $IN_NIX_SHELL
