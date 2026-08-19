@@ -124,8 +124,8 @@ let
                     # C
                     {
                         type = "language";
-                        style = "powerline";
-                        powerline_symbol = arrow;
+                        style = "diamond";
+                        trailing_diamond = rightRounded;
                         background = colorLang;
                         foreground = fgCream;
                         template = " ${iconC}{{ .Full }} ";
@@ -163,7 +163,8 @@ let
                     # C++
                     {
                         type = "language";
-                        style = "powerline";
+                        style = "diamond";
+                        trailing_diamond = rightRounded;
                         background = colorLang;
                         foreground = fgCream;
                         template = " ${iconCpp}{{ .Full }} ";
@@ -201,7 +202,8 @@ let
                     # CMake
                     {
                         type = "cmake";
-                        style = "powerline";
+                        style = "diamond";
+                        trailing_diamond = rightRounded;
                         background = colorLang;
                         foreground = fgCream;
                         template = " ${iconCMake}{{ .Full }} ";
@@ -210,7 +212,8 @@ let
                     # Python
                     {
                         type = "python";
-                        style = "powerline";
+                        style = "diamond";
+                        trailing_diamond = rightRounded;
                         background = colorLang;
                         foreground = fgCream;
                         template = " ${iconPython}{{ .Full }} ";
@@ -219,7 +222,8 @@ let
                     # Node.js
                     {
                         type = "node";
-                        style = "powerline";
+                        style = "diamond";
+                        trailing_diamond = rightRounded;
                         background = colorLang;
                         foreground = fgCream;
                         template = " ${iconNode}{{ .Full }} ";
@@ -228,8 +232,8 @@ let
                     # Go
                     {
                         type = "go";
-                        style = "powerline";
-                        background = colorLang;
+                        style = "diamond";
+                        trailing_diamond = rightRounded;
                         foreground = fgCream;
                         template = " ${iconGo}{{ .Full }} ";
                         options = { display_mode = "files"; };
