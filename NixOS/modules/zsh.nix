@@ -124,6 +124,7 @@ let
                     {
                         type = "language";
                         style = "powerline";
+                        powerline_symbol = arrow;
                         background = colorLang;
                         foreground = fgCream;
                         template = " ${iconC}{{ .Full }} ";
