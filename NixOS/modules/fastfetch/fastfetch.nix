@@ -26,9 +26,8 @@
     executable = true;
   };
 
-  # Запуск fastfetch + «NixOS Upgrade»-бокса при старте шелла
+  # Запуск fastfetch при старте шелла
   programs.zsh.initExtra = ''
     fastfetch
-    "$HOME/.config/fastfetch/scripts/nixos-01_fastfetch.sh"
   '';
 }
