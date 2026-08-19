@@ -38,11 +38,13 @@ let
             percent=$(( current * 100 / max ))
 
             yad --title="Brightness" --width=320 --center \
-            --scale --print-partial --text="Regulate brightness..." \
-            --min=1 --max=100 --value="$percent" --step=1 \
+            --scale --value="$percent" --min-value=1 --max-value=100 --step=1 \
+            --print-partial --text="Regulate brightness..." \
             --button="Ready:0" |
             while IFS= read -r val; do
-                brightnessctl set "''${val}%" >/dev/null 2>&1
+                if [[ "$val" =~ ^[0-9]+$ ]]; then
+                    brightnessctl set "''${val}%" >/dev/null 2>&1
+                fi
             done
             ;;    esac
   '';

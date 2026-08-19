@@ -68,6 +68,34 @@
         margin-right: 8px;
       }
 
+      #expander-box {
+        margin: 0 0 4px 0;
+        background-color: #${theme.colors.surface};
+        border-radius: 6px;
+      }
+
+      #expander-box list,
+      #expander-box row,
+      #expander-box #entry {
+        background-color: transparent;
+        color: #${theme.colors.fg};
+      }
+
+      #expander-box #entry:selected {
+        background-color: #${theme.colors.accent};
+        color: #${theme.colors.bg};
+      }
+
+      #expander-box #text,
+      #expander-box label {
+        color: #${theme.colors.fg};
+      }
+
+      #expander-box #entry:selected #text,
+      #expander-box #entry:selected label {
+        color: #${theme.colors.bg};
+      }
+
       #scroll {
         margin: 0 4px 8px 4px;
       }
