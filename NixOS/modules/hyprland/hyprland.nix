@@ -572,8 +572,6 @@ in
         # Для GTK4/Libadwaita (современные приложения GNOME)
         gnome-desktop           # содержит Adwaita для GTK4
 
-        # Дополнительно для старых приложений
-        gtk-engine-murrine            # движок тем для GTK2
 
         libsForQt5.qt5ct
         qt6Packages.qt6ct
