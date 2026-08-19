@@ -11,7 +11,8 @@
 #     and use raw hex inside rgba()/rgb() for Hyprland/hyprlock:
 #       "#${theme.colors.bg}"              # CSS/kitty
 #       "rgba(${theme.colors.accent}ee)"   # Hyprland/hyprlock
-#     For alpha in CSS append hex alpha: "#${theme.colors.surface}d9" (85%).
+#     For alpha in CSS use theme.css (below): GTK's CSS parser rejects
+#     8-digit hex (#RRGGBBAA), alpha must be written as rgba(r, g, b, a).
 #   * Packages are NOT referenced here — only names/sizes. Modules map
 #     names to pkgs (e.g. gtk.iconTheme -> pkgs.yaru-theme).
 {
@@ -69,6 +70,18 @@
     duration = "B2472E";
     shell = "6FAE7B";
     fg = "FFF6EE";
+  };
+
+  # rgba() strings for GTK-based CSS consumers (waybar, ReGreet).
+  # GTK's CSS parser does NOT understand 8-digit hex (#RRGGBBAA) and will
+  # fail with "Junk at end of value" — alpha must be a rgba(r, g, b, a) call.
+  css = {
+    bg-85 = "rgba(22, 20, 31, 0.85)"; # bg at 85%
+    surface-85 = "rgba(36, 31, 48, 0.85)"; # surface at 85%
+    accent-15 = "rgba(242, 153, 74, 0.15)"; # accent at 15%
+    accent-40 = "rgba(242, 153, 74, 0.4)"; # accent at 40%
+    accent-85 = "rgba(242, 153, 74, 0.85)"; # accent at 85%
+    accent-bright-35 = "rgba(247, 206, 104, 0.35)"; # accent-bright at 35%
   };
 
   fonts = {

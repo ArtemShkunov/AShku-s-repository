@@ -113,8 +113,8 @@
       }
 
       entry {
-        background-color: #${theme.colors.bg}d9;
-        border: 2px solid #${theme.colors.accent}d9;
+        background-color: ${theme.css.bg-85};
+        border: 2px solid ${theme.css.accent-85};
         border-radius: 14px;
         color: #${theme.colors.fg};
         padding: 8px 12px;
@@ -122,18 +122,18 @@
 
       entry:focus-within {
         border-color: #${theme.colors.accent-bright};
-        box-shadow: 0 0 0 1px #${theme.colors.accent-bright}59;
+        box-shadow: 0 0 0 1px ${theme.css.accent-bright-35};
       }
 
       button {
         background-color: transparent;
-        border: 1px solid #${theme.colors.accent}66;
+        border: 1px solid ${theme.css.accent-40};
         border-radius: 10px;
         color: #${theme.colors.fg};
       }
 
       button:hover {
-        background-color: #${theme.colors.accent}26;
+        background-color: ${theme.css.accent-15};
         border-color: #${theme.colors.accent-bright};
       }
 

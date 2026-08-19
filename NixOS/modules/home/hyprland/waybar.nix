@@ -287,7 +287,7 @@ in
       }
 
       window#waybar {
-        background-color: #${theme.colors.surface}d9;
+        background-color: ${theme.css.surface-85};
         color: #${theme.colors.fg};
 
         /* Отступы панели от краев экрана: 8px сверху, 16px по бокам */
