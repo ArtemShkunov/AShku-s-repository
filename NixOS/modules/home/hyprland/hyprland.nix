@@ -8,14 +8,35 @@
 
 let
   lib = pkgs.lib;
+  mkLuaInline = lib.generators.mkLuaInline;
 
-  # Автогенерация биндов переключения на рабочие столы 1-9
+  # Бинды переключения на рабочие столы 1-6 в Lua-идиоме.
   workspaceBinds = builtins.concatLists (
     map (i: [
-      "$mod, ${toString i}, workspace, ${toString i}"
-      "$mod SHIFT, ${toString i}, movetoworkspace, ${toString i}"
-      "$mod, KP_${toString i}, workspace, ${toString i}"
-      "$mod SHIFT, KP_${toString i}, movetoworkspace, ${toString i}"
+      {
+        _args = [
+          (mkLuaInline "mod .. \" + ${toString i}\"")
+          (mkLuaInline "hl.dsp.focus({ workspace = ${toString i} })")
+        ];
+      }
+      {
+        _args = [
+          (mkLuaInline "mod .. \" + SHIFT + ${toString i}\"")
+          (mkLuaInline "hl.dsp.window.move({ workspace = ${toString i} })")
+        ];
+      }
+      {
+        _args = [
+          (mkLuaInline "mod .. \" + KP_${toString i}\"")
+          (mkLuaInline "hl.dsp.focus({ workspace = ${toString i} })")
+        ];
+      }
+      {
+        _args = [
+          (mkLuaInline "mod .. \" + SHIFT + KP_${toString i}\"")
+          (mkLuaInline "hl.dsp.window.move({ workspace = ${toString i} })")
+        ];
+      }
     ]) (lib.range 1 6)
   );
 in
@@ -24,11 +45,15 @@ in
     enable = true;
     xwayland.enable = true;
 
-    configType = "hyprlang";
+    configType = "lua";
     systemd.variables = [ "--all" ];
 
     settings = {
-      exec-once = [
+      mod = {
+        _var = "SUPER";
+      };
+
+      exec_cmd = [
         "waybar"
         "hyprpaper"
         "nm-applet --indicator"
@@ -36,89 +61,286 @@ in
       ];
 
       env = [
-        "XCURSOR_SIZE,${toString theme.cursor.size}"
-        "XCURSOR_THEME,rose-pine-hyprcursor"
-        "HYPRCURSOR_THEME,rose-pine-hyprcursor"
-        "HYPRCURSOR_SIZE,${toString theme.cursor.size}"
-        "NIXOS_OZONE_WL,1"
-        "GTK_THEME,Adwaita:dark" # GTK_THEME variant syntax; theme.gtk.theme is used by home-manager gtk module
-        "QT_QPA_PLATFORMTHEME,kde"
-        "QT_STYLE_OVERRIDE,${theme.qt.style}"
-        "KDE_SESSION_VERSION,6"
+        {
+          _args = [
+            "XCURSOR_SIZE"
+            (toString theme.cursor.size)
+          ];
+        }
+        {
+          _args = [
+            "XCURSOR_THEME"
+            "rose-pine-hyprcursor"
+          ];
+        }
+        {
+          _args = [
+            "HYPRCURSOR_THEME"
+            "rose-pine-hyprcursor"
+          ];
+        }
+        {
+          _args = [
+            "HYPRCURSOR_SIZE"
+            (toString theme.cursor.size)
+          ];
+        }
+        {
+          _args = [
+            "NIXOS_OZONE_WL"
+            "1"
+          ];
+        }
+        {
+          _args = [
+            "GTK_THEME"
+            "Adwaita:dark"
+          ];
+        }
+        {
+          _args = [
+            "QT_QPA_PLATFORMTHEME"
+            "kde"
+          ];
+        }
+        {
+          _args = [
+            "QT_STYLE_OVERRIDE"
+            theme.qt.style
+          ];
+        }
+        {
+          _args = [
+            "KDE_SESSION_VERSION"
+            "6"
+          ];
+        }
       ];
 
-      input = {
-        kb_layout = "us,ru";
-        kb_options = "grp:alt_shift_toggle";
-        follow_mouse = 1;
+      config = {
+        input = {
+          kb_layout = "us,ru";
+          kb_options = "grp:alt_shift_toggle";
+          follow_mouse = 1;
+        };
+
+        dwindle = {
+          preserve_split = true;
+        };
+
+        general = {
+          gaps_in = 5;
+          gaps_out = 10;
+          border_size = 2;
+          # Градиент оранжевый -> золото под цвет заката с обоев
+          col = {
+            active_border = "rgba(${theme.colors.accent}ee) rgba(${theme.colors.accent-bright}ee) 45deg";
+            inactive_border = "rgba(${theme.colors.border}aa)";
+          };
+          layout = "dwindle";
+        };
+
+        decoration = {
+          rounding = 8;
+          blur = {
+            enabled = true;
+            size = 3;
+            passes = 1;
+          };
+        };
+
+        animations.enabled = true;
+
+        xwayland = {
+          force_zero_scaling = true;
+        };
       };
-
-      dwindle = {
-        preserve_split = true;
-      };
-
-      general = {
-        gaps_in = 5;
-        gaps_out = 10;
-        border_size = 2;
-        # Градиент оранжевый -> золото под цвет заката с обоев
-        "col.active_border" = "rgba(${theme.colors.accent}ee) rgba(${theme.colors.accent-bright}ee) 45deg";
-        "col.inactive_border" = "rgba(${theme.colors.border}aa)";
-        layout = "dwindle";
-      };
-
-      decoration = {
-        rounding = 8;
-        blur.enabled = true;
-        blur.size = 3;
-        blur.passes = 1;
-      };
-
-      animations.enabled = true;
-
-      "$mod" = "SUPER";
 
       bind = [
-        "$mod, Q, exec, kitty"
-        "$mod, C, killactive"
-        "$mod, M, exit"
-        "$mod, E, exec, thunar"
-        "$mod, V, togglefloating"
-        "$mod, R, exec, wofi -L 8 --show drun"
-        "$mod, P, pseudo"
-        "$mod, J, layoutmsg, togglesplit"
-        "$mod, L, exec, hyprlock"
-        ", Print, exec, grim -g \"$(slurp)\" - | wl-copy"
-        "$mod, left, movefocus, l"
-        "$mod, right, movefocus, r"
-        "$mod, up, movefocus, u"
-        "$mod, down, movefocus, d"
-        "$mod, F, exec, firefox"
-        "$mod, T, exec, Throne"
-        "$mod, N, exec, pkill hyprsunset || hyprsunset -t 3500"
-        "$$mod, B, exec, zen-beta"
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + Q\"")
+            (mkLuaInline "hl.dsp.exec_cmd(\"kitty\")")
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + C\"")
+            (mkLuaInline "hl.dsp.window.close()")
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + M\"")
+            (mkLuaInline "hl.dsp.exit()")
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + E\"")
+            (mkLuaInline "hl.dsp.exec_cmd(\"thunar\")")
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + V\"")
+            (mkLuaInline "hl.dsp.window.float({ action = \"toggle\" })")
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + R\"")
+            (mkLuaInline "hl.dsp.exec_cmd(\"wofi -L 8 --show drun\")")
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + P\"")
+            (mkLuaInline "hl.dsp.window.pseudo()")
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + J\"")
+            (mkLuaInline "hl.dsp.layout(\"togglesplit\")")
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + L\"")
+            (mkLuaInline "hl.dsp.exec_cmd(\"hyprlock\")")
+          ];
+        }
+        {
+          _args = [
+            "Print"
+            (mkLuaInline "hl.dsp.exec_cmd(\"grim -g \\\"$(slurp)\\\" - | wl-copy\")")
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + left\"")
+            (mkLuaInline "hl.dsp.focus({ direction = \"left\" })")
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + right\"")
+            (mkLuaInline "hl.dsp.focus({ direction = \"right\" })")
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + up\"")
+            (mkLuaInline "hl.dsp.focus({ direction = \"up\" })")
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + down\"")
+            (mkLuaInline "hl.dsp.focus({ direction = \"down\" })")
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + F\"")
+            (mkLuaInline "hl.dsp.exec_cmd(\"firefox\")")
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + T\"")
+            (mkLuaInline "hl.dsp.exec_cmd(\"Throne\")")
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + N\"")
+            (mkLuaInline "hl.dsp.exec_cmd(\"pkill hyprsunset || hyprsunset -t 3500\")")
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + B\"")
+            (mkLuaInline "hl.dsp.exec_cmd(\"zen-beta\")")
+          ];
+        }
+
+        # bindm — перемещение/ресайз окна мышью
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + mouse:272\"")
+            (mkLuaInline "hl.dsp.window.drag()")
+            { mouse = true; }
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + mouse:273\"")
+            (mkLuaInline "hl.dsp.window.resize()")
+            { mouse = true; }
+          ];
+        }
+
+        # bindel — удерживаемые (repeating)
+        {
+          _args = [
+            "XF86MonBrightnessDown"
+            (mkLuaInline "hl.dsp.exec_cmd(\"brightnessctl set 5%-\")")
+            {
+              locked = true;
+              repeating = true;
+            }
+          ];
+        }
+        {
+          _args = [
+            "XF86MonBrightnessUp"
+            (mkLuaInline "hl.dsp.exec_cmd(\"brightnessctl set 5%+\")")
+            {
+              locked = true;
+              repeating = true;
+            }
+          ];
+        }
+        {
+          _args = [
+            "XF86AudioLowerVolume"
+            (mkLuaInline "hl.dsp.exec_cmd(\"pamixer -d 5\")")
+            {
+              locked = true;
+              repeating = true;
+            }
+          ];
+        }
+        {
+          _args = [
+            "XF86AudioRaiseVolume"
+            (mkLuaInline "hl.dsp.exec_cmd(\"pamixer -i 5\")")
+            {
+              locked = true;
+              repeating = true;
+            }
+          ];
+        }
+
+        # bindl — залоченные (locked)
+        {
+          _args = [
+            "XF86AudioMute"
+            (mkLuaInline "hl.dsp.exec_cmd(\"pamixer -t\")")
+            { locked = true; }
+          ];
+        }
+        {
+          _args = [
+            "XF86AudioMicMute"
+            (mkLuaInline "hl.dsp.exec_cmd(\"pamixer --default-source -t\")")
+            { locked = true; }
+          ];
+        }
       ]
       ++ workspaceBinds;
-
-      bindm = [
-        "$mod, mouse:272, movewindow"
-        "$mod, mouse:273, resizewindow"
-      ];
-
-      bindel = [
-        ", XF86MonBrightnessDown, exec, brightnessctl set 5%-"
-        ", XF86MonBrightnessUp, exec, brightnessctl set 5%+"
-        ", XF86AudioLowerVolume, exec, pamixer -d 5"
-        ", XF86AudioRaiseVolume, exec, pamixer -i 5"
-      ];
-      bindl = [
-        ", XF86AudioMute, exec, pamixer -t"
-        ", XF86AudioMicMute, exec, pamixer --default-source -t"
-      ];
-
-      xwayland = {
-        force_zero_scaling = true;
-      };
     };
   };
 

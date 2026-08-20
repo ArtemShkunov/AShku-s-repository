@@ -5,13 +5,18 @@
 # the shared modules. New machine → new home.nix.
 { pkgs, ... }: {
   # This machine's display: resolution / refresh / scale.
-  wayland.windowManager.hyprland.settings.monitor = ",2560x1600@120,auto,1.25";
+  wayland.windowManager.hyprland.settings.config.monitor = {
+    output = "eDP-1";
+    mode = "2560x1600@120";
+    position = "auto";
+    scale = 1.25;
+  };
 
   # This machine's touchpad.
-  wayland.windowManager.hyprland.settings.input.touchpad = {
+  wayland.windowManager.hyprland.settings.config.input.touchpad = {
     natural_scroll = true;
     clickfinger_behavior = true;
-    tap-to-click = true;
+    tap_to_click = true;
   };
 
   # Waybar keyboard-layout module needs the exact input device name from
