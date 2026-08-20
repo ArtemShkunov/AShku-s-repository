@@ -15,7 +15,7 @@ let
         " Lock")
             hyprlock;;
         "󰗽 Exit")
-            hyprctl dispatch exit;;
+            hyprctl dispatch 'hl.dsp.exit()';;
     esac
   '';
 
@@ -56,6 +56,7 @@ let
   # Кастомное меню выбора раскладки клавиатуры через wofi.
   # Список раскладок берётся динамически из input:kb_layout в Hyprland,
   # так что работает с любым набором раскладок без правки индексов.
+
   layoutMenu = pkgs.writeShellScriptBin "layoutmenu" ''
     set -euo pipefail
 
@@ -71,28 +72,29 @@ let
         esac
     }
 
-    menu=""
-    map=""
-    idx=0
-    old_ifs=$IFS
-    IFS=','
-    for code in $layouts_raw; do
-        label=$(pretty_name "$code")
-        menu="$menu$label
-        "
-        map="$map$idx	$label
-        "
-        idx=$((idx + 1))
-    done
-    IFS=$old_ifs
+    # Раскладки собираются в массив (а не конкатенацией строк с переносами),
+    # иначе отступы из этого .nix-файла попадают внутрь значений и вторая
+    # (и последующие) раскладки перестают совпадать при сравнении с выбором.
+    IFS=',' read -ra codes <<< "$layouts_raw"
 
-    selected=$(printf "%s" "$menu" | wofi -L 3 --dmenu --prompt "Layout" --location top_right --xoffset -16 --yoffset 45 --width 250 --height 250)
+    labels=()
+    for code in "''${codes[@]}"; do
+        labels+=("$(pretty_name "$code")")
+    done
+
+    selected=$(printf '%s\n' "''${labels[@]}" | wofi -L 3 --dmenu --prompt "Layout" --location top_right --xoffset -16 --yoffset 45 --width 250 --height 250)
 
     [ -z "$selected" ] && exit 0
 
-    chosen_index=$(printf "%s" "$map" | awk -F'\t' -v sel="$selected" '$2 == sel {print $1; exit}')
+    chosen_index=-1
+    for i in "''${!labels[@]}"; do
+        if [ "''${labels[$i]}" = "$selected" ]; then
+            chosen_index=$i
+            break
+        fi
+    done
 
-    [ -z "$chosen_index" ] && exit 0
+    [ "$chosen_index" -lt 0 ] && exit 0
 
     hyprctl switchxkblayout current "$chosen_index"
   '';
@@ -110,6 +112,16 @@ in
 
   programs.waybar = {
     enable = true;
+    # Backport of waybar PR #5013: route workspace clicks/scroll through the
+    # Hyprland Lua IPC protocol (required since Hyprland 0.54 + Lua configs).
+    package = pkgs.waybar.overrideAttrs (old: {
+      patches = (old.patches or [ ]) ++ [ ./waybar-lua-ipc.patch ];
+    });
+    # Start the bar as a systemd user service (PartOf graphical-session.target),
+    # like hyprpaper/hypridle/mako. This avoids the parse-time spawn problem:
+    # top-level `hl.exec_cmd` runs before the Wayland socket exists and the
+    # process dies without anything respawning it.
+    systemd.enable = true;
 
     settings = {
       mainBar = {
@@ -146,7 +158,6 @@ in
         # 6 рабочих столов
         "hyprland/workspaces" = {
           format = "{name}";
-          on-click = "activate";
           all-outputs = true;
           active-only = false;
           persistent-workspaces = {

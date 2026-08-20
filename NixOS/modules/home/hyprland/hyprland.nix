@@ -53,13 +53,6 @@ in
         _var = "SUPER";
       };
 
-      exec_cmd = [
-        "waybar"
-        "hyprpaper"
-        "nm-applet --indicator"
-        "wl-paste --watch cliphist store"
-      ];
-
       env = [
         {
           _args = [
@@ -134,7 +127,13 @@ in
           border_size = 2;
           # Градиент оранжевый -> золото под цвет заката с обоев
           col = {
-            active_border = "rgba(${theme.colors.accent}ee) rgba(${theme.colors.accent-bright}ee) 45deg";
+            active_border = {
+              colors = [
+                "rgba(${theme.colors.accent}ee)"
+                "rgba(${theme.colors.accent-bright}ee)"
+              ];
+              angle = 45;
+            };
             inactive_border = "rgba(${theme.colors.border}aa)";
           };
           layout = "dwindle";
@@ -372,6 +371,40 @@ in
   };
 
   services.hyprpolkitagent.enable = true;
+
+  # Session daemons that used to live in `settings.exec_cmd`. Top-level
+  # `hl.exec_cmd` spawns at config-parse time — before the Wayland socket
+  # exists — so the processes died at login. Run them as systemd user
+  # services instead (same pattern as hyprpaper/hypridle/mako).
+  systemd.user.services = {
+    "nm-applet" = {
+      Unit = {
+        Description = "NetworkManager applet";
+        PartOf = [ "hyprland-session.target" ];
+        After = [ "hyprland-session.target" ];
+      };
+      Service = {
+        ExecStart = "${pkgs.networkmanagerapplet}/bin/nm-applet --indicator";
+        Restart = "on-failure";
+        RestartSec = 3;
+      };
+      Install.WantedBy = [ "hyprland-session.target" ];
+    };
+
+    "wl-paste-cliphist" = {
+      Unit = {
+        Description = "Clipboard history store (wl-paste --watch cliphist)";
+        PartOf = [ "hyprland-session.target" ];
+        After = [ "hyprland-session.target" ];
+      };
+      Service = {
+        ExecStart = "${pkgs.wl-clipboard}/bin/wl-paste --watch ${pkgs.cliphist}/bin/cliphist store";
+        Restart = "on-failure";
+        RestartSec = 3;
+      };
+      Install.WantedBy = [ "hyprland-session.target" ];
+    };
+  };
 
   home.packages = with pkgs; [
     # Скриншоты

@@ -5,7 +5,7 @@
 # the shared modules. New machine → new home.nix.
 { pkgs, ... }: {
   # This machine's display: resolution / refresh / scale.
-  wayland.windowManager.hyprland.settings.config.monitor = {
+  wayland.windowManager.hyprland.settings.monitor = {
     output = "eDP-1";
     mode = "2560x1600@120";
     position = "auto";
