@@ -1,2 +1,4 @@
 *.exe *.o *.bin __pycache__
 AGENTS.md
+NixOS/result/
+NixOS/result
