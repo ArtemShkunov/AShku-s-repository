@@ -16,6 +16,6 @@
     ../../modules/system/theming.nix
     ../../modules/system/desktop.nix
     ../../modules/system/greeter.nix
+    ../../modules/system/power.nix
   ];
 }
-
