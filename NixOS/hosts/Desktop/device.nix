@@ -4,6 +4,14 @@
   ...
 }:
 {
+
+
+  services.xserver.enable = true;
+  
+
+  services.xserver.desktopManager.xfce.enable = true;
+
+
   networking.hostName = "Desktop";
   
   boot.loader.systemd-boot.enable = true;
@@ -22,7 +30,7 @@
   };
 
   # Intel iGPU
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
     driSupport32Bit = true;
   };

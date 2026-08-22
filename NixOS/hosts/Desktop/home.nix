@@ -1,4 +1,7 @@
 { pkgs, ... }: {
+
+  
+
   wayland.windowManager.hyprland.settings.monitor = {
     output = "DP-1";
     mode = "1920x1080@120";
