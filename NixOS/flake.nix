@@ -55,4 +55,30 @@
         ];
       };
     };
+
+      nixosConfigurations."Desktop" = nixpkgs.lib.nixosSystem {
+        inherit system;
+        # `theme` (and `inputs`) are passed to every system module.
+        specialArgs = { inherit inputs theme; };
+        modules = [
+          ./hosts/Desktop/default.nix
+
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.backupFileExtension = "backup";
+            home-manager.useUserPackages = true;
+            # `theme` (and `inputs`) reach every home-manager module.
+            home-manager.extraSpecialArgs = { inherit inputs theme; };
+            # Shared user config + this host's machine-specific home bits.
+            home-manager.users."artemmkk-sh" = {
+              imports = [
+                (import ./home/artemmkk-sh.nix)
+                (import ./hosts/Desktop/home.nix)
+              ];
+            };
+          }
+        ];
+      };
+    };
 }
