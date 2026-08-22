@@ -19,6 +19,9 @@
 
   boot.supportedFilesystems = [ "ntfs" "exfat" ];
 
+  boot.kernelParams = [ "mem_sleep_default=s2idle" ];
+
+
   # Dual GPU: Intel iGPU + NVIDIA RTX 3050
   # NOTE: For PRIME offload, run `lspci -nn | grep -E 'VGA|3D'` on the machine
   # and set hardware.nvidia.prime.offload.intelBusId / amdgpuBusId accordingly
