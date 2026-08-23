@@ -73,6 +73,31 @@
     motherboard = "intel";
   };
 
+  # Kill all RGB at boot: sets every controller the OpenRGB SDK sees to black
+  # (direct mode, color 000000). Runs after the openrgb server is up and
+  # retries while it starts listening. Firmware still lights LEDs during POST;
+  # only a BIOS toggle or physical disconnection can prevent that.
+  systemd.services.rgb-off = {
+    description = "Turn off all RGB via OpenRGB";
+    after = [ "openrgb.service" ];
+    wants = [ "openrgb.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      for _ in $(seq 1 30); do
+        if ${pkgs.openrgb}/bin/openrgb --client 127.0.0.1:6742 --mode direct --color 000000; then
+          exit 0
+        fi
+        sleep 1
+      done
+      echo "openrgb server unreachable, could not disable RGB" >&2
+      exit 1
+    '';
+  };
+
   # Software fan control (lm_sensors fancontrol). Requires a config generated
   # on-machine once the it87 driver exposes PWM: run `sudo pwmconfig` and paste
   # its output into `hardware.fancontrol.config` below, then flip enable.
