@@ -21,6 +21,8 @@
   # B660) never completes a usable resume under s2idle; the firmware default
   # `deep` (S3) suspends/resumes cleanly and honours USB keyboard/mouse wake.
 
+  boot.kernelParams = [ "i915.enable_dc=0" ];
+
   # Dual GPU: Intel iGPU + NVIDIA RTX 3050
   # NOTE: For PRIME offload, run `lspci -nn | grep -E 'VGA|3D'` on the machine
   # and set hardware.nvidia.prime.offload.intelBusId / amdgpuBusId accordingly

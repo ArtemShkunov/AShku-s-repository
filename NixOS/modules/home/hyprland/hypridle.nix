@@ -12,7 +12,8 @@
         # экран будет блокироваться независимо от того, как вызван сон.
         before_sleep_cmd = "loginctl lock-session";
         # Чтобы монитор не приходилось "будить" двойным нажатием клавиши.
-        after_sleep_cmd = "hyprctl dispatch 'hl.dsp.dpms(\"on\")'";
+        after_sleep_cmd = "hyprctl dispatch 'hl.dsp.dpms(\"off\")'; sleep 2; "
+          + "hyprctl dispatch 'hl.dsp.dpms(\"on\")'";
         ignore_dbus_inhibit = false;
       };
 
