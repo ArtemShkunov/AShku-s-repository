@@ -17,7 +17,7 @@ let
             exec systemctl reboot;;
         "⏾ Suspend")
             exec systemctl suspend;;
-        " Lock")
+        "  Lock")
             hyprlock;;
         "󰗽 Exit")
             hyprctl dispatch 'hl.dsp.exit()';;
@@ -70,7 +70,15 @@ let
 
     [ "$chosen_index" -lt 0 ] && exit 0
 
-    hyprctl switchxkblayout current "$chosen_index"
+    # Переключаем раскладку на ВСЕХ клавиатурах, а не только на "current":
+    # у одной физической клавиатуры может быть несколько input-устройств,
+    # и waybar слушает события конкретного имени. Синхронизация всех
+    # гарантирует обновление индикатора независимо от того, какое устройство
+    # Hyprland считает активным. Ошибки по псевдоклавиатурам игнорируем.
+    while IFS= read -r kb; do
+        [ -z "$kb" ] && continue
+        hyprctl switchxkblayout "$kb" "$chosen_index" >/dev/null 2>&1 || true
+    done < <(hyprctl devices -j | jq -r '.keyboards[].name')
   '';
 in
 {
@@ -125,7 +133,7 @@ in
 
     # Кнопка Wofi с позиционированием под левым краем панели
     "custom/wofi" = {
-      format = " ";
+      format = "";
       on-click = "wofi -L 8 --show drun --location top_left --xoffset 16 --yoffset 45";
       tooltip = false;
     };

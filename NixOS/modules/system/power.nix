@@ -5,7 +5,9 @@
   # and hubs have `power/wakeup = disabled`, which blocks every downstream USB
   # device from waking the system; internal laptop keyboards/touchpads live on
   # parent devices (i2c/serio) whose wakeup is also off. Walk the sysfs tree and
-  # turn wakeup on for all input devices and the whole USB chain.
+  # turn wakeup on for all input devices, the whole USB chain, and the ACPI
+  # PS/2 entries. No RemainAfterExit: the unit must re-run before every suspend
+  # (suspend.target), since some drivers clear their wakeup flag on unbind.
   systemd.services.enable-wakeup = {
     description = "Enable wakeup on input and USB devices";
     script = ''
@@ -24,10 +26,16 @@
           echo enabled > "$dev/power/wakeup" 2>/dev/null || true
         fi
       done
+      # PS/2 ports are wired through ACPI; writing to /proc/acpi/wakeup
+      # toggles, so flip only entries that are currently disabled.
+      for name in PS2K PS2M KBD; do
+        if grep -q "^$name[[:space:]].*disabled" /proc/acpi/wakeup 2>/dev/null; then
+          echo "$name" > /proc/acpi/wakeup 2>/dev/null || true
+        fi
+      done
     '';
     serviceConfig = {
       Type = "oneshot";
-      RemainAfterExit = true;
     };
     wantedBy = [
       "multi-user.target"

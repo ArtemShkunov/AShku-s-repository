@@ -10,8 +10,9 @@
     scale = "1";
   };
 
-  programs.waybar.settings.mainBar."hyprland/language".keyboard-name =
-    "company--usb-device--keyboard";
+  # Должно совпадать с клавиатурой, которую Hyprland помечает как main
+  # (см. `hyprctl devices`), иначе индикатор раскладки в waybar не обновляется.
+  programs.waybar.settings.mainBar."hyprland/language".keyboard-name = "company--usb-device-";
 
   # Dual GPU: NVIDIA RTX 3050 + Intel iGPU
   wayland.windowManager.hyprland.settings.env = [
