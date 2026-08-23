@@ -21,7 +21,8 @@
 
     # Desktop (Hyprland)
     ../modules/home/hyprland/hyprland.nix
-    ../modules/home/hyprland/waybar.nix
+    # Waybar подключается per-host: waybar-desktop.nix / waybar-laptop.nix
+    # импортируются из hosts/<host>/home.nix, а не отсюда.
     ../modules/home/hyprland/wofi.nix
     ../modules/home/hyprland/mako.nix
     ../modules/home/hyprland/hyprlock.nix

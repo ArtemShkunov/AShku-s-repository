@@ -4,6 +4,10 @@
 # on this machine's display, input devices or peripherals lives here, NOT in
 # the shared modules. New machine → new home.nix.
 { pkgs, ... }: {
+  imports = [
+    ../../modules/home/hyprland/waybar-laptop.nix
+  ];
+
   # This machine's display: resolution / refresh / scale.
   wayland.windowManager.hyprland.settings.monitor = {
     output = "eDP-1";
