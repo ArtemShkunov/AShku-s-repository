@@ -58,17 +58,7 @@ in
       # Яркость
       backlight = {
         format = "{icon} {percent}%";
-        format-icons = [
-          ""
-          ""
-          ""
-          ""
-          ""
-          ""
-          ""
-          ""
-          ""
-        ];
+        format-icons = ["" "" "" "" "" "" "" "" ""];
         on-click = "${brightnessMenu}/bin/brightnessmenu";
         tooltip = false;
       };
@@ -81,14 +71,8 @@ in
         };
         format = "{icon} {capacity}%";
         format-charging = "󰂄 {capacity}%";
-        format-plugged = " {capacity}%";
-        format-icons = [
-          " "
-          " "
-          " "
-          " "
-          " "
-        ];
+        format-plugged = " {capacity}%";
+        format-icons = ["" "" "" "" ""];
       };
     };
 

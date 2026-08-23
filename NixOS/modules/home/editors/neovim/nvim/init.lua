@@ -64,6 +64,9 @@ vim.opt.rtp:prepend(plugin_paths["lazy-nvim"])
 require("lazy").setup("plugins", {
   -- Все плагины уже установлены Nix'ом, lazy.nvim не должен
   -- пытаться их скачивать или обновлять
+
+  pkg = { enabled = false },   -- stop injecting bundled lazy.lua/rockspec specs (v11 feature)
+  rocks = { enabled = false }, -- no luarocks/hererocks needed; all plugins come from Nix
   install = { missing = false },
   checker = { enabled = false },
   change_detection = { notify = false },

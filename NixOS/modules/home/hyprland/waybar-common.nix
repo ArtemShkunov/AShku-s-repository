@@ -8,16 +8,16 @@
 let
   # Скрипт для кастомного меню питания через wofi с позиционированием в верхнем правом углу
   powerMenu = pkgs.writeShellScriptBin "powermenu" ''
-    entries="⏻ Power off\n⟳ Reboot\n⏾ Suspend\n Lock\n󰗽 Exit"
+    entries=" Power off\n Reboot\n⏾ Suspend\n Lock\n󰗽 Exit"
     selected=$(echo -e "$entries" | wofi -L 6 --dmenu --prompt "Power" --location top_right --xoffset -16 --yoffset 45 --width 250 --height 250)
     case $selected in
-        "⏻ Power off")
+        " Power off")
             exec systemctl poweroff -i;;
-        "⟳ Reboot")
+        " Reboot")
             exec systemctl reboot;;
         "⏾ Suspend")
             exec systemctl suspend;;
-        " Lock")
+        " Lock")
             hyprlock;;
         "󰗽 Exit")
             hyprctl dispatch 'hl.dsp.exit()';;
@@ -125,7 +125,7 @@ in
 
     # Кнопка Wofi с позиционированием под левым краем панели
     "custom/wofi" = {
-      format = "";
+      format = " ";
       on-click = "wofi -L 8 --show drun --location top_left --xoffset 16 --yoffset 45";
       tooltip = false;
     };
@@ -195,9 +195,9 @@ in
       format-muted = "󰖁 Muted";
       format-icons = {
         default = [
-          " " # Тихо
-          " " # Средне
-          " " # Громко
+          " " # Тихо
+          " " # Средне
+          " " # Громко
         ];
       };
       on-click = "kitty -e wiremix";
@@ -206,8 +206,8 @@ in
     # Микрофон
     "pulseaudio#microphone" = {
       format = "{format_source}";
-      format-source = " {volume}%";
-      format-source-muted = "  Muted";
+      format-source = " {volume}%";
+      format-source-muted = "  Muted";
       on-click = "pamixer --default-source -t";
       on-click-right = "kitty -e wiremix";
     };
