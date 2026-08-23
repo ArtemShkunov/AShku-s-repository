@@ -1,4 +1,4 @@
-# Host entry point for honor-magicbook-x16-plus.
+# Host entry point for Desktop.
 #
 # A host = hardware-configuration.nix (generated) + device.nix (machine
 # specifics) + the shared system modules. Everything else in the repo is
