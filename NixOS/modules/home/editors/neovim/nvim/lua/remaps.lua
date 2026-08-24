@@ -38,5 +38,11 @@ vim.keymap.set("n", "<leader>lj", "<cmd>lprev<CR>zz")
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
 
--- Переключение проекта в tmux-sessionizer
-vim.keymap.set("n", "<C-f>", "<cmd>!tmux neww tmux-sessionizer<CR>")
+-- Переключение проекта через tmux-sessionx (вне tmux — только уведомление)
+vim.keymap.set("n", "<C-f>", function()
+  if vim.env.TMUX == nil then
+    vim.notify("tmux-sessionx: доступен только внутри tmux")
+    return
+  end
+  vim.cmd("!tmux-sessionx")
+end, { desc = "Переключить проект (tmux-sessionx)" })

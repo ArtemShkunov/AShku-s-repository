@@ -68,14 +68,14 @@
           fi
       }
 
-      # ---- Быстрый вызов tmux-sessionizer по Ctrl+f ----
-      tmux-sessionizer-widget() {
+      # ---- Быстрый вызов tmux-sessionx по Ctrl+f (вне tmux сам поднимает клиент) ----
+      tmux-sessionx-widget() {
           zle push-input
-          BUFFER="tmux-sessionizer"
+          BUFFER="tmux-sessionx"
           zle accept-line
       }
-      zle -N tmux-sessionizer-widget
-      bindkey '^f' tmux-sessionizer-widget
+      zle -N tmux-sessionx-widget
+      bindkey '^f' tmux-sessionx-widget
     '';
   };
 

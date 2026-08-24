@@ -2,7 +2,12 @@
 #
 # Status-bar colors come from theme.colors; all the keybinding/plugin logic
 # is theming-free.
-{ pkgs, theme, ... }:
+{
+  pkgs,
+  config,
+  theme,
+  ...
+}:
 
 let
   # Диагностика восстановления процессов tmux-resurrect: хуки логируют
@@ -27,8 +32,55 @@ let
       fi
     } >> "$log"
   '';
+
+  # Путь к скрипту плагина. ВАЖНО: nixpkgs кладёт плагин в
+  # share/tmux-plugins/<pluginName>, где pluginName = "sessionx"
+  # (без префикса "tmux-"), поэтому сегмент берём из .pluginName.
+  sessionxScript = "${pkgs.tmuxPlugins.tmux-sessionx}/share/tmux-plugins/${pkgs.tmuxPlugins.tmux-sessionx.pluginName}/scripts/sessionx.sh";
+
+  # Вотер для запуска ВНЕ tmux: он выполняется как команда панели сессии-
+  # лаунчера, поэтому у процесса есть и $TMUX, и pty — без них fzf-tmux не
+  # может привязать popup к клиенту (проверено: фоновый подшелл из обёртки
+  # рисует popup «в никуда»). Ждём attach до 10с, открываем popup, убираем
+  # лаунчер.
+  tmux-sessionx-wait = pkgs.writeShellScript "tmux-sessionx-wait" ''
+    launch="_sessionx-launch"
+    n=0
+    until [[ -n $(${pkgs.tmux}/bin/tmux list-clients -t "$launch" 2> /dev/null) ]]; do
+      n=$((n + 1))
+      if [ "$n" -gt 200 ]; then
+        ${pkgs.tmux}/bin/tmux kill-session -t "$launch" 2> /dev/null
+        exit 0
+      fi
+      ${pkgs.coreutils}/bin/sleep 0.05
+    done
+    "${sessionxScript}"
+    ${pkgs.tmux}/bin/tmux kill-session -t "$launch" 2> /dev/null
+  '';
+
+  # Обёртка для вызова popup-менеджера сессий tmux-sessionx.
+  #
+  # Внутри tmux просто запускаем скрипт плагина. Вне tmux sessionx не может
+  # нарисовать popup (display-popup требует клиента), поэтому обёртка создаёт
+  # одноразовую сессию-лаунчер (её панель запускает tmux-sessionx-wait),
+  # аттачится к ней и получает popup поверх себя: выбор проекта делает
+  # switch-client, и клиент остаётся в tmux уже в выбранной сессии; Esc убивает
+  # лаунчер и возвращает в голый шелл.
+  tmux-sessionx = pkgs.writeShellScriptBin "tmux-sessionx" ''
+    if [[ -n "''${TMUX:-}" ]]; then
+      exec "${sessionxScript}"
+    fi
+
+    launch="_sessionx-launch"
+    ${pkgs.tmux}/bin/tmux kill-session -t "$launch" 2> /dev/null
+    ${pkgs.tmux}/bin/tmux new-session -d -s "$launch" -c "''${PWD:-$HOME}" "${tmux-sessionx-wait}"
+
+    exec ${pkgs.tmux}/bin/tmux attach -t "$launch"
+  '';
 in
 {
+  home.packages = [ tmux-sessionx ];
+
   programs.tmux = {
     enable = true;
     package = pkgs.tmux;
@@ -71,6 +123,10 @@ in
         plugin = tmuxPlugins.tmux-sessionx;
         extraConfig = ''
           set -g @sessionx-bind 'o'
+          # Список каталогов для создания новых сессий (замена поведения
+          # старого tmux-sessionizer): подкаталоги ~/Projects попадают в popup.
+          set -g @sessionx-custom-paths '${config.home.homeDirectory}/Projects'
+          set -g @sessionx-custom-paths-subdirectories 'true'
         '';
       }
     ];
@@ -113,7 +169,7 @@ in
 
       bind r source-file ~/.config/tmux/tmux.conf \; display "Config reloaded!"
 
-      bind-key -r f run-shell "tmux neww tmux-sessionizer"
+      bind-key -r f run-shell "${sessionxScript}"
 
       # ---- Статус-бар: стиль catppuccin-tmux (omerxx), цвета из theme ----
       # Скруглённые сегменты: слева сессия, окна с номером-плашкой справа,

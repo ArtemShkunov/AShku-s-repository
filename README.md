@@ -78,7 +78,7 @@ NixOS/
         ├── terminal/
         │   ├── kitty.nix            #   терминал
         │   ├── tmux.nix             #   tmux (клавиши/плагины/статус-бар)
-        │   └── sessionizer.nix      #   tmux-sessionizer + fzf
+        │   └── sessionizer.nix      #   fzf (+ скрипт tmux-sessionizer)
         ├── editors/
         │   ├── git.nix              #   git
         │   └── neovim/              #   neovim + LSP/инструменты
@@ -230,7 +230,7 @@ Imported by every host and independent of hardware:
 
 - `shell/` — `zsh.nix` (сам шелл) и `oh-my-posh.nix` (промпт) разделены:
   промпт можно использовать с любым шеллом.
-- `terminal/` — kitty, tmux (клавиши/плагины/статус-бар), sessionizer.
+- `terminal/` — kitty, tmux (клавиши/плагины/статус-бар, sessionx).
 - `editors/` — git; `neovim/` — neovim со своими LSP/инструментами
   (внутри — `nvim/` с Lua-конфигом).
 - `hyprland/` — каждый компонент десктопа отдельным файлом: сам WM,
@@ -246,7 +246,7 @@ live together:
 
 - `shell/` — `zsh.nix` (the shell) and `oh-my-posh.nix` (the prompt) are
   separated: the prompt can be used with any shell.
-- `terminal/` — kitty, tmux (keys/plugins/status bar), sessionizer.
+- `terminal/` — kitty, tmux (keys/plugins/status bar, sessionx).
 - `editors/` — git; `neovim/` — neovim with its LSP/tooling (inside —
   `nvim/` with the Lua config).
 - `hyprland/` — each desktop component is its own file: the WM itself,
