@@ -26,7 +26,6 @@ let
     gitsigns-nvim = gitsigns-nvim;
 
     lualine-nvim = lualine-nvim;
-    bufferline-nvim = bufferline-nvim;
     which-key-nvim = which-key-nvim;
 
     nvim-autopairs = nvim-autopairs;
@@ -135,5 +134,8 @@ in
     # Для копирования
     wl-clipboard
     xclip
+
+    # external dependency for treesitter
+    fd
   ];
 }

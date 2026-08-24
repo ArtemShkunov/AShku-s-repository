@@ -15,22 +15,6 @@ return {
   },
 
   {
-    "bufferline-nvim",
-    dir = plugin_path("bufferline-nvim"),
-    name = "bufferline-nvim",
-    event = "VeryLazy",
-    dependencies = {
-      { "nvim-web-devicons", dir = plugin_path("nvim-web-devicons"), name = "nvim-web-devicons" },
-      "rose-pine",
-    },
-    config = function()
-      require("bufferline").setup({
-        highlights = require("rose-pine.plugins.bufferline"),
-      })
-    end,
-  },
-
-  {
     "which-key-nvim",
     dir = plugin_path("which-key-nvim"),
     name = "which-key-nvim",
