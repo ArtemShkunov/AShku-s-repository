@@ -18,4 +18,30 @@ return {
       })
     end,
   },
+
+  {
+    "autolist-nvim",
+    dir = plugin_path("autolist-nvim"),
+    name = "autolist-nvim",
+    ft = { "markdown", "text", "gitcommit" },
+    config = function()
+      require("autolist").setup({})
+    end,
+  },
+
+  {
+    "vim-table-mode",
+    dir = plugin_path("vim-table-mode"),
+    name = "vim-table-mode",
+    ft = { "markdown" },
+    config = function()
+      vim.g.table_mode_disable_tableize_mappings = 0
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "markdown",
+        callback = function()
+          vim.cmd("TableModeEnable")
+        end,
+      })
+    end,
+  },
 }

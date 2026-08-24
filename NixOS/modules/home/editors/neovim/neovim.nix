@@ -61,6 +61,9 @@ let
     lazygit-nvim = lazygit-nvim;
 
     render-markdown-nvim = render-markdown-nvim;
+
+    autolist-nvim = autolist-nvim;
+    vim-table-mode = vim-table-mode;
   };
 
   # Генерируем Lua-таблицу вида:
@@ -125,6 +128,9 @@ in
 
     # --- Markdown ---
     marksman
+
+    # tree-sitter CLI — нужен для :checkhealth nvim-treesitter (и TSInstall при необходимости)
+    tree-sitter
 
     # Для копирования
     wl-clipboard

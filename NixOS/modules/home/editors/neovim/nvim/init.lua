@@ -3,6 +3,14 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+-- Отключаем провайдеры, которые не используются (нет плагинов на
+-- node/ruby/perl/python), чтобы :checkhealth не показывал лишних
+-- warning/error про отсутствующие интерпретаторы.
+vim.g.loaded_node_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python3_provider = 0
+
 
 local opt = vim.opt
 

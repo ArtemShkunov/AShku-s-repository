@@ -35,6 +35,7 @@ return {
             -- clangd будет спрашивать реальный компилятор из PATH о его системных
             -- include-путях и использовать их.
             vim.lsp.config("clangd", {
+                filetypes = { "c", "cpp", "objc", "objcpp" },
                 cmd = {
                     "clangd",
                     "--query-driver=/nix/store/**/bin/*",
@@ -53,11 +54,21 @@ return {
                 "marksman", -- Markdown
             })
 
+            -- Убираем составные filetype'ы (c.doxygen, cpp.doxygen,
+            -- markdown.mdx), которых нет в рантайме — иначе :checkhealth
+            -- vim.lsp ругается "Unknown filetype".
+            vim.lsp.config("marksman", {
+                filetypes = { "markdown" },
+            })
+
             vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
             vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
             vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, {})
             vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
             vim.keymap.set("n", "gr", vim.lsp.buf.references, {})
+            vim.keymap.set({ "n", "v" }, "<leader>fmt", function()
+                vim.lsp.buf.format({ async = true })
+            end, { desc = "Format buffer" })
         end,
     },
 
@@ -124,7 +135,9 @@ return {
             null_ls.setup({
                 sources = {
                     -- C / C++
-                    null_ls.builtins.formatting.clang_format,
+                    null_ls.builtins.formatting.clang_format.with({
+                        extra_args = { "--style=Microsoft" },
+                    }),
                     null_ls.builtins.diagnostics.cppcheck,
 
                     -- Lua
