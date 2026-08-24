@@ -78,4 +78,10 @@
       bindkey '^f' tmux-sessionizer-widget
     '';
   };
+
+  # zoxide — smarter `cd`; provides the z/zi commands via --cmd z.
+  programs.zoxide = {
+    enable = true;
+    options = [ "--cmd z" ];
+  };
 }

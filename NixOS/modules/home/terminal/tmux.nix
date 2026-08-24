@@ -22,6 +22,13 @@
           set -g @continuum-save-interval '5'
         '';
       }
+      {
+        # Fuzzy session manager popup: switch/create/rename/kill sessions.
+        plugin = tmuxPlugins.tmux-sessionx;
+        extraConfig = ''
+          set -g @sessionx-bind 'o'
+        '';
+      }
     ];
 
     extraConfig = ''
@@ -64,22 +71,36 @@
 
       bind-key -r f run-shell "tmux neww tmux-sessionizer"
 
-      # ---- Статус-бар в цветах темы ----
-
+      # ---- Статус-бар: стиль catppuccin-tmux (omerxx), цвета из theme ----
+      # Скруглённые сегменты: слева сессия, окна с номером-плашкой справа,
+      # справа модули (директория / дата-время / хост).
       set -g status-position top
+      set -g status-justify left
       set -g status-style "bg=#${theme.colors.bg},fg=#${theme.colors.fg}"
-      set -g status-left-length 40
-      set -g status-left "#[fg=#${theme.colors.bg},bg=#${theme.colors.accent},bold]  #S #[fg=#${theme.colors.accent},bg=#${theme.colors.bg}]"
-      setw -g window-status-current-format "#[fg=#${theme.colors.bg},bg=#${theme.colors.accent-bright},bold] #I->#W #[fg=#${theme.colors.accent-bright},bg=#${theme.colors.bg}]"
-      setw -g window-status-format " #I->#W "
-
+      set -g status-left-length 100
       set -g status-right-length 100
-      set -g status-right "#[fg=#${theme.colors.fg},bg=#${theme.colors.bg}]   #{b:pane_current_path} #[fg=#${theme.colors.grey},bg=#${theme.colors.bg}]| #[fg=#${theme.colors.fg},bg=#${theme.colors.bg}] %d.%m %H:%M #[fg=#${theme.colors.grey},bg=#${theme.colors.bg}]| #[fg=#${theme.colors.fg},bg=#${theme.colors.bg}] #h #[fg=#${theme.colors.grey},bg=#${theme.colors.bg}]| #[fg=#${theme.colors.fg},bg=#${theme.colors.bg}] #(whoami) "
 
-      set -g pane-border-style "fg=#${theme.colors.bg}"
-      set -g pane-active-border-style "fg=#${theme.colors.accent}"
+      # Сессия: чип зелёный, при зажатом префиксе краснеет
+      set -g status-left "#[fg=#{?client_prefix,#${theme.colors.error},#${theme.colors.success}},bg=#${theme.colors.bg}]#[fg=#${theme.colors.bg},bg=#{?client_prefix,#${theme.colors.error},#${theme.colors.success}}] #[fg=#${theme.colors.fg},bg=#${theme.colors.surface}] #S#[fg=#${theme.colors.surface},bg=#${theme.colors.bg}]"
 
-      set -g message-style "bg=#${theme.colors.accent},fg=#${theme.colors.bg}"
+      setw -g window-status-separator ""
+      setw -g window-status-style "fg=#${theme.colors.fg},bg=#${theme.colors.bg},none"
+      setw -g window-status-activity-style "fg=#${theme.colors.fg},bg=#${theme.colors.bg},none"
+
+      # Неактивное окно: капсула surface + синяя плашка номера справа
+      setw -g window-status-format "#[fg=#${theme.colors.surface},bg=#${theme.colors.bg},nobold,nounderscore,noitalics]#[fg=#${theme.colors.fg},bg=#${theme.colors.surface}]#W#[fg=#${theme.colors.blue},bg=#${theme.colors.surface}] █#[fg=#${theme.colors.surface},bg=#${theme.colors.blue}]#I#[fg=#${theme.colors.blue},bg=#${theme.colors.bg}] "
+      # Активное окно: имя на фоне бара + оранжевая плашка номера, индикатор зума
+      setw -g window-status-current-format "#[fg=#${theme.colors.fg},bg=#${theme.colors.bg}]#W#{?window_zoomed_flag,(,)}#[fg=#${theme.colors.accent},bg=#${theme.colors.bg}] █#[fg=#${theme.colors.bg},bg=#${theme.colors.accent}]#I#[fg=#${theme.colors.accent},bg=#${theme.colors.bg}] "
+
+      # Модули справа: иконка-чип + серый сегмент текста
+      set -g status-right "#[fg=#${theme.colors.magenta},bg=#${theme.colors.bg}]#[fg=#${theme.colors.bg},bg=#${theme.colors.magenta}] #[fg=#${theme.colors.fg},bg=#${theme.colors.surface}] #{b:pane_current_path}#[fg=#${theme.colors.surface},bg=#${theme.colors.bg}]#[fg=#${theme.colors.accent-bright},bg=#${theme.colors.bg}]#[fg=#${theme.colors.bg},bg=#${theme.colors.accent-bright}] #[fg=#${theme.colors.fg},bg=#${theme.colors.surface}] %d.%m %H:%M#[fg=#${theme.colors.surface},bg=#${theme.colors.bg}]#[fg=#${theme.colors.blue},bg=#${theme.colors.bg}]#[fg=#${theme.colors.bg},bg=#${theme.colors.blue}] #[fg=#${theme.colors.fg},bg=#${theme.colors.surface}] #h#[fg=#${theme.colors.surface},bg=#${theme.colors.bg}]"
+
+      set -g pane-border-style "fg=#${theme.colors.surface}"
+      set -g pane-active-border-style "fg=#${theme.colors.blue}"
+
+      set -g message-style "fg=#${theme.colors.cyan},bg=#${theme.colors.surface},align=centre"
+      set -g message-command-style "fg=#${theme.colors.cyan},bg=#${theme.colors.surface},align=centre"
+      setw -g mode-style "fg=#${theme.colors.magenta},bg=#${theme.colors.grey},bold"
 
       # ---- Автосохранение сессии при отключении (prefix+d и любой detach) ----
       set-hook -g client-detached 'run-shell -b "${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/scripts/save.sh"'

@@ -1,5 +1,17 @@
 return {
   {
+    "nvim-web-devicons",
+    dir = plugin_path("nvim-web-devicons"),
+    name = "nvim-web-devicons",
+    lazy = false,
+    config = function()
+      require("nvim-web-devicons").setup({
+        default = true,
+      })
+    end,
+  },
+
+  {
     "lualine-nvim",
     dir = plugin_path("lualine-nvim"),
     name = "lualine-nvim",

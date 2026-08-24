@@ -58,6 +58,7 @@
     "gigabyte_wmi" # board hwmon (temps / voltages / fans via WMI)
     "it87" # ITE Super-I/O on the B660 DS3H — exposes fan PWM for fancontrol
     "uvcvideo" # Logitech UVC webcam (046d:081b)
+    "snd_hda_intel" # NVIDIA HDMI/DP audio codec (monitor built-in speakers)
   ];
 
   # Motherboard drivers: Gigabyte B660 DS3H DDR4.
@@ -65,6 +66,25 @@
     lm_sensors # `sensors` CLI for board/fan/voltage readout
     v4l-utils # webcam / V4L2 utilities
   ];
+
+  # ─── Webcam (Logitech UVC 046d:081b) ───
+  # The UVC device is reached by Wayland apps (Firefox/Chrome/etc.) through the
+  # camera portal provided by xdg-desktop-portal-hyprland (enabled in the
+  # shared hyprland module) on top of the PipeWire service (shared audio.nix).
+  # No separate option exists in this nixpkgs; the explicit piece of hardware
+  # support here is the device permission rule below.
+  #
+  # Explicit device permissions for the Logitech webcam: video group, rw
+  # access, and a stable /dev/video-logitech symlink.
+  services.udev.extraRules = ''
+    SUBSYSTEM=="video4linux", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="081b", GROUP="video", MODE="0664", SYMLINK+="video-logitech"
+  '';
+
+  # ─── Monitor built-in speakers (DisplayPort audio) ───
+  # The RTX 3050 drives the DP-1 monitor, whose built-in speakers appear as a
+  # HDMI/DP audio sink via snd_hda_intel (loaded above). PipeWire enumerates it
+  # automatically; nothing here forces it as the default sink — it's just
+  # selectable alongside the onboard audio. No extra config required.
 
   # RGB lighting control (OpenRGB). Auto-loads i2c-dev + i2c-i801 for the
   # Gigabyte RGB Fusion controller.
