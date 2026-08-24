@@ -77,23 +77,23 @@
       set -g status-position top
       set -g status-justify left
       set -g status-style "bg=#${theme.colors.bg},fg=#${theme.colors.fg}"
-      set -g status-left-length 100
-      set -g status-right-length 100
+      set -g status-left-length 150
+      set -g status-right-length 150
 
-      # Сессия: чип зелёный, при зажатом префиксе краснеет
-      set -g status-left "#[fg=#{?client_prefix,#${theme.colors.error},#${theme.colors.success}},bg=#${theme.colors.bg}]#[fg=#${theme.colors.bg},bg=#{?client_prefix,#${theme.colors.error},#${theme.colors.success}}] #[fg=#${theme.colors.fg},bg=#${theme.colors.surface}] #S#[fg=#${theme.colors.surface},bg=#${theme.colors.bg}]"
+      # Сессия: пилюля [ ][иконка][ #S ], зелёная/красная при зажатом префиксе
+      set -g status-left "#[fg=#{?client_prefix,#${theme.colors.error},#${theme.colors.success}},bg=#${theme.colors.bg},nobold,nounderscore,noitalics] #[fg=#${theme.colors.bg},bg=#{?client_prefix,#${theme.colors.error},#${theme.colors.success}},nobold,nounderscore,noitalics] #[fg=#${theme.colors.fg},bg=#${theme.colors.surface}] #S#[fg=#${theme.colors.surface},bg=#${theme.colors.bg},nobold,nounderscore,noitalics] "
 
       setw -g window-status-separator ""
       setw -g window-status-style "fg=#${theme.colors.fg},bg=#${theme.colors.bg},none"
       setw -g window-status-activity-style "fg=#${theme.colors.fg},bg=#${theme.colors.bg},none"
 
-      # Неактивное окно: капсула surface + синяя плашка номера справа
-      setw -g window-status-format "#[fg=#${theme.colors.surface},bg=#${theme.colors.bg},nobold,nounderscore,noitalics]#[fg=#${theme.colors.fg},bg=#${theme.colors.surface}]#W#[fg=#${theme.colors.blue},bg=#${theme.colors.surface}] █#[fg=#${theme.colors.surface},bg=#${theme.colors.blue}]#I#[fg=#${theme.colors.blue},bg=#${theme.colors.bg}] "
-      # Активное окно: имя на фоне бара + оранжевая плашка номера, индикатор зума
-      setw -g window-status-current-format "#[fg=#${theme.colors.fg},bg=#${theme.colors.bg}]#W#{?window_zoomed_flag,(,)}#[fg=#${theme.colors.accent},bg=#${theme.colors.bg}] █#[fg=#${theme.colors.bg},bg=#${theme.colors.accent}]#I#[fg=#${theme.colors.accent},bg=#${theme.colors.bg}] "
+      # Неактивное окно: одна пилюля [ имя █ номер ], закрыта с обеих сторон
+      setw -g window-status-format "#[fg=#${theme.colors.surface},bg=#${theme.colors.bg},nobold,nounderscore,noitalics]#[fg=#${theme.colors.fg},bg=#${theme.colors.surface}]#W#[fg=#${theme.colors.blue},bg=#${theme.colors.surface},nobold,nounderscore,noitalics] █#[fg=#${theme.colors.surface},bg=#${theme.colors.blue}]#I#[fg=#${theme.colors.blue},bg=#${theme.colors.bg}] "
+      # Активное окно: левый край слит с фоном бара (fg=bg=bg — капсула "открыта"), номер — акцентный
+      setw -g window-status-current-format "#[fg=#${theme.colors.bg},bg=#${theme.colors.bg},nobold,nounderscore,noitalics]#[fg=#${theme.colors.fg},bg=#${theme.colors.bg}]#W#{?window_zoomed_flag,(),}#[fg=#${theme.colors.accent},bg=#${theme.colors.bg},nobold,nounderscore,noitalics] █#[fg=#${theme.colors.bg},bg=#${theme.colors.accent}]#I#[fg=#${theme.colors.accent},bg=#${theme.colors.bg}] "
 
-      # Модули справа: иконка-чип + серый сегмент текста
-      set -g status-right "#[fg=#${theme.colors.magenta},bg=#${theme.colors.bg}]#[fg=#${theme.colors.bg},bg=#${theme.colors.magenta}] #[fg=#${theme.colors.fg},bg=#${theme.colors.surface}] #{b:pane_current_path}#[fg=#${theme.colors.surface},bg=#${theme.colors.bg}]#[fg=#${theme.colors.accent-bright},bg=#${theme.colors.bg}]#[fg=#${theme.colors.bg},bg=#${theme.colors.accent-bright}] #[fg=#${theme.colors.fg},bg=#${theme.colors.surface}] %d.%m %H:%M#[fg=#${theme.colors.surface},bg=#${theme.colors.bg}]#[fg=#${theme.colors.blue},bg=#${theme.colors.bg}]#[fg=#${theme.colors.bg},bg=#${theme.colors.blue}] #[fg=#${theme.colors.fg},bg=#${theme.colors.surface}] #h#[fg=#${theme.colors.surface},bg=#${theme.colors.bg}]"
+      # Модули справа: те же пилюли [ иконка текст ]
+      set -g status-right "#[fg=#${theme.colors.magenta},bg=#${theme.colors.bg},nobold,nounderscore,noitalics] #[fg=#${theme.colors.bg},bg=#${theme.colors.magenta},nobold,nounderscore,noitalics] #[fg=#${theme.colors.fg},bg=#${theme.colors.surface}] #{b:pane_current_path}#[fg=#${theme.colors.surface},bg=#${theme.colors.bg},nobold,nounderscore,noitalics] #[fg=#${theme.colors.accent-bright},bg=#${theme.colors.bg},nobold,nounderscore,noitalics] #[fg=#${theme.colors.bg},bg=#${theme.colors.accent-bright},nobold,nounderscore,noitalics] #[fg=#${theme.colors.fg},bg=#${theme.colors.surface}] %d.%m %H:%M#[fg=#${theme.colors.surface},bg=#${theme.colors.bg},nobold,nounderscore,noitalics] #[fg=#${theme.colors.blue},bg=#${theme.colors.bg},nobold,nounderscore,noitalics] #[fg=#${theme.colors.bg},bg=#${theme.colors.blue},nobold,nounderscore,noitalics]󰇅 #[fg=#${theme.colors.fg},bg=#${theme.colors.surface}] #h#[fg=#${theme.colors.surface},bg=#${theme.colors.bg},nobold,nounderscore,noitalics] "
 
       set -g pane-border-style "fg=#${theme.colors.surface}"
       set -g pane-active-border-style "fg=#${theme.colors.blue}"
