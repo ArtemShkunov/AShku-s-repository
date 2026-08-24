@@ -65,6 +65,8 @@
       bind-key -r f run-shell "tmux neww tmux-sessionizer"
 
       # ---- Статус-бар в цветах темы ----
+
+      set -g status-position top
       set -g status-style "bg=#${theme.colors.bg},fg=#${theme.colors.fg}"
       set -g status-left-length 40
       set -g status-left "#[fg=#${theme.colors.bg},bg=#${theme.colors.accent},bold]  #S #[fg=#${theme.colors.accent},bg=#${theme.colors.bg}]"
