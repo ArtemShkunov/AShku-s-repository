@@ -2,7 +2,33 @@
 #
 # Status-bar colors come from theme.colors; all the keybinding/plugin logic
 # is theming-free.
-{ pkgs, theme, ... }: {
+{ pkgs, theme, ... }:
+
+let
+  # Диагностика восстановления процессов tmux-resurrect: хуки логируют
+  # состояние на каждой фазе restore (какой last-файл читается, что лежит
+  # в @resurrect-processes, какие команды вообще считаются восстанавли-
+  # ваемыми) — чтобы поймать момент, где процессы перестают восстанавли-
+  # ваться.
+  resurrect-debug = pkgs.writeShellScriptBin "resurrect-debug" ''
+    phase="''${1:-unknown}"
+    log_dir="$HOME/.cache/resurrect"
+    log="$log_dir/debug.log"
+    last="$HOME/.tmux/resurrect/last"
+    mkdir -p "$log_dir"
+    {
+      printf '[%s] phase=%s\n' "$(${pkgs.coreutils}/bin/date '+%F %T.%N')" "$phase"
+      printf '  last=%s\n' "$(${pkgs.coreutils}/bin/readlink "$last" 2>/dev/null || echo missing)"
+      printf '  processes_opt=[%s]\n' "$(${pkgs.tmux}/bin/tmux show-options -gv @resurrect-processes 2>/dev/null)"
+      printf '  panes_now=%s\n' "$(${pkgs.tmux}/bin/tmux list-panes -a 2>/dev/null | ${pkgs.coreutils}/bin/wc -l)"
+      if [ -f "$last" ]; then
+        ${pkgs.gawk}/bin/awk -F '\t' \
+          '$1 == "pane" && $11 !~ /^:$/ { printf "  restorable %s:%s.%s cmd=%s\n", $2, $3, $6, $11 }' "$last"
+      fi
+    } >> "$log"
+  '';
+in
+{
   programs.tmux = {
     enable = true;
     package = pkgs.tmux;
@@ -14,7 +40,25 @@
     keyMode = "vi";
 
     plugins = with pkgs; [
-      tmuxPlugins.resurrect
+      {
+        # Опции resurrect задаются ДО загрузки кода самих плагинов: continuum
+        # запускает авто-восстановление через 1 секунду после парсинга своей
+        # строки конфига, поэтому всё, что читается во время restore
+        # (@resurrect-processes и хуки ниже), должно быть выставлено раньше.
+        plugin = tmuxPlugins.resurrect;
+        extraConfig = ''
+          set -g @resurrect-capture-pane-contents 'on'
+          set -g @resurrect-strategy-nvim 'session'
+          # nvim в ps виден как полный /nix/store/... путь (wrapper делает exec), поэтому
+          # обычный матч по слову "nvim" не срабатывает — ~-регэксп ловит путь, а "->"
+          # переписывает команду обратно в голый `nvim`, чтобы сработала 'session'-стратегия.
+          set -g @resurrect-processes 'btop opencode "~nvim->nvim"'
+          # ВРЕМЕННО: диагностика фаз восстановления (см. ~/.cache/resurrect/debug.log)
+          set -g @resurrect-hook-pre-restore-all '${resurrect-debug}/bin/resurrect-debug pre-restore-all'
+          set -g @resurrect-hook-pre-restore-pane-processes '${resurrect-debug}/bin/resurrect-debug pre-pane-processes'
+          set -g @resurrect-hook-post-restore-all '${resurrect-debug}/bin/resurrect-debug post-restore-all'
+        '';
+      }
       {
         plugin = tmuxPlugins.continuum;
         extraConfig = ''

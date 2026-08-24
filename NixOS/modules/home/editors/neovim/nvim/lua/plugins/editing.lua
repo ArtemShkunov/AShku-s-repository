@@ -28,4 +28,14 @@ return {
       require("Comment").setup({})
     end,
   },
+
+  {
+    -- VimL-плагин без setup(): нужен загруженным на старте, чтобы
+    -- autocmd в init.lua видел :Obsession и автостартовал сессию для
+    -- tmux-resurrect (@resurrect-strategy-nvim 'session').
+    "vim-obsession",
+    dir = plugin_path("vim-obsession"),
+    name = "vim-obsession",
+    lazy = false,
+  },
 }

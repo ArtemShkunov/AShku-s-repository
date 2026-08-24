@@ -122,6 +122,34 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- Автостарт :Obsession — пишет Session.vim в cwd и держит его актуальным.
 -- Без этого tmux-resurrect (@resurrect-strategy-nvim 'session') не сможет
 -- восстановить nvim: ему просто нечего будет открывать через `nvim -S`.
+--
+-- Чтобы Session.vim не мусорил в репозиториях, он автоматически добавляется
+-- в .git/info/exclude — локальные игноры git: файлы не трогаем, .gitignore
+-- не меняем, работает даже там, где нет прав на коммиты.
+local function exclude_session_vim()
+  local git_dir = vim.fn.trim(vim.fn.system({ 'git', 'rev-parse', '--absolute-git-dir' }))
+  if vim.v.shell_error ~= 0 or git_dir == '' then
+    return -- не git-репозиторий — игнорировать нечего
+  end
+  local exclude = git_dir .. '/info/exclude'
+  vim.fn.mkdir(vim.fn.fnamemodify(exclude, ':h'), 'p')
+  local f = io.open(exclude, 'r')
+  local content = f and f:read('*a') or ''
+  if f then
+    f:close()
+  end
+  if not content:find('Session%.vim') then
+    local w = io.open(exclude, 'a')
+    if w then
+      if content ~= '' and content:sub(-1) ~= '\n' then
+        w:write('\n')
+      end
+      w:write('# nvim session file (added automatically by init.lua)\nSession.vim\n')
+      w:close()
+    end
+  end
+end
+
 vim.api.nvim_create_autocmd('VimEnter', {
   desc = 'Auto-start Obsession session tracking for tmux-resurrect',
   group = vim.api.nvim_create_augroup('obsession-autostart', { clear = true }),
@@ -130,7 +158,17 @@ vim.api.nvim_create_autocmd('VimEnter', {
     -- вызовов, где явное mksession может быть нежелательно
     if vim.fn.argc() <= 1 and vim.fn.exists(':Obsession') == 2 then
       vim.cmd('Obsession')
+      exclude_session_vim()
     end
   end,
+})
+
+-- Подстраховка: если Obsession запущен вручную (или сессия сохраняется
+-- после пересоздания), исключение всё равно проставится перед каждой записью.
+vim.api.nvim_create_autocmd('User', {
+  desc = 'Keep Session.vim out of git via .git/info/exclude',
+  group = vim.api.nvim_create_augroup('obsession-git-exclude', { clear = true }),
+  pattern = 'ObsessionPreSave',
+  callback = exclude_session_vim,
 })
 
