@@ -32,10 +32,12 @@
 
   # Desktop programs.
   programs.throne.enable = true;
-    programs.throne.tunMode.enable = true;
+  programs.throne.tunMode.enable = true;
   programs.firefox.enable = true;
 
   environment.systemPackages = with pkgs; [
+    unzip
+    unrar
     kdePackages.ark # archives
     mousepad # XFCE text editor
     ristretto # XFCE image viewer
