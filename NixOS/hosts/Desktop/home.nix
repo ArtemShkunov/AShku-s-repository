@@ -12,7 +12,7 @@
 
   # Должно совпадать с клавиатурой, которую Hyprland помечает как main
   # (см. `hyprctl devices`), иначе индикатор раскладки в waybar не обновляется.
-  programs.waybar.settings.mainBar."hyprland/language".keyboard-name = "company--usb-device-";
+  programs.waybar.settings.mainBar."hyprland/language".keyboard-name = "logitech-logig-mkeyboard";
 
   # Dual GPU: NVIDIA RTX 3050 + Intel iGPU
   wayland.windowManager.hyprland.settings.env = [
