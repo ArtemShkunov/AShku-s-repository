@@ -53,21 +53,24 @@ return {
           pythonPath = function()
             return "python3"
           end,
+          console = "integratedTerminal",
         },
       }
 
-      -- === C / C++: gdb (нужен GDB >= 14) ===
-      dap.adapters.gdb = {
-        id = "gdb",
-        type = "executable",
-        command = "gdb",
-        args = { "--quiet", "--interpreter=dap" },
+      -- === C / C++: CodeLLDB ===
+      dap.adapters.codelldb = {
+        type = "server",
+        port = 13000,
+        executable = {
+          command = "codelldb",
+          args = { "--port", "13000" },
+        },
       }
 
       dap.configurations.c = {
         {
-          name = "Run executable (GDB)",
-          type = "gdb",
+          name = "Launch executable (CodeLLDB)",
+          type = "codelldb",
           request = "launch",
           program = function()
             local path = vim.fn.input({
@@ -78,12 +81,13 @@ return {
             return (path and path ~= "") and path or dap.ABORT
           end,
           cwd = "${workspaceFolder}",
+          stopOnEntry = false,
         },
         {
-          name = "Attach to process (GDB)",
-          type = "gdb",
+          name = "Attach to process (CodeLLDB)",
+          type = "codelldb",
           request = "attach",
-          processId = require("dap.utils").pick_process,
+          pid = require("dap.utils").pick_process,
         },
       }
 

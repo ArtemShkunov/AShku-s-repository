@@ -1,6 +1,16 @@
 { config, pkgs, ... }:
 
 let
+  # CodeLLDB adapter binary (bundled inside the vscode extension)
+  codelldbWrapper = pkgs.runCommandLocal "codelldb" { } ''
+        mkdir -p $out/bin
+        cat > $out/bin/codelldb <<EOF
+    #!${pkgs.runtimeShell}
+    exec ${pkgs.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb "\$@"
+    EOF
+        chmod +x $out/bin/codelldb
+  '';
+
   # Список плагинов ОДИН РАЗ — используется и для установки через Nix,
   # и для генерации путей, которые скормим lazy.nvim.
   vimPlugins = with pkgs.vimPlugins; {
@@ -59,6 +69,8 @@ let
     nvim-nio = nvim-nio;
     lazygit-nvim = lazygit-nvim;
 
+    codelldb = codelldbWrapper;
+
     render-markdown-nvim = render-markdown-nvim;
 
     autolist-nvim = autolist-nvim;
@@ -104,6 +116,7 @@ in
     # --- C / C++ ---
     clang-tools
     cppcheck
+    codelldbWrapper
 
     # --- Python ---
     pyright
