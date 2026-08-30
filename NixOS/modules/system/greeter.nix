@@ -43,8 +43,32 @@
   # каталог с сессиями, который NixOS собирает для дисплей-менеджеров
   # (туда автоматически попадает hyprland.desktop благодаря
   # programs.hyprland.enable = true в configuration.nix).
-  systemd.services.greetd.environment.XDG_DATA_DIRS =
-    "${config.services.displayManager.sessionData.desktops}/share:/run/current-system/sw/share:/usr/share";
+  systemd.services.greetd.environment = {
+    XDG_DATA_DIRS = "${config.services.displayManager.sessionData.desktops}/share:/run/current-system/sw/share:/usr/share";
+
+    # Тот же курсор (тема + размер), что и в Hyprland (см. env в
+    # modules/home/hyprland/hyprland.nix) — cage/wlroots и GTK4 читают
+    # XCURSOR_THEME/XCURSOR_SIZE на Wayland так же, как это делает Hyprland.
+    XCURSOR_THEME = theme.cursor.name;
+    XCURSOR_SIZE = toString theme.cursor.size;
+  };
+
+  # greetd/cage can drop service env on the way into the session worker, so
+  # pass the cursor explicitly to the launcher too.
+  services.greetd.settings.default_session.command = lib.mkForce (
+    let
+      greetdLauncher = pkgs.writeShellScriptBin "greetd-regreet-launcher" ''
+        export XCURSOR_THEME=${theme.cursor.name}
+        export XCURSOR_SIZE=${toString theme.cursor.size}
+        export WLR_XCURSOR_THEME=${theme.cursor.name}
+        export WLR_XCURSOR_SIZE=${toString theme.cursor.size}
+
+        exec ${lib.getExe' pkgs.dbus "dbus-run-session"} \
+          ${lib.getExe pkgs.cage} -s -d -- ${lib.getExe pkgs.regreet}
+      '';
+    in
+    lib.getExe greetdLauncher
+  );
 
   services.displayManager.regreet = {
     enable = true;
@@ -61,9 +85,12 @@
       package = pkgs.yaru-theme;
     };
 
+    # Тот же курсор, что и в Hyprland-сессии (modules/home/theming.nix) —
+    # theme.cursor.name/package rose-pine-cursor, а не theme.gtk.cursorTheme
+    # (Adwaita), который использовался раньше только на экране входа.
     cursorTheme = {
-      name = theme.gtk.cursorTheme;
-      package = pkgs.adwaita-icon-theme;
+      name = theme.cursor.name;
+      package = pkgs.rose-pine-cursor;
     };
 
     font = {
