@@ -6,7 +6,7 @@
   services.printing.drivers = [
     pkgs.gutenprint
     pkgs.brlaser # Brother printers
-    pkgs.hplipWithPlugin # HP printers (requires unfree enabled)
+    pkgs.hplip # HP printers (requires unfree enabled; no proprietary plugin, avoids developers.hp.com fetch)
   ];
 
   # Printer settings GUI

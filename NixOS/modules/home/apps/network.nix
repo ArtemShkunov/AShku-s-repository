@@ -5,6 +5,5 @@
     bluetui # bluetooth TUI
     impala # network monitoring
     localsend # LAN file transfer
-    jocalsend # local-send companion
   ];
 }
