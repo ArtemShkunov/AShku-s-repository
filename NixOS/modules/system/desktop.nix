@@ -41,5 +41,6 @@
     kdePackages.ark # archives
     mousepad # XFCE text editor
     ristretto # XFCE image viewer
+    yazi
   ];
 }
