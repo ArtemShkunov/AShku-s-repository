@@ -53,7 +53,6 @@
     git # flakes and much more
     gparted
     ntfs3g
-    ventoy-full
   ];
 
   system.stateVersion = "26.05";
