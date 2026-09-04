@@ -6,6 +6,7 @@
     lazygit
     opencode
         opencode-desktop
+    poppler-utils
   ];
 
   programs.direnv = {
