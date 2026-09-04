@@ -82,6 +82,18 @@ return {
           end,
           cwd = "${workspaceFolder}",
           stopOnEntry = false,
+          args = function()
+            local input = vim.fn.input({
+              prompt = "Program arguments (space-separated): ",
+              default = "",
+            })
+            if input == "" then return {} end
+            local args = {}
+            for arg in input:gmatch("%S+") do
+              table.insert(args, arg)
+            end
+            return args
+          end,
         },
         {
           name = "Attach to process (CodeLLDB)",
