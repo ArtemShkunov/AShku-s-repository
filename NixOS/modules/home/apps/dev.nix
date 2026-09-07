@@ -7,6 +7,7 @@
     opencode
         opencode-desktop
     poppler-utils
+    lla
   ];
 
   programs.direnv = {
