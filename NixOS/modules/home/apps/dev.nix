@@ -5,9 +5,10 @@
     ripgrep
     lazygit
     opencode
-        opencode-desktop
+    opencode-desktop
     poppler-utils
     lla
+    yazi
   ];
 
   programs.direnv = {
