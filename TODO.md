@@ -7,3 +7,5 @@
 - сделать tofi вместо wofi
 - сделать tofi буфера обмена
 - на waybar сделать у модулей background и мб более активные границы
+- добавить поддержку yazi  в tmux и kitty, изучить плагины yazi
+- Возможно сделать yazi default file manager

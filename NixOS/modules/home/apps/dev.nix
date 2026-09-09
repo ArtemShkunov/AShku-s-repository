@@ -8,6 +8,7 @@
     opencode-desktop
     poppler-utils
     lla
+    yazi
   ];
 
   programs.direnv = {
