@@ -20,8 +20,19 @@ return {
       { "nvim-web-devicons", dir = plugin_path("nvim-web-devicons"), name = "nvim-web-devicons" },
     },
     config = function()
+      local function show_recording()
+        local reg = vim.fn.reg_recording()
+        if reg == "" then
+          return ""
+        end
+        return "REC @" .. reg
+      end
+
       require("lualine").setup({
         options = { theme = "rose-pine" },
+        sections = {
+          lualine_x = { show_recording, "encoding", "fileformat", "filetype" },
+        },
       })
     end,
   },
