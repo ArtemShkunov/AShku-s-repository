@@ -9,6 +9,7 @@
     poppler-utils
     lla
     yazi
+    bat
   ];
 
   programs.direnv = {
