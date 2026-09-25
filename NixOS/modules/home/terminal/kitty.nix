@@ -6,7 +6,6 @@
   programs.kitty = {
     enable = true;
     settings = {
-      background_opacity = "0.75";
       confirm_os_window_close = 0;
 
       # Цвета терминала в тон теме

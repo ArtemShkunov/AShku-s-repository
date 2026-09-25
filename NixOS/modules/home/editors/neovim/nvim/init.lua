@@ -86,6 +86,12 @@ require("lazy").setup("plugins", {
   },
 })
 
+-- Все colorscheme-плагины зарегистрированы в plugins/colorscheme.lua и уже
+-- загружены (lazy = false выше). Теперь можно безопасно настроить
+-- переключатель темы и применить сохранённую (или дефолтную) тему.
+require("theme-switcher").setup()
+require("theme-switcher").apply(require("theme-switcher").load_saved(), { skip_persist = true })
+
 
 vim.diagnostic.config {
     update_in_insert = false,

@@ -63,6 +63,13 @@ let
 
     dressing-nvim = dressing-nvim;
     rose-pine = rose-pine;
+    gruvbox-nvim = gruvbox-nvim;
+    nightfox-nvim = nightfox-nvim;
+    kanagawa-nvim = kanagawa-nvim;
+    catppuccin-nvim = catppuccin-nvim;
+    tokyonight-nvim = tokyonight-nvim;
+    nord-nvim = nord-nvim;
+    neovim-ayu = neovim-ayu;
 
     nvim-dap = nvim-dap;
     nvim-dap-ui = nvim-dap-ui;

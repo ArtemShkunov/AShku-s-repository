@@ -29,7 +29,7 @@ return {
       end
 
       require("lualine").setup({
-        options = { theme = "rose-pine" },
+        options = { theme = "auto" },
         sections = {
           lualine_x = { show_recording, "encoding", "fileformat", "filetype" },
         },
