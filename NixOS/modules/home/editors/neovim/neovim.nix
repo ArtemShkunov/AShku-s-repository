@@ -54,6 +54,8 @@ let
       p.vim
       p.query
       p.markdown_inline
+      p.latex
+      p.bibtex
     ]);
     nvim-treesitter-textobjects = nvim-treesitter-textobjects;
 
@@ -82,6 +84,8 @@ let
 
     autolist-nvim = autolist-nvim;
     vim-table-mode = vim-table-mode;
+
+    vimtex = vimtex;
   };
 
   # Генерируем Lua-таблицу вида:
@@ -147,6 +151,11 @@ in
 
     # --- Markdown ---
     marksman
+
+    # --- LaTeX ---
+    texlab
+    texlive.combined.scheme-full
+    zathura
 
     # tree-sitter CLI — нужен для :checkhealth nvim-treesitter (и TSInstall при необходимости)
     tree-sitter

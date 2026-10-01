@@ -6,5 +6,6 @@
     impala # network monitoring
     localsend # LAN file transfer
     qbittorrent
+    thunderbird
   ];
 }

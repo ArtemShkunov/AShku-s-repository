@@ -44,6 +44,26 @@ return {
                 },
             })
 
+            -- texlab не запускает компиляцию сам по себе — за это отвечает
+            -- vimtex (latexmk). texlab оставляем только для диагностик,
+            -- автодополнения и переходов (gd, K и т.п.).
+            vim.lsp.config("texlab", {
+                settings = {
+                    texlab = {
+                        build = {
+                            onSave = false,
+                        },
+                        forwardSearch = {
+                            executable = "zathura",
+                            args = { "--synctex-forward", "%l:1:%f", "%p" },
+                        },
+                        chktex = {
+                            onOpenAndSave = true,
+                        },
+                    },
+                },
+            })
+
             vim.lsp.enable({
                 "clangd",  -- C / C++ (пакет: clang-tools)
                 "pyright", -- Python  (пакет: pyright)
@@ -52,6 +72,7 @@ return {
                 "ruff",    -- тоже Python
                 "bashls",  -- Bash
                 "marksman", -- Markdown
+                "texlab",  -- LaTeX   (пакет: texlab)
             })
 
             -- Убираем составные filetype'ы (c.doxygen, cpp.doxygen,

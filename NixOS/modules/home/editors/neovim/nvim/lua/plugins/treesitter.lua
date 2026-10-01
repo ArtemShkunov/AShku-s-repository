@@ -15,7 +15,7 @@ return {
       -- Парсеры уже установлены через Nix, TSInstall не нужен.
       -- Включаем подсветку и отступы через нативный vim.treesitter API.
       vim.api.nvim_create_autocmd("FileType", {
-        pattern = { "c", "cpp", "python", "lua", "nix", "bash", "markdown", "vim" },
+        pattern = { "c", "cpp", "python", "lua", "nix", "bash", "markdown", "vim", "tex", "bib" },
         callback = function(args)
           vim.treesitter.start(args.buf)
           vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
