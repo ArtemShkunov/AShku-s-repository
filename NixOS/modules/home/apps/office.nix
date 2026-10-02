@@ -12,5 +12,7 @@
     hyphenDicts.ru_RU
     hunspellDicts.ru_RU
     hunspellDicts.ru-ru
+
+    ghostscript
   ];
 }
