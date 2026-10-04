@@ -54,9 +54,15 @@
   # Laptop-only: battery charge thresholds + CPU power governor.
   services.tlp = {
     enable = true;
+    # D-Bus daemon org.freedesktop.UPower.PowerProfiles + tlpctl:
+    # переключение профилей без root из waybar/CLI.
+    pd.enable = true;
     settings = {
       CPU_SCALING_GOVERNOR_ON_AC = "performance";
       CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
+      # По умолчанию TLP ставит сюда balance_performance — профиль
+      # performance не был бы максимальным.
+      CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
       START_CHARGE_THRESH_BAT0 = 75;
       STOP_CHARGE_THRESH_BAT0 = 80;
     };

@@ -36,9 +36,72 @@ let
             ;;
     esac
   '';
+
+  # Меню выбора TLP-профиля через wofi (вверху справа).
+  profileMenu = pkgs.writeShellScriptBin "profilemenu" ''
+    set -euo pipefail
+
+    cur=$(tlp-stat -m 2>/dev/null | head -1 | cut -d/ -f1)
+    mark() {
+      if [ "$1" = "$cur" ]; then
+        printf ' *'
+      fi
+    }
+
+    entries=" 󰓅 Performance$(mark performance)\n 󰐦 Balanced$(mark balanced)\n 󰌪 Power saver$(mark power-saver)"
+    selected=$(echo -e "$entries" | wofi -L 3 --dmenu --prompt "Power profile" --location top_right --xoffset -16 --yoffset 45 --width 250 --height 150)
+    [ -z "$selected" ] && exit 0
+
+    case "$selected" in
+      *Performance*) profile=performance;;
+      *Balanced*) profile=balanced;;
+      *Power*) profile=power-saver;;
+      *) exit 0;;
+    esac
+
+    # tlpctl сам применяет профиль; уведомляем только при успехе.
+    tlpctl set "$profile" >/dev/null && notify-send -u low -t 2000 "Power profile" "$profile"
+  '';
+
+  # Состояние для custom-модуля waybar: JSON {text, tooltip, class}.
+  profileStatus = pkgs.writeShellScriptBin "profilestatus" ''
+    set -euo pipefail
+
+    state=$(tlp-stat -m 2>/dev/null | head -1)
+    profile=''${state%%/*}
+    [ -z "$profile" ] && profile=balanced
+
+    src=bat
+    for f in /sys/class/power_supply/*/online; do
+      if [ "$(cat "$f" 2>/dev/null)" = "1" ]; then
+        src=ac
+        break
+      fi
+    done
+
+    case "$profile" in
+      performance) text="󰓅 Perf"; tip="Performance";;
+      power-saver) text="󰌪 Save"; tip="Power saver";;
+      *) text="󰐦 Bal"; tip="Balanced"; profile=balanced;;
+    esac
+
+    if [ "$src" = ac ]; then
+      srcname="AC"
+    else
+      srcname="battery"
+    fi
+
+    # -c обязателен: waybar 0.15 читает только первую строку вывода
+    # и парсит её как JSON (src/modules/custom.cpp, parseOutputJson).
+    ${pkgs.jq}/bin/jq -c -n --arg text "$text" \
+      --arg tip "$tip ($srcname)" \
+      --arg cls "$profile" \
+      '{text:$text, tooltip:$tip, class:$cls}'
+  '';
 in
 {
-  home.packages = common.packages;
+  # libnotify — notify-send для меню профиля (его же ждёт alert в zsh).
+  home.packages = common.packages ++ [ pkgs.libnotify ];
 
   programs.waybar = {
     enable = true;
@@ -52,7 +115,7 @@ in
         common.moduleGroups.rightPre
         ++ [ "backlight" ]
         ++ common.moduleGroups.rightMid
-        ++ [ "battery" ]
+        ++ [ "custom/powerprofile" "battery" ]
         ++ common.moduleGroups.rightPost;
 
       # Яркость
@@ -61,6 +124,15 @@ in
         format-icons = ["" "" "" "" "" "" "" "" ""];
         on-click = "${brightnessMenu}/bin/brightnessmenu";
         tooltip = false;
+      };
+
+      # TLP-профиль: индикатор + wofi-меню выбора (tlpctl, без root).
+      "custom/powerprofile" = {
+        exec = "${profileStatus}/bin/profilestatus";
+        return-type = "json";
+        interval = 2;
+        on-click = "${profileMenu}/bin/profilemenu";
+        tooltip = true;
       };
 
       # Батарея
@@ -78,8 +150,17 @@ in
 
     style = common.style + ''
       #backlight,
-      #battery {
+      #battery,
+      #custom-powerprofile {
         padding: 0 8px;
+      }
+
+      #custom-powerprofile.performance {
+        color: #${theme.colors.accent-bright};
+      }
+
+      #custom-powerprofile.power-saver {
+        color: #${theme.colors.accent};
       }
 
       #battery.warning {
