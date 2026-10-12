@@ -9,6 +9,14 @@
 
   networking.hostName = "Desktop";
 
+  # Public resolvers first: the ISP/router DNS (192.168.1.1) returns NXDOMAIN
+  # for filtered domains (e.g. youtube.com). While Throne's TUN is up these go
+  # through the tunnel; otherwise they resolve directly.
+  networking.networkmanager.insertNameservers = [
+    "1.1.1.1"
+    "8.8.8.8"
+  ];
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -78,8 +86,6 @@
   services.udev.extraRules = ''
     SUBSYSTEM=="video4linux", ATTRS{idVendor}=="046d", ATTRS{idProduct}=="081b", GROUP="video", MODE="0664", SYMLINK+="video-logitech"
   '';
-
-
 
   boot.initrd.kernelModules = [
     "nvidia"
