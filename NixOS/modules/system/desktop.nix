@@ -42,5 +42,6 @@
     mousepad # XFCE text editor
     ristretto # XFCE image viewer
     yazi
+    ungoogled-chromium # in case firefox/zen messes up
   ];
 }
