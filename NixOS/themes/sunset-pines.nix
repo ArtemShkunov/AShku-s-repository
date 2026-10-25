@@ -18,11 +18,11 @@
 {
   name = "Sunset Pines";
 
-  # Semantic colors shared by waybar/wofi/mako/tmux/hyprlock/greeter/etc.
+  # Semantic colors shared by waybar/fuzzel/mako/tmux/hyprlock/greeter/etc.
   colors = {
     bg = "16141f"; # base background
     bg-lock = "1a1a1a"; # hyprlock flat background
-    surface = "241f30"; # raised surfaces (waybar/wofi/mako windows)
+    surface = "241f30"; # raised surfaces (waybar/fuzzel/mako windows)
     border = "4a3b4f"; # muted borders, hover states
     fg = "f5e9dc"; # primary text
     fg-dim = "8a7a8a"; # muted/secondary text
@@ -72,7 +72,7 @@
     fg = "FFF6EE";
   };
 
-  # rgba() strings for GTK-based CSS consumers (waybar, ReGreet).
+  # rgba() strings for GTK-based CSS consumers (waybar, GTK apps).
   # GTK's CSS parser does NOT understand 8-digit hex (#RRGGBBAA) and will
   # fail with "Junk at end of value" — alpha must be a rgba(r, g, b, a) call.
   css = {

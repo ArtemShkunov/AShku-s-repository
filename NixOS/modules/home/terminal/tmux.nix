@@ -171,6 +171,9 @@ in
 
       bind-key -r f run-shell "${sessionxScript}"
 
+      # Yazi в popup поверх панели, стартуя из её текущего каталога.
+      bind y display-popup -E -w 90% -h 90% -d "#{pane_current_path}" "${pkgs.yazi}/bin/yazi"
+
       # ---- Статус-бар: стиль catppuccin-tmux (omerxx), цвета из theme ----
       # Скруглённые сегменты: слева сессия, окна с номером-плашкой справа,
       # справа модули (директория / дата-время / хост).

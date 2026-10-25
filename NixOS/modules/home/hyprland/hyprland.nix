@@ -10,34 +10,38 @@ let
   lib = pkgs.lib;
   mkLuaInline = lib.generators.mkLuaInline;
 
-  # Бинды переключения на рабочие столы 1-6 в Lua-идиоме.
+  # Бинды переключения на рабочие столы 1-9 в Lua-идиоме.
   workspaceBinds = builtins.concatLists (
     map (i: [
       {
         _args = [
           (mkLuaInline "mod .. \" + ${toString i}\"")
           (mkLuaInline "hl.dsp.focus({ workspace = ${toString i} })")
+          { description = "Workspace ${toString i}"; }
         ];
       }
       {
         _args = [
           (mkLuaInline "mod .. \" + SHIFT + ${toString i}\"")
           (mkLuaInline "hl.dsp.window.move({ workspace = ${toString i} })")
+          { description = "Move window to workspace ${toString i}"; }
         ];
       }
       {
         _args = [
           (mkLuaInline "mod .. \" + KP_${toString i}\"")
           (mkLuaInline "hl.dsp.focus({ workspace = ${toString i} })")
+          { description = "Workspace ${toString i} (numpad)"; }
         ];
       }
       {
         _args = [
           (mkLuaInline "mod .. \" + SHIFT + KP_${toString i}\"")
           (mkLuaInline "hl.dsp.window.move({ workspace = ${toString i} })")
+          { description = "Move window to workspace ${toString i} (numpad)"; }
         ];
       }
-    ]) (lib.range 1 6)
+    ]) (lib.range 1 9)
   );
 in
 {
@@ -156,113 +160,215 @@ in
         };
       };
 
+      # Трёхпальцевый горизонтальный свайп по тачпаду переключает рабочие столы.
+      gesture = {
+        fingers = 3;
+        direction = "horizontal";
+        action = "workspace";
+      };
+
       bind = [
         {
           _args = [
             (mkLuaInline "mod .. \" + Q\"")
             (mkLuaInline "hl.dsp.exec_cmd(\"kitty\")")
+            { description = "Terminal"; }
           ];
         }
         {
           _args = [
             (mkLuaInline "mod .. \" + C\"")
             (mkLuaInline "hl.dsp.window.close()")
+            { description = "Close window"; }
           ];
         }
         {
           _args = [
             (mkLuaInline "mod .. \" + M\"")
             (mkLuaInline "hl.dsp.exit()")
+            { description = "Exit Hyprland"; }
           ];
         }
         {
           _args = [
             (mkLuaInline "mod .. \" + E\"")
             (mkLuaInline "hl.dsp.exec_cmd(\"thunar\")")
+            { description = "File manager"; }
           ];
         }
         {
           _args = [
             (mkLuaInline "mod .. \" + V\"")
             (mkLuaInline "hl.dsp.window.float({ action = \"toggle\" })")
+            { description = "Toggle floating"; }
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + F\"")
+            (mkLuaInline "hl.dsp.window.fullscreen({ action = \"toggle\" })")
+            { description = "Toggle fullscreen"; }
           ];
         }
         {
           _args = [
             (mkLuaInline "mod .. \" + R\"")
-            (mkLuaInline "hl.dsp.exec_cmd(\"wofi -L 8 --show drun\")")
+            (mkLuaInline "hl.dsp.exec_cmd(\"fuzzel\")")
+            { description = "Application launcher"; }
           ];
         }
         {
           _args = [
             (mkLuaInline "mod .. \" + P\"")
             (mkLuaInline "hl.dsp.window.pseudo()")
+            { description = "Toggle pseudotile"; }
           ];
         }
         {
           _args = [
             (mkLuaInline "mod .. \" + J\"")
             (mkLuaInline "hl.dsp.layout(\"togglesplit\")")
+            { description = "Toggle split direction"; }
           ];
         }
         {
           _args = [
             (mkLuaInline "mod .. \" + L\"")
             (mkLuaInline "hl.dsp.exec_cmd(\"hyprlock\")")
+            { description = "Lock screen"; }
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + SHIFT + V\"")
+            (mkLuaInline "hl.dsp.exec_cmd(\"clipboard-history\")")
+            { description = "Clipboard history"; }
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + H\"")
+            (mkLuaInline "hl.dsp.exec_cmd(\"shortcuts\")")
+            { description = "Keyboard shortcuts"; }
           ];
         }
         {
           _args = [
             "Print"
             (mkLuaInline "hl.dsp.exec_cmd(\"grim -g \\\"$(slurp)\\\" - | wl-copy\")")
+            { description = "Screenshot region"; }
           ];
         }
         {
           _args = [
             (mkLuaInline "mod .. \" + left\"")
             (mkLuaInline "hl.dsp.focus({ direction = \"left\" })")
+            { description = "Focus left"; }
           ];
         }
         {
           _args = [
             (mkLuaInline "mod .. \" + right\"")
             (mkLuaInline "hl.dsp.focus({ direction = \"right\" })")
+            { description = "Focus right"; }
           ];
         }
         {
           _args = [
             (mkLuaInline "mod .. \" + up\"")
             (mkLuaInline "hl.dsp.focus({ direction = \"up\" })")
+            { description = "Focus up"; }
           ];
         }
         {
           _args = [
             (mkLuaInline "mod .. \" + down\"")
             (mkLuaInline "hl.dsp.focus({ direction = \"down\" })")
+            { description = "Focus down"; }
           ];
         }
         {
           _args = [
-            (mkLuaInline "mod .. \" + F\"")
+            (mkLuaInline "mod .. \" + CTRL + left\"")
+            (mkLuaInline "hl.dsp.focus({ workspace = \"e-1\" })")
+            { description = "Previous workspace"; }
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + CTRL + right\"")
+            (mkLuaInline "hl.dsp.focus({ workspace = \"e+1\" })")
+            { description = "Next workspace"; }
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + ALT + left\"")
+            (mkLuaInline "hl.dsp.window.swap({ direction = \"left\" })")
+            { description = "Swap window left"; }
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + ALT + right\"")
+            (mkLuaInline "hl.dsp.window.swap({ direction = \"right\" })")
+            { description = "Swap window right"; }
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + ALT + up\"")
+            (mkLuaInline "hl.dsp.window.swap({ direction = \"up\" })")
+            { description = "Swap window up"; }
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + ALT + down\"")
+            (mkLuaInline "hl.dsp.window.swap({ direction = \"down\" })")
+            { description = "Swap window down"; }
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "\"ALT + Tab\"")
+            (mkLuaInline "hl.dsp.window.cycle_next()")
+            { description = "Next window"; }
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "\"ALT + SHIFT + Tab\"")
+            (mkLuaInline "hl.dsp.window.cycle_next({ next = false })")
+            { description = "Previous window"; }
+          ];
+        }
+        {
+          _args = [
+            (mkLuaInline "mod .. \" + SHIFT + F\"")
             (mkLuaInline "hl.dsp.exec_cmd(\"firefox\")")
+            { description = "Firefox"; }
           ];
         }
         {
           _args = [
             (mkLuaInline "mod .. \" + T\"")
             (mkLuaInline "hl.dsp.exec_cmd(\"Throne\")")
+            { description = "Throne"; }
           ];
         }
         {
           _args = [
             (mkLuaInline "mod .. \" + N\"")
             (mkLuaInline "hl.dsp.exec_cmd(\"pkill hyprsunset || hyprsunset -t 3500\")")
+            { description = "Toggle night light"; }
           ];
         }
         {
           _args = [
             (mkLuaInline "mod .. \" + B\"")
-            (mkLuaInline "hl.dsp.exec_cmd(\"zen-beta\")")
+            (mkLuaInline "hl.dsp.exec_cmd(\"default-browser\")")
+            { description = "Default browser"; }
           ];
         }
 
@@ -271,14 +377,20 @@ in
           _args = [
             (mkLuaInline "mod .. \" + mouse:272\"")
             (mkLuaInline "hl.dsp.window.drag()")
-            { mouse = true; }
+            {
+              mouse = true;
+              description = "Move window with mouse";
+            }
           ];
         }
         {
           _args = [
             (mkLuaInline "mod .. \" + mouse:273\"")
             (mkLuaInline "hl.dsp.window.resize()")
-            { mouse = true; }
+            {
+              mouse = true;
+              description = "Resize window with mouse";
+            }
           ];
         }
 
@@ -290,6 +402,7 @@ in
             {
               locked = true;
               repeating = true;
+              description = "Brightness down";
             }
           ];
         }
@@ -300,6 +413,7 @@ in
             {
               locked = true;
               repeating = true;
+              description = "Brightness up";
             }
           ];
         }
@@ -310,6 +424,7 @@ in
             {
               locked = true;
               repeating = true;
+              description = "Volume down";
             }
           ];
         }
@@ -320,6 +435,7 @@ in
             {
               locked = true;
               repeating = true;
+              description = "Volume up";
             }
           ];
         }
@@ -329,14 +445,20 @@ in
           _args = [
             "XF86AudioMute"
             (mkLuaInline "hl.dsp.exec_cmd(\"pamixer -t\")")
-            { locked = true; }
+            {
+              locked = true;
+              description = "Mute output";
+            }
           ];
         }
         {
           _args = [
             "XF86AudioMicMute"
             (mkLuaInline "hl.dsp.exec_cmd(\"pamixer --default-source -t\")")
-            { locked = true; }
+            {
+              locked = true;
+              description = "Mute microphone";
+            }
           ];
         }
       ]

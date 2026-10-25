@@ -69,7 +69,7 @@ NixOS/
     │   ├── fonts.nix                #   системные шрифты
     │   ├── theming.nix              #   системные пакеты тем (GTK/Qt)
     │   ├── desktop.nix              #   Hyprland-система, thunar, polkit, GUI-программы
-    │   └── greeter.nix              #   greetd + ReGreet (экран входа)
+    │   └── greeter.nix              #   ly (экран входа)
     │
     └── home/                        # общие home-manager модули (один модуль — одна забота)
         ├── shell/
@@ -84,8 +84,11 @@ NixOS/
         │   └── neovim/              #   neovim + LSP/инструменты
         ├── hyprland/
         │   ├── hyprland.nix         #   сам WM (бинды/раскладка/порталы)
-        │   ├── waybar.nix           #   панель
-        │   ├── wofi.nix             #   лаунчер
+        │   ├── waybar-common.nix    #   общие скрипты/модули/CSS Waybar
+        │   ├── waybar-desktop.nix   #   Waybar для ПК
+        │   ├── waybar-laptop.nix    #   Waybar для ноутбука
+        │   ├── fuzzel.nix           #   лаунчер и меню
+        │   ├── shortcuts.nix        #   меню подсказок по шорткатам
         │   ├── mako.nix             #   уведомления
         │   ├── hyprlock.nix         #   экран блокировки
         │   ├── hypridle.nix         #   idle-менеджер
@@ -206,7 +209,7 @@ can't tell what needs to change for a new device.
   adwaita-*, qtwayland).
 - **`desktop.nix`** — системная часть десктопа: Hyprland, XWayland/клавиатура,
   thunar/gvfs, polkit, firefox, throne.
-- **`greeter.nix`** — greetd + ReGreet; цвета берёт из `theme`.
+- **`greeter.nix`** — ly; цвета берёт из `theme`.
 
 Imported by every host and independent of hardware:
 
@@ -221,7 +224,7 @@ Imported by every host and independent of hardware:
   adwaita-*, qtwayland).
 - **`desktop.nix`** — desktop system parts: Hyprland, XWayland/keymap,
   thunar/gvfs, polkit, firefox, throne.
-- **`greeter.nix`** — greetd + ReGreet; colors read from `theme`.
+- **`greeter.nix`** — ly; colors read from `theme`.
 
 ### `modules/home/` — общие home-модули / shared home modules
 
@@ -234,7 +237,7 @@ Imported by every host and independent of hardware:
 - `editors/` — git; `neovim/` — neovim со своими LSP/инструментами
   (внутри — `nvim/` с Lua-конфигом).
 - `hyprland/` — каждый компонент десктопа отдельным файлом: сам WM,
-  waybar, wofi, mako, hyprlock, hypridle, hyprpaper.
+  waybar, fuzzel, mako, hyprlock, hypridle, hyprpaper.
 - `apps/` — пакеты приложений, сгруппированные по назначению (чат,
   браузеры, офис, медиа, сеть, разработка).
 - `fastfetch/` — конфиг + скрипты + логотипы.
@@ -250,7 +253,7 @@ live together:
 - `editors/` — git; `neovim/` — neovim with its LSP/tooling (inside —
   `nvim/` with the Lua config).
 - `hyprland/` — each desktop component is its own file: the WM itself,
-  waybar, wofi, mako, hyprlock, hypridle, hyprpaper.
+  waybar, fuzzel, mako, hyprlock, hypridle, hyprpaper.
 - `apps/` — application packages grouped by purpose (chat, browsers,
   office, media, network, dev).
 - `fastfetch/` — config + scripts + logos.

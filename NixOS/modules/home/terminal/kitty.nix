@@ -8,6 +8,11 @@
     settings = {
       confirm_os_window_close = 0;
 
+      # kitty 0.49+ remembers the maximized state along with the window size,
+      # so a single maximized window made every new kitty open maximized and
+      # cover the tiled layout. The WM decides sizing for tiled windows.
+      remember_window_size = false;
+
       # Цвета терминала в тон теме
       background = "#${theme.colors.bg}";
       foreground = "#${theme.colors.fg}";
@@ -43,6 +48,9 @@
       "ctrl+7" = "send_text all \\x1b[55;5u";
       "ctrl+8" = "send_text all \\x1b[56;5u";
       "ctrl+9" = "send_text all \\x1b[57;5u";
+
+      # Yazi поверх текущей вкладки в каталоге, где запущен шелл.
+      "ctrl+shift+y" = "launch --type=overlay --cwd=current ${pkgs.yazi}/bin/yazi";
     };
 
     font = {

@@ -12,7 +12,13 @@ let
     set -euo pipefail
 
     entries="🌙 Night mode\n☀ Brightness"
-    selected=$(echo -e "$entries" | wofi -L 3 --dmenu --prompt "Backlight" --location top_right --xoffset -16 --yoffset 45 --width 250 --height 150)
+    selected=$(
+      printf '%b\n' "$entries" |
+        fuzzel-menu \
+          --prompt "Backlight  " \
+          --lines 3 \
+          --width 30
+    )
 
     case "$selected" in
         "🌙 Night mode")
@@ -37,7 +43,7 @@ let
     esac
   '';
 
-  # Меню выбора TLP-профиля через wofi (вверху справа).
+  # Меню выбора TLP-профиля через Fuzzel.
   profileMenu = pkgs.writeShellScriptBin "profilemenu" ''
     set -euo pipefail
 
@@ -49,7 +55,13 @@ let
     }
 
     entries=" 󰓅 Performance$(mark performance)\n 󰐦 Balanced$(mark balanced)\n 󰌪 Power saver$(mark power-saver)"
-    selected=$(echo -e "$entries" | wofi -L 3 --dmenu --prompt "Power profile" --location top_right --xoffset -16 --yoffset 45 --width 250 --height 150)
+    selected=$(
+      printf '%b\n' "$entries" |
+        fuzzel-menu \
+          --prompt "Power profile  " \
+          --lines 3 \
+          --width 32
+    )
     [ -z "$selected" ] && exit 0
 
     case "$selected" in
@@ -113,20 +125,50 @@ in
       modules-center = common.moduleGroups.center;
       modules-right =
         common.moduleGroups.rightPre
-        ++ [ "backlight" ]
-        ++ common.moduleGroups.rightMid
-        ++ [ "custom/powerprofile" "battery" ]
+        ++ [ "custom/status-start" ]
+        ++ common.moduleGroups.systemIndicators
+        ++ [
+          "backlight"
+        ]
+        ++ [ "custom/status-end" ]
+        ++ [
+          "custom/powerprofile"
+          "battery"
+        ]
         ++ common.moduleGroups.rightPost;
 
-      # Яркость
+      # Яркость — визуально в общей группе индикаторов.
       backlight = {
-        format = "{icon} {percent}%";
-        format-icons = ["" "" "" "" "" "" "" "" ""];
+        format = "{icon}";
+        tooltip-format = "Brightness: {percent}%";
+        format-icons = [
+          ""
+          ""
+          ""
+          ""
+          ""
+          ""
+          ""
+          ""
+          ""
+        ];
         on-click = "${brightnessMenu}/bin/brightnessmenu";
+        on-scroll-up = "brightnessctl set +5%";
+        on-scroll-down = "brightnessctl set 5%-";
         tooltip = false;
       };
 
-      # TLP-профиль: индикатор + wofi-меню выбора (tlpctl, без root).
+      # Invisible group edges make the contiguous indicators one control.
+      "custom/status-start" = {
+        format = "";
+        tooltip = false;
+      };
+      "custom/status-end" = {
+        format = "";
+        tooltip = false;
+      };
+
+      # TLP-профиль: индикатор + меню Fuzzel (tlpctl, без root).
       "custom/powerprofile" = {
         exec = "${profileStatus}/bin/profilestatus";
         return-type = "json";
@@ -144,7 +186,13 @@ in
         format = "{icon} {capacity}%";
         format-charging = "󰂄 {capacity}%";
         format-plugged = " {capacity}%";
-        format-icons = ["" "" "" "" ""];
+        format-icons = [
+          ""
+          ""
+          ""
+          ""
+          ""
+        ];
       };
     };
 
@@ -153,6 +201,14 @@ in
       #battery,
       #custom-powerprofile {
         padding: 0 8px;
+        border: none;
+        border-radius: 0;
+        background-color: transparent;
+      }
+
+      #backlight {
+        background-color: #${theme.colors.surface};
+        padding: 0 7px;
       }
 
       #custom-powerprofile.performance {

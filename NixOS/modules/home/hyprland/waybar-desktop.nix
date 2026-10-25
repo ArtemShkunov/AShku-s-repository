@@ -21,7 +21,9 @@ in
       modules-left = common.moduleGroups.left;
       modules-center = common.moduleGroups.center;
       modules-right =
-        common.moduleGroups.rightPre ++ common.moduleGroups.rightMid ++ common.moduleGroups.rightPost;
+        common.moduleGroups.rightPre
+        ++ common.moduleGroups.systemIndicators
+        ++ common.moduleGroups.rightPost;
     };
 
     style = common.style;
