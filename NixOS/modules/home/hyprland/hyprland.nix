@@ -127,8 +127,8 @@ in
         };
 
         general = {
-          gaps_in = 5;
-          gaps_out = 10;
+          gaps_in = 2.5;
+          gaps_out = 2.5;
           border_size = 2;
           # Градиент оранжевый -> золото под цвет заката с обоев
           col = {
@@ -213,7 +213,7 @@ in
         {
           _args = [
             (mkLuaInline "mod .. \" + R\"")
-            (mkLuaInline "hl.dsp.exec_cmd(\"fuzzel\")")
+            (mkLuaInline "hl.dsp.exec_cmd(\"fuzzel -p 'Apps... ' \")")
             { description = "Application launcher"; }
           ];
         }

@@ -153,12 +153,10 @@ in
     rightPre = [ "tray" ];
     # System indicators adjacent in one visually unified group.
     systemIndicators = [
-      "custom/status-start"
       "network"
       "bluetooth"
       "pulseaudio"
       "pulseaudio#microphone"
-      "custom/status-end"
     ];
     rightPost = [
       "hyprland/language"
@@ -172,12 +170,12 @@ in
     layer = "top";
     position = "top";
     height = 34;
-    spacing = 0; # Соседние элементы образуют непрерывные TUI-группы
+    spacing = 6; # Небольшой зазор между модулями
 
     # Кнопка запуска приложений (Fuzzel).
     "custom/launcher" = {
       format = "";
-      on-click = "fuzzel";
+      on-click = "fuzzel -p 'Apps... '";
       tooltip = false;
     };
 
@@ -207,24 +205,18 @@ in
       tooltip = false;
     };
 
-    "custom/status-start" = {
-      format = "";
-      tooltip = false;
-    };
-    "custom/status-end" = {
-      format = "";
-      tooltip = false;
-    };
-
     # Дата и время. По клику запускается календарь
     clock = {
       format = "{:%H:%M  |  %A, %d %b}";
       tooltip-format = "<tt><small>{calendar}</small></tt>";
     };
 
-    # Фоновые приложения в трее
+    # Фоновые приложения в трее. show-passive-items нужен, чтобы видеть
+    # приложения, которые не отправляют активных обновлений статуса.
     tray = {
+      icon-size = 18;
       spacing = 8; # Расстояние между иконками приложений в трее
+      show-passive-items = true;
     };
 
     # Bluetooth. Значок меняется в зависимости от состояния адаптера
@@ -320,7 +312,7 @@ in
       border-radius: 0;
     }
 
-    /* Modules use flat terminal-like cells; no hover glow. */
+    /* Все модули плоские: фон панели просвечивает одинаково. */
     #custom-launcher,
     #custom-shortcuts,
     #workspaces,
@@ -338,34 +330,17 @@ in
       margin: 0;
     }
 
-    #custom-status-start,
-    #custom-status-end {
-      background-color: #${theme.colors.surface};
-      border: none;
-      padding: 0;
-      margin: 0;
-      min-width: 1px;
-    }
-
-    /* Adjacent status indicators read as a single TUI group. */
+    /* Индикаторы сети/Bluetooth/звука не выделяются фоном. */
     #network,
     #bluetooth,
     #pulseaudio,
     #pulseaudio\.microphone,
     #backlight {
-      background-color: #${theme.colors.surface};
+      background-color: transparent;
       border: none;
       border-radius: 0;
       padding: 0 7px;
       margin: 0;
-    }
-
-    #network {
-      padding-left: 10px;
-    }
-
-    #pulseaudio\.microphone {
-      padding-right: 10px;
     }
 
     #network,
@@ -414,7 +389,7 @@ in
     }
 
     #workspaces button.active {
-      background-color: #${theme.colors.surface};
+      background-color: transparent;
       color: #${theme.colors.accent-bright};
     }
 

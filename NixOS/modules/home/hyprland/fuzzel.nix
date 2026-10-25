@@ -5,7 +5,7 @@
 
 let
   fuzzelMenu = pkgs.writeShellScriptBin "fuzzel-menu" ''
-    exec ${pkgs.fuzzel}/bin/fuzzel --dmenu --enable-mouse=yes "$@"
+    exec ${pkgs.fuzzel}/bin/fuzzel --dmenu "$@"
   '';
 
   clipboardHistory = pkgs.writeShellScriptBin "clipboard-history" ''
@@ -15,7 +15,6 @@ let
       ${pkgs.cliphist}/bin/cliphist list |
         ${pkgs.fuzzel}/bin/fuzzel \
           --dmenu \
-          --enable-mouse=yes \
           --prompt "Clipboard  " \
           --lines 15 \
           --width 72
@@ -38,7 +37,7 @@ in
         font = "${theme.fonts.mono}:size=13";
         terminal = "${pkgs.kitty}/bin/kitty";
         prompt = "Apps  ";
-        placeholder = "Type to search applications…";
+        placeholder = "  ";
         lines = 15;
         width = 58;
         horizontal-pad = 24;

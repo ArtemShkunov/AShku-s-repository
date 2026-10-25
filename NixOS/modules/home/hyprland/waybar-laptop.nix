@@ -125,13 +125,9 @@ in
       modules-center = common.moduleGroups.center;
       modules-right =
         common.moduleGroups.rightPre
-        ++ [ "custom/status-start" ]
         ++ common.moduleGroups.systemIndicators
         ++ [
           "backlight"
-        ]
-        ++ [ "custom/status-end" ]
-        ++ [
           "custom/powerprofile"
           "battery"
         ]
@@ -155,16 +151,6 @@ in
         on-click = "${brightnessMenu}/bin/brightnessmenu";
         on-scroll-up = "brightnessctl set +5%";
         on-scroll-down = "brightnessctl set 5%-";
-        tooltip = false;
-      };
-
-      # Invisible group edges make the contiguous indicators one control.
-      "custom/status-start" = {
-        format = "";
-        tooltip = false;
-      };
-      "custom/status-end" = {
-        format = "";
         tooltip = false;
       };
 
@@ -207,8 +193,7 @@ in
       }
 
       #backlight {
-        background-color: #${theme.colors.surface};
-        padding: 0 7px;
+        background-color: transparent;
       }
 
       #custom-powerprofile.performance {
