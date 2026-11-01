@@ -7,5 +7,6 @@
     localsend # LAN file transfer
     qbittorrent
     thunderbird
+    scrcpy
   ];
 }
