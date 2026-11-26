@@ -39,6 +39,7 @@
     unzip
     unrar
     kdePackages.ark # archives
+    zip
     mousepad # XFCE text editor
     ristretto # XFCE image viewer
     yazi

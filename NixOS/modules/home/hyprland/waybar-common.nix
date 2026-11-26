@@ -159,6 +159,7 @@ in
       "pulseaudio#microphone"
     ];
     rightPost = [
+      "idle_inhibitor"
       "hyprland/language"
       "custom/power"
     ];
@@ -273,6 +274,17 @@ in
       on-click-right = "pavucontrol";
     };
 
+    # Временно отключает действия hypridle по бездействию.
+    idle_inhibitor = {
+      format = "{icon}";
+      format-icons = {
+        activated = "󰅶";
+        deactivated = "󰾪";
+      };
+      tooltip-format-activated = "Automatic lock and sleep: off";
+      tooltip-format-deactivated = "Automatic lock and sleep: on";
+    };
+
     # Раскладка клавиатуры. Отображение обновляется автоматически через
     # IPC Hyprland, по клику открывается кастомное меню выбора раскладки.
     # keyboard-name зависит от конкретной машины — задаётся в host home.nix.
@@ -318,6 +330,7 @@ in
     #workspaces,
     #clock,
     #tray,
+    #idle_inhibitor,
     #language,
     #custom-sysinfo,
     #custom-power,
@@ -351,6 +364,7 @@ in
     #custom-launcher,
     #custom-shortcuts,
     #clock,
+    #idle_inhibitor,
     #language,
     #custom-sysinfo,
     #custom-power,
@@ -367,6 +381,7 @@ in
     #custom-launcher:hover,
     #custom-shortcuts:hover,
     #clock:hover,
+    #idle_inhibitor:hover,
     #language:hover,
     #custom-sysinfo:hover,
     #custom-power:hover,
@@ -419,6 +434,10 @@ in
     }
 
     /* Кнопка питания. */
+    #idle_inhibitor.activated {
+      color: #${theme.colors.accent-bright};
+    }
+
     #custom-power {
       color: #${theme.colors.error};
       font-size: 16px;

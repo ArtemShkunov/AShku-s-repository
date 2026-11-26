@@ -4,6 +4,7 @@
     libreoffice
     obsidian
     kdePackages.okular
+    papers
 
     # Spelling/hyphenation for LibreOffice (RU + EN)
     hunspell
