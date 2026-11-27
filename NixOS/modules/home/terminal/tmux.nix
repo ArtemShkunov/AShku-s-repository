@@ -1,7 +1,6 @@
 # tmux.nix — tmux multiplexer: keybinds, plugins, session restore.
 #
-# Status-bar colors come from theme.colors; all the keybinding/plugin logic
-# is theming-free.
+# Interface colors come from theme.colors.
 {
   pkgs,
   config,
@@ -127,6 +126,8 @@ in
           # старого tmux-sessionizer): подкаталоги ~/Projects попадают в popup.
           set -g @sessionx-custom-paths '${config.home.homeDirectory}/Projects'
           set -g @sessionx-custom-paths-subdirectories 'true'
+          # sessionx использует fzf со своей палитрой, независимо от tmux.
+          set -g @sessionx-additional-options '--color=fg:#${theme.colors.fg},bg:#${theme.colors.bg},fg+:#${theme.colors.fg},bg+:#${theme.colors.surface},hl:#${theme.colors.accent},hl+:#${theme.colors.accent-bright},pointer:#${theme.colors.accent},marker:#${theme.colors.success},spinner:#${theme.colors.accent},prompt:#${theme.colors.accent},info:#${theme.colors.fg-dim},header:#${theme.colors.cyan},border:#${theme.colors.border},label:#${theme.colors.fg}'
         '';
       }
     ];
@@ -204,6 +205,11 @@ in
       set -g message-style "fg=#${theme.colors.cyan},bg=#${theme.colors.surface},align=centre"
       set -g message-command-style "fg=#${theme.colors.cyan},bg=#${theme.colors.surface},align=centre"
       setw -g mode-style "fg=#${theme.colors.magenta},bg=#${theme.colors.grey},bold"
+      set -g menu-style "fg=#${theme.colors.fg},bg=#${theme.colors.surface}"
+      set -g menu-selected-style "fg=#${theme.colors.bg},bg=#${theme.colors.accent}"
+      set -g menu-border-style "fg=#${theme.colors.border}"
+      set -g popup-style "fg=#${theme.colors.fg},bg=#${theme.colors.bg}"
+      set -g popup-border-style "fg=#${theme.colors.border}"
 
       # ---- Автосохранение сессии при отключении (prefix+d и любой detach) ----
       set-hook -g client-detached 'run-shell -b "${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect/scripts/save.sh"'
