@@ -57,6 +57,40 @@
     "intel"
   ];
 
+  # VG27VQ is connected to Intel DisplayPort, not the NVIDIA audio controller.
+  # Expose DP and analog headphones together: the stock profiles only expose
+  # one output at a time, so changing profiles destroys the other output.
+  services.pipewire.wireplumber.extraConfig."51-monitor-audio" = {
+    "monitor.alsa.rules" = [
+      {
+        matches = [
+          { "device.name" = "alsa_card.pci-0000_00_1f.3"; }
+        ];
+        actions.update-props = {
+          "device.profile-set" = pkgs.writeText "desktop-audio-profile.conf" ''
+            .include ${pkgs.pipewire}/share/alsa-card-profile/mixer/profile-sets/default.conf
+
+            [General]
+            auto-profiles = no
+
+            [Profile desktop-dual-output]
+            description = Monitor + Headphones + Microphone
+            output-mappings = analog-stereo hdmi-stereo
+            input-mappings = analog-stereo
+            priority = 10000
+          '';
+          "device.profile" = "desktop-dual-output";
+        };
+      }
+      {
+        matches = [
+          { "node.name" = "alsa_output.pci-0000_00_1f.3.hdmi-stereo"; }
+        ];
+        actions.update-props."priority.session" = 1400;
+      }
+    ];
+  };
+
   boot.kernelModules = [
     "nvidia"
     "nvidia_modeset"
