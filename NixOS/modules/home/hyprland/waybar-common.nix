@@ -133,11 +133,7 @@ in
     defaultBrowser
   ];
 
-  # Backport of waybar PR #5013: route workspace clicks/scroll through the
-  # Hyprland Lua IPC protocol (required since Hyprland 0.54 + Lua configs).
-  package = pkgs.waybar.overrideAttrs (old: {
-    patches = (old.patches or [ ]) ++ [ ./waybar-lua-ipc.patch ];
-  });
+  package = pkgs.waybar;
 
   # Группы имён модулей для modules-left/center/right. Разбиты на части,
   # чтобы специфичные для ноутбука backlight/battery можно было вставить
